@@ -545,14 +545,46 @@ section { position: relative; }
 .process-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
 .process-head { position: sticky; top: 120px; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
 .process-head p { color: var(--muted); font-size: 1.125rem; max-width: 460px; }
-.steps { display: grid; gap: 16px; }
-.step { display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; padding: clamp(22px, 2.4vw, 32px); border-radius: var(--r-lg); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
-.step:hover { transform: translateX(6px); box-shadow: var(--shadow-md); }
-.step-n { color: var(--blue); background: var(--blue-50); border: 1px solid var(--blue-100); padding: 8px 12px; border-radius: 10px; }
-.step h3 { font-size: 1.3rem; margin-bottom: 6px; }
-.step p { color: var(--muted); font-size: .9875rem; }
-.step-ic { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: var(--yellow); color: var(--ink); font-size: 24px; transition: transform .5s var(--ease); }
-.step:hover .step-ic { transform: rotate(-8deg) scale(1.06); }
+/* Línea de tiempo: nodos con ícono que se cargan uno a uno; el paso bajo el cursor se ilumina */
+.timeline { --node: 58px; --gap: 22px; --m: 10px; position: relative; display: grid; gap: var(--gap); }
+.tl-item { position: relative; display: grid; grid-template-columns: var(--node) 1fr; column-gap: 22px; align-items: start; outline: none; }
+.tl-node {
+  position: relative; z-index: 2; margin-top: var(--m); width: var(--node); height: var(--node); border-radius: 50%;
+  display: grid; place-items: center; font-size: 25px; background: #fff; color: #98A3B6; border: 2px solid var(--line); box-shadow: var(--shadow-sm);
+  transition: background .5s var(--ease), color .4s, border-color .5s, box-shadow .5s var(--ease), transform .5s var(--ease);
+}
+.tl-node::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--yellow); opacity: 0; pointer-events: none; }
+.tl-card {
+  padding: 22px 26px; border-radius: var(--r-lg); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+  transition: opacity .6s var(--ease), transform .6s var(--ease), border-color .4s, box-shadow .5s var(--ease);
+}
+.tl-card h3 { font-size: 1.25rem; margin-bottom: 6px; transition: color .3s; }
+.tl-card p { color: var(--muted); font-size: .9875rem; }
+
+/* conector entre nodos: pista gris + relleno que avanza */
+.tl-item:not(:last-child)::before, .tl-item:not(:last-child)::after {
+  content: ""; position: absolute; left: calc(var(--node) / 2 - 2px); width: 4px; border-radius: 4px;
+  top: calc(var(--m) + var(--node)); bottom: calc(-1 * (var(--gap) + var(--m)));
+}
+.tl-item::before { background: #DCE3F0; }
+.tl-item::after { background: linear-gradient(var(--blue-bright), var(--blue)); transform: scaleY(0); transform-origin: top; transition: transform .9s linear; }
+.tl-item.is-on::after { transform: scaleY(1); }
+
+/* paso aún sin cargar (solo con JS) */
+.js .tl-item:not(.is-on) .tl-card { opacity: .45; transform: translateY(12px); }
+.js .tl-item:not(.is-on).is-current .tl-card { opacity: 1; transform: none; }
+
+/* paso cargado */
+.tl-item.is-on .tl-node { background: var(--yellow); border-color: var(--yellow); color: var(--ink); box-shadow: 0 10px 24px -8px rgba(244, 213, 59, .75); animation: nodePop .7s var(--ease); }
+@keyframes nodePop { 0% { transform: scale(.7); } 60% { transform: scale(1.14); } 100% { transform: scale(1); } }
+
+/* paso actual (hover, foco o toque): se ilumina */
+.tl-item.is-current .tl-node { background: var(--yellow); border-color: #fff; color: var(--ink); transform: scale(1.12); animation: none; box-shadow: 0 0 0 7px rgba(244, 213, 59, .32), 0 0 36px 10px rgba(244, 213, 59, .6); }
+.tl-item.is-current .tl-node::after { animation: ring 1.7s ease-out infinite; }
+@keyframes ring { 0% { transform: scale(1); opacity: .85; } 100% { transform: scale(1.75); opacity: 0; } }
+.tl-item.is-current .tl-card { border-color: #F1DE7A; transform: translateX(6px); box-shadow: 0 0 0 4px rgba(244, 213, 59, .2), var(--shadow-md); }
+.tl-item.is-current .tl-card h3 { color: var(--blue); }
+.tl-item:focus-visible .tl-card { outline: 3px solid var(--blue-bright); outline-offset: 3px; }
 
 /* =========================================================
    CIFRAS
@@ -725,8 +757,10 @@ section { position: relative; }
   .f2, .f4 { display: none; }
   .m-search { display: none; }
   .mods, .field-row, .mv, .badges, .more-grid { grid-template-columns: 1fr; }
-  .step { grid-template-columns: 1fr; gap: 14px; }
-  .step-ic { display: none; }
+  .timeline { --node: 48px; --gap: 16px; }
+  .tl-item { column-gap: 14px; }
+  .tl-node { font-size: 21px; }
+  .tl-card { padding: 18px 18px; }
   .case { grid-template-columns: 1fr; }
   .case-go { display: none; }
   .stats-card { grid-template-columns: 1fr; }

@@ -218,12 +218,33 @@
     hubWrap.addEventListener('mouseenter', () => { hovering = true; clearTimeout(timer); progress.classList.remove('run'); });
     hubWrap.addEventListener('mouseleave', () => { hovering = false; restartProgress(); schedule(); });
 
-    new IntersectionObserver(([en]) => {
-      inView = en.isIntersecting;
+    new IntersectionObserver(entries => {
+      inView = entries[entries.length - 1].isIntersecting; // la última entrada es el estado más reciente
       restartProgress(); schedule();
     }, { threshold: 0.35 }).observe(hubWrap);
 
     select(0);
+  }
+
+  /* ---------- Línea de tiempo: se carga paso a paso; el paso actual se ilumina ---------- */
+  const timeline = $('[data-timeline]');
+  if (timeline) {
+    const items = $$('.tl-item', timeline);
+    const STEP = 950; // ms entre pasos (coincide con el avance del conector)
+    const run = () => items.forEach((it, i) => setTimeout(() => it.classList.add('is-on'), reduceMotion ? 0 : i * STEP));
+    if ('IntersectionObserver' in window) {
+      const tio = new IntersectionObserver(entries => { if (entries.some(en => en.isIntersecting)) { run(); tio.disconnect(); } }, { threshold: 0.25 });
+      tio.observe(timeline);
+    } else run();
+
+    const mark = (it) => items.forEach(o => o.classList.toggle('is-current', o === it));
+    items.forEach(it => {
+      it.addEventListener('mouseenter', () => mark(it));
+      it.addEventListener('focus', () => mark(it));
+      it.addEventListener('click', () => mark(it)); // táctil: no hay hover
+    });
+    timeline.addEventListener('mouseleave', () => mark(null));
+    timeline.addEventListener('focusout', e => { if (!timeline.contains(e.relatedTarget)) mark(null); });
   }
 
   /* ---------- FAQ (acordeón) ---------- */
