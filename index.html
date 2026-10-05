@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIO | Gestión hospitalaria integrada con SAMAN SOLUTION</title>
+<meta name="description" content="Más de 30 años de experiencia en soluciones TIC. SAMAN SOLUTION integra la gestión asistencial, financiera y administrativa de tu institución de salud en una sola solución.">
+<meta name="theme-color" content="#00102E">
+<link rel="icon" href="assets/img/logo-sio.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<!-- ============ ICON SPRITE ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></symbol>
+    <symbol id="i-heart-pulse" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 17.5v-11"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-bar-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+    <symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-package" viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></symbol>
+    <symbol id="i-life-buoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-clipboard-check" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+    <symbol id="i-hospital" viewBox="0 0 24 24"><path d="M12 6v4M14 8h-4"/><path d="M14 22v-4a2 2 0 0 0-4 0v4"/><path d="M18 22V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v17"/><path d="M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h2"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01M6 18h.01"/></symbol>
+    <symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar" id="topbar">
+  <a class="topbar-link" href="#saman-rips">
+    <span class="tag-new">Nuevo</span>
+    <span><span class="t-long">Saman RIPS: genera tus RIPS sin errores, conforme a la Resolución 2275</span><span class="t-short">Saman RIPS · Resolución 2275</span></span>
+    <svg class="ic"><use href="#i-arrow-right"/></svg>
+  </a>
+  <button class="topbar-close" type="button" aria-label="Cerrar anuncio" data-close-topbar><svg class="ic"><use href="#i-x"/></svg></button>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="nav-wrap" id="nav">
+  <nav class="nav" aria-label="Principal">
+    <a class="brand" href="#inicio" aria-label="SIO — Soluciones Integrales de Oficina">
+      <img src="assets/img/logo-sio.png" alt="SIO Soluciones Integrales de Oficina" width="400" height="179">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#inicio" class="is-active">Inicio</a></li>
+      <li class="has-mega">
+        <button type="button" class="mega-trigger" aria-expanded="false" aria-controls="mega">Soluciones <svg class="ic"><use href="#i-chevron-down"/></svg></button>
+        <div class="mega" id="mega">
+          <div class="mega-grid">
+            <a class="mega-feature" href="#saman-solution">
+              <span class="pill pill-yellow">Producto principal</span>
+              <span class="mega-logo"><img src="assets/img/logo-saman-solution.png" alt="SAMAN SOLUTION Gestión hospitalaria"></span>
+              <strong>Todo tu hospital en una sola solución</strong>
+              <p>Historia clínica electrónica, facturación, cartera, finanzas y talento humano con un único proveedor.</p>
+              <span class="link-arrow">Explorar SAMAN SOLUTION <svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <div class="mega-col">
+              <span class="mega-label">Se integran con SAMAN SOLUTION</span>
+              <a class="mega-item" href="#saman-soft">
+                <span class="mi-ic"><svg class="ic"><use href="#i-receipt"/></svg></span>
+                <span><b>Saman Soft</b><small>Facturación y nómina electrónica</small></span>
+              </a>
+              <a class="mega-item" href="#health-sq">
+                <span class="mi-ic"><svg class="ic"><use href="#i-clipboard-check"/></svg></span>
+                <span><b>Health SQ</b><small>Sistemas obligatorios de calidad</small></span>
+              </a>
+              <a class="mega-item" href="#saman-rips">
+                <span class="mi-ic"><svg class="ic"><use href="#i-file-text"/></svg></span>
+                <span><b>Saman RIPS</b><small>RIPS automáticos · Res. 2275</small></span>
+              </a>
+            </div>
+            <div class="mega-col">
+              <span class="mega-label">Otras soluciones</span>
+              <a class="mega-item mini" href="#otras-soluciones"><span class="mi-ic"><svg class="ic"><use href="#i-folder"/></svg></span><span><b>Gestión documental</b></span></a>
+              <a class="mega-item mini" href="#otras-soluciones"><span class="mi-ic"><svg class="ic"><use href="#i-scan"/></svg></span><span><b>Gestión de información</b></span></a>
+              <a class="mega-item mini" href="#otras-soluciones"><span class="mi-ic"><svg class="ic"><use href="#i-monitor"/></svg></span><span><b>Suministros tecnológicos</b></span></a>
+              <a class="mega-item mini" href="#otras-soluciones"><span class="mi-ic"><svg class="ic"><use href="#i-zap"/></svg></span><span><b>Servicios públicos</b></span></a>
+              <a class="mega-item mini" href="#otras-soluciones"><span class="mi-ic"><svg class="ic"><use href="#i-database"/></svg></span><span><b>Gobierno de datos</b></span></a>
+              <a class="mega-item mini" href="#otras-soluciones"><span class="mi-ic"><svg class="ic"><use href="#i-building"/></svg></span><span><b>Centro de negocios</b></span></a>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="#casos">Casos de éxito</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a class="link-support" href="https://tbg.sio.com.co/login" target="_blank" rel="noopener"><i class="dot"></i>Soporte <svg class="ic"><use href="#i-arrow-up-right"/></svg></a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a class="btn btn-dark btn-sm" href="#contacto">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+      <button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><svg class="ic"><use href="#i-menu"/></svg></button>
+    </div>
+  </nav>
+
+  <div class="drawer" id="drawer" hidden>
+    <a href="#inicio">Inicio</a>
+    <details>
+      <summary>Soluciones <svg class="ic"><use href="#i-chevron-down"/></svg></summary>
+      <a href="#saman-solution" class="d-main">SAMAN SOLUTION <small>Producto principal</small></a>
+      <a href="#saman-soft">Saman Soft</a>
+      <a href="#health-sq">Health SQ</a>
+      <a href="#saman-rips">Saman RIPS</a>
+      <a href="#otras-soluciones">Otras soluciones</a>
+    </details>
+    <a href="#casos">Casos de éxito</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="https://tbg.sio.com.co/login" target="_blank" rel="noopener" class="d-support">Soporte <svg class="ic"><use href="#i-arrow-up-right"/></svg></a>
+    <a href="#contacto">Contacto</a>
+    <a class="btn btn-dark" href="#contacto">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ 1. HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <a class="badge" href="#saman-solution" data-reveal>
+      <span class="badge-dot"></span>
+      <span class="mono">SAMAN SOLUTION</span>
+      <span class="badge-sep"></span>
+      <span>Software integrado para gestión hospitalaria</span>
+      <svg class="ic"><use href="#i-arrow-right"/></svg>
+    </a>
+
+    <h1 data-reveal style="--d:.08s">Toda la gestión hospitalaria,<br class="br-lg"> <span class="hl">en&nbsp;una sola solución.</span></h1>
+
+    <p class="lead" data-reveal style="--d:.16s">
+      Historia clínica electrónica, facturación, cartera, contabilidad y talento humano integrados en un único sistema y con un único proveedor.
+      Más de 30 años acompañando a las IPS de Colombia.
+    </p>
+
+    <div class="cta-row" data-reveal style="--d:.24s">
+      <a class="btn btn-dark btn-lg" href="#contacto">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+      <a class="btn btn-ghost btn-lg" href="#saman-solution">Conocer SAMAN SOLUTION</a>
+    </div>
+
+    <ul class="trust-chips" data-reveal style="--d:.32s" aria-label="Respaldo y certificaciones">
+      <li><svg class="ic"><use href="#i-shield-check"/></svg> Proveedor tecnológico autorizado por la DIAN</li>
+      <li><svg class="ic"><use href="#i-lock"/></svg> ISO/IEC 27001</li>
+      <li><svg class="ic"><use href="#i-award"/></svg> CMMI nivel 3</li>
+      <li><svg class="ic"><use href="#i-database"/></svg> Oracle Partner Network</li>
+    </ul>
+  </div>
+
+  <!-- Producto: mockup ilustrativo -->
+  <div class="device-stage container" data-reveal style="--d:.2s">
+    <div class="float f1" data-float>
+      <span class="f-ic ok"><svg class="ic"><use href="#i-check"/></svg></span>
+      <div><b>Factura electrónica</b><small>Validada ante la DIAN</small></div>
+      <span class="f-chip">Enviada por correo</span>
+    </div>
+    <div class="float f2 dark" data-float>
+      <div class="f-head"><span class="mono">RIPS · RES. 2275</span><span class="f-val">100%</span></div>
+      <b>Generación automática</b>
+      <div class="f-bar"><i></i></div>
+      <small>0 errores · listo para radicar</small>
+    </div>
+    <div class="float f3" data-float>
+      <span class="f-ic"><svg class="ic"><use href="#i-smartphone"/></svg></span>
+      <div><b>HCE móvil</b><small>Registro de enfermería sincronizado</small></div>
+    </div>
+    <div class="float f4" data-float>
+      <div class="f-head"><span class="mono">HEALTH SQ · HABILITACIÓN</span></div>
+      <div class="f-sema"><i class="g"></i><i class="y"></i><i class="r"></i><span>Semaforización de tiempos</span></div>
+    </div>
+
+    <div class="device" data-device>
+      <div class="device-bezel">
+        <span class="device-cam"></span>
+        <div class="screen" data-screen>
+          <div class="app" aria-hidden="true">
+            <aside class="m-side">
+              <div class="m-brand"><span class="m-tree"></span><span><b>Saman</b> Solution</span></div>
+              <nav class="m-nav">
+                <a class="on"><i style="--c:#1C4593"></i>Panel gerencial</a>
+                <a><i style="--c:#17998A"></i>Asistencial</a>
+                <a><i style="--c:#7B3A8F"></i>Comercial</a>
+                <a><i style="--c:#0F4C7A"></i>Financiero</a>
+                <a><i style="--c:#63C3CC"></i>Talento humano</a>
+                <a><i style="--c:#F59E1B"></i>Administrativo</a>
+                <a><i style="--c:#EB5757"></i>Análisis y reportes</a>
+              </nav>
+              <div class="m-user"><span class="m-av">SS</span><span>Sede principal<small>Cali</small></span></div>
+            </aside>
+            <div class="m-main">
+              <div class="m-top">
+                <div><h4>Panel gerencial</h4><span>Resumen de la operación</span></div>
+                <div class="m-search"><svg class="ic"><use href="#i-search"/></svg>Buscar paciente, factura, RIPS…</div>
+                <span class="m-chip">Octubre</span>
+              </div>
+              <div class="m-kpis">
+                <div class="m-card"><span>Atenciones hoy</span><b>1.284</b><em class="up">▲ 8%</em></div>
+                <div class="m-card"><span>Facturas radicadas</span><b>312</b><em class="up">▲ 5%</em></div>
+                <div class="m-card"><span>RIPS validados</span><b>100%</b><em>Res. 2275</em></div>
+                <div class="m-card"><span>Cartera recuperada</span><b>76%</b><em class="up">▲ 3%</em></div>
+              </div>
+              <div class="m-row">
+                <div class="m-card m-chart">
+                  <div class="m-ch-head"><b>Atenciones por mes</b><span>Últimos 12 meses</span></div>
+                  <div class="m-bars">
+                    <i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:60%"></i><i style="--h:48%"></i><i style="--h:66%"></i>
+                    <i style="--h:58%"></i><i style="--h:72%"></i><i style="--h:64%"></i><i class="hi" style="--h:90%"><u>1.284</u></i><i style="--h:70%"></i><i style="--h:80%"></i>
+                  </div>
+                  <div class="m-axis"><span>E</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span></div>
+                </div>
+                <div class="m-card m-donut-card">
+                  <div class="m-ch-head"><b>Cartera por edades</b></div>
+                  <div class="m-donut"><span>76%</span></div>
+                  <ul class="m-legend">
+                    <li><i style="--c:#1C4593"></i>0-30 días</li>
+                    <li><i style="--c:#F4D53B"></i>31-60 días</li>
+                    <li><i style="--c:#7B3A8F"></i>61-90 días</li>
+                    <li><i style="--c:#EB5757"></i>+90 días</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="m-card m-table">
+                <div class="m-ch-head"><b>Cuentas por radicar</b><span>Hoy</span></div>
+                <div class="m-tr"><span>Consulta externa</span><span>128 cuentas</span><em class="s-ok">Radicadas</em></div>
+                <div class="m-tr"><span>Urgencias</span><span>64 cuentas</span><em class="s-wait">En auditoría</em></div>
+                <div class="m-tr"><span>Hospitalización</span><span>41 cuentas</span><em class="s-ok">Radicadas</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="device-note">Vista ilustrativa del producto · datos de ejemplo</p>
+  </div>
+</section>
+
+<!-- ============ 2. CLIENTES ============ -->
+<section class="clients" id="clientes" aria-labelledby="clients-title">
+  <div class="container center">
+    <h2 class="h2-sm" id="clients-title" data-reveal>Cuando la operación clínica importa, <span class="hl">eligen SIO</span></h2>
+    <p class="muted" data-reveal style="--d:.08s">Hospitales, clínicas, cajas de compensación y entidades públicas confían en nuestras soluciones.</p>
+  </div>
+  <div class="logo-rows" data-reveal style="--d:.14s">
+    <div class="marquee" data-marquee>
+      <div class="marquee-track">
+        <img src="assets/img/clients/r1-01.png" alt="Hospital San José" loading="lazy">
+        <img src="assets/img/clients/r1-02.png" alt="Fundación Hospital San Pedro" loading="lazy">
+        <img src="assets/img/clients/r1-03.png" alt="Hospital Isaías Duarte Cancino E.S.E." loading="lazy">
+        <img src="assets/img/clients/r1-04.png" alt="HFPS" loading="lazy">
+        <img src="assets/img/clients/r1-05.png" alt="Logo de cliente" loading="lazy">
+        <img src="assets/img/clients/r1-06.png" alt="Comfenalco Valle" loading="lazy">
+        <img src="assets/img/clients/r1-07.png" alt="Comfandi" loading="lazy">
+        <img src="assets/img/clients/r1-08.png" alt="Coomeva" loading="lazy">
+        <img src="assets/img/clients/r1-09.png" alt="IPS Municipal de Ipiales E.S.E." loading="lazy">
+      </div>
+    </div>
+    <div class="marquee" data-marquee data-dir="reverse">
+      <div class="marquee-track">
+        <img src="assets/img/clients/r2-01.png" alt="Hospital Ricaurte E.S.E." loading="lazy">
+        <img src="assets/img/clients/r2-02.png" alt="IPS Genesis" loading="lazy">
+        <img src="assets/img/clients/r2-03.png" alt="Caprecom" loading="lazy">
+        <img src="assets/img/clients/r2-04.png" alt="Logo de cliente" loading="lazy">
+        <img src="assets/img/clients/r2-05.png" alt="Medinuclear" loading="lazy">
+        <img src="assets/img/clients/r2-06.png" alt="IPS Ahakka" loading="lazy">
+        <img src="assets/img/clients/r2-07.png" alt="IPS Unimedic" loading="lazy">
+        <img src="assets/img/clients/r2-08.png" alt="IPS Puente del Medio" loading="lazy">
+        <img src="assets/img/clients/r2-09.png" alt="Clínica Oncológica Aurora" loading="lazy">
+      </div>
+    </div>
+    <div class="marquee" data-marquee>
+      <div class="marquee-track">
+        <img src="assets/img/clients/r3-01.png" alt="Clinical Spa" loading="lazy">
+        <img src="assets/img/clients/r3-02.png" alt="Hospital Cumbal E.S.E." loading="lazy">
+        <img src="assets/img/clients/r3-03.png" alt="Clínica Las Lajas" loading="lazy">
+        <img src="assets/img/clients/r3-04.png" alt="TrauMedical" loading="lazy">
+        <img src="assets/img/clients/r3-05.png" alt="Patólogos Asociados" loading="lazy">
+        <img src="assets/img/clients/r3-06.png" alt="Cedenar" loading="lazy">
+        <img src="assets/img/clients/r3-07.png" alt="Gobernación del Valle del Cauca" loading="lazy">
+        <img src="assets/img/clients/r3-08.png" alt="SOS" loading="lazy">
+        <img src="assets/img/clients/r3-09.png" alt="Registraduría Nacional del Estado Civil" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. SAMAN SOLUTION (producto principal) ============ -->
+<section class="solution" id="saman-solution">
+  <div class="panel-dark">
+    <div class="panel-glow" aria-hidden="true"></div>
+    <div class="container">
+      <header class="sec-head center">
+        <span class="pill pill-dark" data-reveal>Producto principal</span>
+        <h2 data-reveal style="--d:.06s">Un solo sistema. <span class="hl-y">Seis subsistemas</span> integrados.</h2>
+        <p data-reveal style="--d:.12s">
+          SAMAN SOLUTION apoya las actividades asistenciales, administrativas y financieras de tu institución,
+          con la historia clínica electrónica del paciente como eje central.
+        </p>
+      </header>
+
+      <div class="hub-layout" data-hub data-reveal style="--d:.1s">
+        <div class="hub" role="tablist" aria-label="Subsistemas de SAMAN SOLUTION" aria-orientation="vertical">
+          <svg class="hub-lines" viewBox="0 0 100 100" aria-hidden="true"></svg>
+          <div class="hub-ring r1" aria-hidden="true"></div>
+          <div class="hub-ring r2" aria-hidden="true"></div>
+          <div class="hub-core" aria-hidden="true">
+            <span class="mono">Eje central</span>
+            <b>Historia clínica electrónica</b>
+          </div>
+
+          <button class="node is-active" role="tab" id="tab-asistencial" aria-controls="pane-asistencial" aria-selected="true" data-angle="-90" data-key="asistencial" style="--c:#17998A">
+            <span class="ni"><svg class="ic"><use href="#i-heart-pulse"/></svg></span>Asistencial
+          </button>
+          <button class="node" role="tab" id="tab-comercial" aria-controls="pane-comercial" aria-selected="false" tabindex="-1" data-angle="-30" data-key="comercial" style="--c:#7B3A8F">
+            <span class="ni"><svg class="ic"><use href="#i-receipt"/></svg></span>Comercial
+          </button>
+          <button class="node" role="tab" id="tab-financiero" aria-controls="pane-financiero" aria-selected="false" tabindex="-1" data-angle="30" data-key="financiero" style="--c:#0F4C7A">
+            <span class="ni"><svg class="ic"><use href="#i-wallet"/></svg></span>Financiero
+          </button>
+          <button class="node" role="tab" id="tab-analisis" aria-controls="pane-analisis" aria-selected="false" tabindex="-1" data-angle="90" data-key="analisis" style="--c:#EB5757">
+            <span class="ni"><svg class="ic"><use href="#i-bar-chart"/></svg></span>Análisis y Reportes
+          </button>
+          <button class="node" role="tab" id="tab-administrativo" aria-controls="pane-administrativo" aria-selected="false" tabindex="-1" data-angle="150" data-key="administrativo" style="--c:#F59E1B">
+            <span class="ni"><svg class="ic"><use href="#i-package"/></svg></span>Administrativo
+          </button>
+          <button class="node" role="tab" id="tab-talento" aria-controls="pane-talento" aria-selected="false" tabindex="-1" data-angle="210" data-key="talento" style="--c:#63C3CC">
+            <span class="ni"><svg class="ic"><use href="#i-users"/></svg></span>Talento Humano
+          </button>
+        </div>
+
+        <div class="detail">
+          <div class="detail-progress" aria-hidden="true"><i></i></div>
+
+          <div class="pane is-active" role="tabpanel" id="pane-asistencial" aria-labelledby="tab-asistencial" style="--c:#17998A">
+            <div class="pane-head"><span class="pane-ic"><svg class="ic"><use href="#i-heart-pulse"/></svg></span><div><span class="mono">Subsistema</span><h3>Asistencial</h3></div><span class="pane-count"><b>13</b> módulos</span></div>
+            <p>Toda la atención del paciente, desde la cita hasta el resultado diagnóstico, con la historia clínica electrónica como eje.</p>
+            <ul class="mods">
+              <li>Historia clínica electrónica</li><li>Registro diario de enfermería</li><li>Administración de cuentas</li><li>Administración de quirófanos</li>
+              <li>Resultados de apoyo diagnóstico</li><li>Administración de agendas</li><li>Autorizaciones</li><li>Auditoría interna</li>
+              <li>Auditoría concurrente</li><li>Listas de llegada</li><li>Citas web</li><li>H.C.E. móvil</li><li>Atención al usuario (PQR)</li>
+            </ul>
+          </div>
+
+          <div class="pane" role="tabpanel" id="pane-comercial" aria-labelledby="tab-comercial" style="--c:#7B3A8F" hidden>
+            <div class="pane-head"><span class="pane-ic"><svg class="ic"><use href="#i-receipt"/></svg></span><div><span class="mono">Subsistema</span><h3>Comercial</h3></div><span class="pane-count"><b>3</b> módulos</span></div>
+            <p>Cartera, facturación y radicación electrónicas conectadas directamente con la atención prestada.</p>
+            <ul class="mods"><li>Cartera</li><li>Facturación electrónica</li><li>Radicación electrónica</li></ul>
+          </div>
+
+          <div class="pane" role="tabpanel" id="pane-financiero" aria-labelledby="tab-financiero" style="--c:#0F4C7A" hidden>
+            <div class="pane-head"><span class="pane-ic"><svg class="ic"><use href="#i-wallet"/></svg></span><div><span class="mono">Subsistema</span><h3>Financiero</h3></div><span class="pane-count"><b>4</b> módulos</span></div>
+            <p>Contabilidad, proveedores, tesorería y presupuesto en un mismo flujo de información.</p>
+            <ul class="mods"><li>Contabilidad</li><li>Proveedores</li><li>Tesorería</li><li>Presupuesto</li></ul>
+          </div>
+
+          <div class="pane" role="tabpanel" id="pane-analisis" aria-labelledby="tab-analisis" style="--c:#EB5757" hidden>
+            <div class="pane-head"><span class="pane-ic"><svg class="ic"><use href="#i-bar-chart"/></svg></span><div><span class="mono">Subsistema</span><h3>Análisis y Reportes</h3></div><span class="pane-count"><b>3</b> módulos</span></div>
+            <p>Información gerencial para decidir con datos: trazabilidad de los procesos e indicadores de gestión.</p>
+            <ul class="mods"><li>Módulo gerencial</li><li>Trazabilidad de procesos</li><li>Indicadores de gestión</li></ul>
+          </div>
+
+          <div class="pane" role="tabpanel" id="pane-administrativo" aria-labelledby="tab-administrativo" style="--c:#F59E1B" hidden>
+            <div class="pane-head"><span class="pane-ic"><svg class="ic"><use href="#i-package"/></svg></span><div><span class="mono">Subsistema</span><h3>Administrativo</h3></div><span class="pane-count"><b>2</b> módulos</span></div>
+            <p>Control de los recursos físicos de la institución.</p>
+            <ul class="mods"><li>Almacén</li><li>Activos fijos</li></ul>
+          </div>
+
+          <div class="pane" role="tabpanel" id="pane-talento" aria-labelledby="tab-talento" style="--c:#63C3CC" hidden>
+            <div class="pane-head"><span class="pane-ic"><svg class="ic"><use href="#i-users"/></svg></span><div><span class="mono">Subsistema</span><h3>Talento Humano</h3></div><span class="pane-count"><b>2</b> módulos</span></div>
+            <p>Gestión del talento humano y nómina electrónica, integradas con el resto de la operación de la institución.</p>
+            <ul class="mods"><li>Sistema de gestión de talento humano</li><li>Nómina electrónica</li></ul>
+          </div>
+
+          <div class="detail-foot">
+            <div class="detail-nav">
+              <button type="button" aria-label="Subsistema anterior" data-hub-prev><svg class="ic" style="transform:scaleX(-1)"><use href="#i-arrow-right"/></svg></button>
+              <button type="button" aria-label="Siguiente subsistema" data-hub-next><svg class="ic"><use href="#i-arrow-right"/></svg></button>
+            </div>
+            <a class="btn btn-yellow" href="#contacto">Cotiza ya <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="solution-foot" data-reveal>
+        <span class="logo-chip"><img src="assets/img/logo-saman-solution.png" alt="SAMAN SOLUTION Gestión hospitalaria"></span>
+        <p>Solución tecnológica integral para la gestión hospitalaria. <b>Toda la operación en una sola solución, con un único proveedor.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. ECOSISTEMA ============ -->
+<section class="ecosystem" id="ecosistema">
+  <div class="container">
+    <header class="sec-head center">
+      <span class="pill" data-reveal>Ecosistema SIO</span>
+      <h2 data-reveal style="--d:.06s">Soluciones que se <span class="hl">integran</span> a SAMAN SOLUTION</h2>
+      <p data-reveal style="--d:.12s">Cada solución resuelve una necesidad específica y se conecta con el sistema principal para que la información fluya sin reprocesos.</p>
+    </header>
+
+    <div class="bento">
+      <!-- Saman Soft -->
+      <article class="b-card b-soft" id="saman-soft" data-reveal>
+        <div class="b-top">
+          <img class="b-logo" src="assets/img/logo-saman-soft.png" alt="Saman Soft Documentación electrónica">
+          <span class="integ"><svg class="ic"><use href="#i-link"/></svg>Integrado con SAMAN SOLUTION</span>
+        </div>
+        <div class="b-body">
+          <div class="b-copy">
+            <span class="pill pill-sm">Documentos electrónicos · DIAN</span>
+            <h3>Facturación y nómina electrónica, en la nube.</h3>
+            <p>Proveedor tecnológico habilitado por la DIAN desde febrero de 2020. Genera, valida y distribuye tus documentos electrónicos.</p>
+            <ul class="checks">
+              <li>Facturas, notas débito y crédito</li>
+              <li>Nómina electrónica y documento soporte</li>
+              <li>Buzón de gestión para facturas</li>
+              <li>Integración por servicios REST o archivos planos</li>
+              <li>Conservación de documentos por 10 años</li>
+            </ul>
+            <a class="link-arrow" href="#contacto">Solicitar información <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+          </div>
+          <div class="b-visual v-docs" aria-hidden="true">
+            <div class="doc d3"></div><div class="doc d2"></div>
+            <div class="doc d1">
+              <div class="doc-head"><span class="mono">Factura electrónica</span><i class="stamp"><svg class="ic"><use href="#i-check"/></svg></i></div>
+              <div class="skel w70"></div><div class="skel w50"></div><div class="skel w60"></div>
+              <ol class="flow">
+                <li class="done"><i></i>Generada</li>
+                <li class="done"><i></i>Validada DIAN</li>
+                <li class="done"><i></i>Enviada por correo</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Health SQ -->
+      <article class="b-card b-hsq" id="health-sq" data-reveal style="--d:.08s">
+        <div class="b-top">
+          <img class="b-logo" src="assets/img/logo-health-sq.png" alt="Health SQ">
+          <span class="integ"><svg class="ic"><use href="#i-link"/></svg>Integrado</span>
+        </div>
+        <span class="pill pill-sm">Calidad en salud · SOGC</span>
+        <h3>El sistema obligatorio de calidad, bajo control.</h3>
+        <p>Administración, seguimiento y control integral del Sistema Obligatorio de Garantía de Calidad en salud.</p>
+        <div class="b-visual v-quality" aria-hidden="true">
+          <div class="q-tile"><svg class="ic"><use href="#i-clipboard-check"/></svg><b>Habilitación</b><small>Semaforización de tiempos</small></div>
+          <div class="q-tile"><svg class="ic"><use href="#i-award"/></svg><b>Acreditación</b><small>Planes PAMEC</small></div>
+          <div class="q-tile"><svg class="ic"><use href="#i-shield-check"/></svg><b>Seguridad</b><small>Protocolo de Londres</small></div>
+          <div class="q-tile"><svg class="ic"><use href="#i-bar-chart"/></svg><b>Indicadores</b><small>Fichas técnicas</small></div>
+        </div>
+        <a class="link-arrow" href="#contacto">Solicitar información <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+      </article>
+
+      <!-- Saman RIPS -->
+      <article class="b-card b-rips" id="saman-rips" data-reveal>
+        <div class="b-top">
+          <img class="b-logo" src="assets/img/logo-saman-rips.png" alt="Saman RIPS">
+          <span class="integ"><svg class="ic"><use href="#i-link"/></svg>Integrado</span>
+        </div>
+        <span class="pill pill-sm">RIPS · Resolución 2275</span>
+        <h3>RIPS automáticos, seguros y sin errores.</h3>
+        <p>¿Confundido con los RIPS? Te lo ponemos fácil. Software en la nube para consultar, gestionar y controlar la generación de tus RIPS.</p>
+        <ol class="stepper" aria-label="Implementación">
+          <li>Diagnóstico inicial</li>
+          <li>Configuración personalizada</li>
+          <li>Capacitación virtual</li>
+          <li>Pruebas con datos reales</li>
+          <li class="last">Sistema listo para usar</li>
+        </ol>
+        <a class="link-arrow" href="https://wa.me/573185067331" target="_blank" rel="noopener">Asesoría gratuita por WhatsApp <svg class="ic"><use href="#i-arrow-up-right"/></svg></a>
+      </article>
+
+      <!-- Otras soluciones -->
+      <article class="b-card b-more" id="otras-soluciones" data-reveal style="--d:.08s">
+        <div class="b-more-head">
+          <div>
+            <span class="pill pill-sm">Otras soluciones</span>
+            <h3>Servicios que complementan tu operación</h3>
+          </div>
+        </div>
+        <div class="more-grid">
+          <a class="more-item" href="#contacto"><span class="mi-ic"><svg class="ic"><use href="#i-folder"/></svg></span><span><b>Gestión documental<em>BPO</em></b><small>TRD, digitalización, custodia de archivos y ventanilla única.</small></span></a>
+          <a class="more-item" href="#contacto"><span class="mi-ic"><svg class="ic"><use href="#i-scan"/></svg></span><span><b>Gestión de información<em>BPO</em></b><small>Captura masiva con OCR, ICR, OMR, QR y RFID.</small></span></a>
+          <a class="more-item" href="#contacto"><span class="mi-ic"><svg class="ic"><use href="#i-monitor"/></svg></span><span><b>Suministros tecnológicos<em>BPO</em></b><small>Equipos, puestos de trabajo y mesa de ayuda.</small></span></a>
+          <a class="more-item" href="#contacto"><span class="mi-ic"><svg class="ic"><use href="#i-zap"/></svg></span><span><b>Servicios públicos</b><small>Supernova S.C. para energía, agua y gas.</small></span></a>
+          <a class="more-item" href="#contacto"><span class="mi-ic"><svg class="ic"><use href="#i-database"/></svg></span><span><b>Gobierno de datos</b><small>Administración Oracle, tuning y alta disponibilidad.</small></span></a>
+          <a class="more-item" href="#contacto"><span class="mi-ic"><svg class="ic"><use href="#i-building"/></svg></span><span><b>Centro de negocios</b><small>Oficinas, oficina virtual y salas de reuniones en Cali.</small></span></a>
+        </div>
+        <div class="more-cta">
+          <p><b>¿Necesitas algo más a la medida?</b> Cuéntanos tu proceso y armamos la solución con tu equipo.</p>
+          <a class="btn btn-dark btn-sm" href="#contacto">Hablar con un asesor <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. CÓMO TRABAJAMOS ============ -->
+<section class="process" id="proceso">
+  <div class="container process-grid">
+    <header class="process-head">
+      <span class="pill" data-reveal>Implementación</span>
+      <h2 data-reveal style="--d:.06s">De la primera reunión a la <span class="hl">operación en marcha</span></h2>
+      <p data-reveal style="--d:.12s">Un proceso estructurado y documentado —evaluado bajo el modelo CMMI nivel 3— para que cada implementación sea predecible y segura.</p>
+      <a class="btn btn-dark" href="#contacto" data-reveal style="--d:.18s">Agenda una conversación <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+    </header>
+
+    <ol class="steps">
+      <li class="step" data-reveal>
+        <span class="step-n mono">001</span>
+        <div><h3>Diagnóstico inicial</h3><p>Revisamos cómo gestionas hoy tu operación para definir el alcance y las soluciones adecuadas.</p></div>
+        <span class="step-ic"><svg class="ic"><use href="#i-search"/></svg></span>
+      </li>
+      <li class="step" data-reveal style="--d:.06s">
+        <span class="step-n mono">002</span>
+        <div><h3>Configuración personalizada</h3><p>Parametrizamos la plataforma según los procesos y necesidades de tu institución.</p></div>
+        <span class="step-ic"><svg class="ic"><use href="#i-layers"/></svg></span>
+      </li>
+      <li class="step" data-reveal style="--d:.12s">
+        <span class="step-n mono">003</span>
+        <div><h3>Capacitación de tus equipos</h3><p>Formamos a tu personal en los productos y servicios implementados, de forma virtual o presencial.</p></div>
+        <span class="step-ic"><svg class="ic"><use href="#i-users"/></svg></span>
+      </li>
+      <li class="step" data-reveal style="--d:.18s">
+        <span class="step-n mono">004</span>
+        <div><h3>Pruebas con datos reales y puesta en marcha</h3><p>Validamos con tu información antes de operar y te acompañamos con soporte funcional y técnico.</p></div>
+        <span class="step-ic"><svg class="ic"><use href="#i-check"/></svg></span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 6. CIFRAS ============ -->
+<section class="stats" aria-label="SIO en cifras">
+  <div class="container">
+    <div class="stats-card" data-reveal>
+      <div class="stat">
+        <div class="stat-n"><span data-count="30">0</span><i>+</i></div>
+        <b>años de experiencia</b>
+        <p>Desde 1992 desarrollando, implementando y operando soluciones informáticas misionales.</p>
+      </div>
+      <div class="stat">
+        <div class="stat-n"><span data-count="6">0</span></div>
+        <b>subsistemas integrados</b>
+        <p>Asistencial, comercial, financiero, talento humano, administrativo y análisis.</p>
+      </div>
+      <div class="stat">
+        <div class="stat-n"><span data-count="10">0</span><i>años</i></div>
+        <b>de conservación documental</b>
+        <p>Documentos electrónicos de Saman Soft, durante la vigencia del contrato.</p>
+      </div>
+      <div class="stat">
+        <div class="stat-n"><i class="pre">Nivel</i><span data-count="3">0</span></div>
+        <b>CMMI-SVC</b>
+        <p>Procesos caracterizados y evaluados, además de la certificación IT Mark.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. COMPARATIVO ============ -->
+<section class="compare" id="comparativo">
+  <div class="container">
+    <header class="sec-head center">
+      <span class="pill" data-reveal>El cambio</span>
+      <h2 data-reveal style="--d:.06s">Sistemas aislados vs. <span class="hl">operación integrada</span></h2>
+      <p data-reveal style="--d:.12s">Cuando cada área trabaja en su propio sistema, la información se duplica y se pierde. Con SAMAN SOLUTION todo ocurre en un mismo lugar.</p>
+    </header>
+
+    <div class="vs">
+      <div class="vs-card vs-old" data-reveal>
+        <h3>Operación fragmentada</h3>
+        <ul>
+          <li><i class="bad"><svg class="ic"><use href="#i-x"/></svg></i>Varios proveedores y sistemas por área</li>
+          <li><i class="bad"><svg class="ic"><use href="#i-x"/></svg></i>Información duplicada entre lo asistencial y lo financiero</li>
+          <li><i class="bad"><svg class="ic"><use href="#i-x"/></svg></i>RIPS armados a mano, con riesgo de errores</li>
+          <li><i class="bad"><svg class="ic"><use href="#i-x"/></svg></i>Facturación y radicación desconectadas de la atención</li>
+          <li><i class="bad"><svg class="ic"><use href="#i-x"/></svg></i>Evidencias de calidad y auditoría dispersas</li>
+          <li><i class="bad"><svg class="ic"><use href="#i-x"/></svg></i>Reportes gerenciales construidos manualmente</li>
+        </ul>
+      </div>
+      <div class="vs-card vs-new" data-reveal style="--d:.1s">
+        <h3>Con SAMAN SOLUTION</h3>
+        <ul>
+          <li><i class="good"><svg class="ic"><use href="#i-check"/></svg></i>Un único proveedor para toda la operación</li>
+          <li><i class="good"><svg class="ic"><use href="#i-check"/></svg></i>Historia clínica electrónica como eje central</li>
+          <li><i class="good"><svg class="ic"><use href="#i-check"/></svg></i>RIPS automáticos y sin errores (Res. 2275)</li>
+          <li><i class="good"><svg class="ic"><use href="#i-check"/></svg></i>Facturación electrónica validada ante la DIAN</li>
+          <li><i class="good"><svg class="ic"><use href="#i-check"/></svg></i>Habilitación y acreditación con Health SQ</li>
+          <li><i class="good"><svg class="ic"><use href="#i-check"/></svg></i>Indicadores gerenciales y trazabilidad de procesos</li>
+        </ul>
+        <a class="btn btn-yellow" href="#contacto">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. CASOS DE ÉXITO ============ -->
+<section class="cases" id="casos">
+  <div class="container cases-grid">
+    <header class="cases-head">
+      <span class="pill" data-reveal>Casos de éxito</span>
+      <h2 data-reveal style="--d:.06s">Experiencia comprobada <span class="hl">en cada sector</span></h2>
+      <p data-reveal style="--d:.12s">Más de tres décadas implementando soluciones en instituciones de salud, cajas de compensación y entidades del sector público.</p>
+      <a class="btn btn-dark" href="#casos" data-reveal style="--d:.18s">Ver casos de éxito <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+    </header>
+
+    <div class="cases-list">
+      <article class="case" data-reveal>
+        <span class="case-ic"><svg class="ic"><use href="#i-hospital"/></svg></span>
+        <div class="case-body">
+          <h3>Hospitales, clínicas e IPS</h3>
+          <p>Gestión asistencial, financiera y administrativa integrada en una sola solución.</p>
+          <div class="case-logos">
+            <img src="assets/img/clients/r1-02.png" alt="Fundación Hospital San Pedro" loading="lazy">
+            <img src="assets/img/clients/r3-02.png" alt="Hospital Cumbal E.S.E." loading="lazy">
+            <img src="assets/img/clients/r3-03.png" alt="Clínica Las Lajas" loading="lazy">
+            <img src="assets/img/clients/r2-05.png" alt="Medinuclear" loading="lazy">
+          </div>
+        </div>
+        <svg class="ic case-go"><use href="#i-arrow-up-right"/></svg>
+      </article>
+
+      <article class="case" data-reveal style="--d:.08s">
+        <span class="case-ic"><svg class="ic"><use href="#i-users"/></svg></span>
+        <div class="case-body">
+          <h3>Cajas de compensación y aseguradoras</h3>
+          <p>Documentos electrónicos y procesos de información a gran escala.</p>
+          <div class="case-logos">
+            <img src="assets/img/clients/r1-07.png" alt="Comfandi" loading="lazy">
+            <img src="assets/img/clients/r1-06.png" alt="Comfenalco Valle" loading="lazy">
+            <img src="assets/img/clients/r1-08.png" alt="Coomeva" loading="lazy">
+            <img src="assets/img/clients/r3-08.png" alt="SOS" loading="lazy">
+          </div>
+        </div>
+        <svg class="ic case-go"><use href="#i-arrow-up-right"/></svg>
+      </article>
+
+      <article class="case" data-reveal style="--d:.16s">
+        <span class="case-ic"><svg class="ic"><use href="#i-building"/></svg></span>
+        <div class="case-body">
+          <h3>Sector público y servicios públicos</h3>
+          <p>Gestión documental, gobierno de datos y soluciones para energía, agua y gas.</p>
+          <div class="case-logos">
+            <img src="assets/img/clients/r3-07.png" alt="Gobernación del Valle del Cauca" loading="lazy">
+            <img src="assets/img/clients/r3-09.png" alt="Registraduría Nacional del Estado Civil" loading="lazy">
+            <img src="assets/img/clients/r3-06.png" alt="Cedenar" loading="lazy">
+          </div>
+        </div>
+        <svg class="ic case-go"><use href="#i-arrow-up-right"/></svg>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. NOSOTROS ============ -->
+<section class="about" id="nosotros">
+  <div class="panel-dark">
+    <div class="panel-glow alt" aria-hidden="true"></div>
+    <div class="container about-grid">
+      <div class="about-copy">
+        <span class="pill pill-dark" data-reveal>Nosotros</span>
+        <h2 data-reveal style="--d:.06s">Más de 30 años construyendo <span class="hl-y">confianza</span> en TI</h2>
+        <p data-reveal style="--d:.12s">
+          Soluciones Integrales de Oficina S.A.S es una organización colombiana, fundada en 1992, que brinda soluciones de valor agregado soportadas en las tecnologías de la información y las comunicaciones: desarrollo, implementación, soporte, actualización, mantenimiento y operación de soluciones informáticas misionales.
+        </p>
+        <div class="mv" data-reveal style="--d:.18s">
+          <div><span class="mono">Misión</span><p>Gestionar o apoyar la información estratégica o los procesos de nuestros clientes, generando valor.</p></div>
+          <div><span class="mono">Visión 2030</span><p>Ser reconocidos en Colombia como la mejor opción para integrar, implementar y operar soluciones tecnológicas que optimicen los procesos de nuestros clientes.</p></div>
+        </div>
+        <a class="btn btn-yellow" href="#contacto" data-reveal style="--d:.22s">Conoce a SIO <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+      </div>
+
+      <div class="badges" data-reveal style="--d:.1s">
+        <div class="badge-card"><span class="b-ic"><svg class="ic"><use href="#i-award"/></svg></span><b>CMMI SVC · Nivel 3</b><p>Procesos bien caracterizados en estándares, procedimientos, herramientas y métodos.</p></div>
+        <div class="badge-card"><span class="b-ic"><svg class="ic"><use href="#i-lock"/></svg></span><b>ISO/IEC 27001</b><p>Sistema de gestión de seguridad de la información.</p></div>
+        <div class="badge-card"><span class="b-ic"><svg class="ic"><use href="#i-shield-check"/></svg></span><b>IT Mark</b><p>Evaluación de procesos reconocida en la industria TI.</p></div>
+        <div class="badge-card"><span class="b-ic"><svg class="ic"><use href="#i-database"/></svg></span><b>Oracle Partner Network</b><p>Respaldo tecnológico del líder mundial en bases de datos y nube.</p></div>
+        <div class="badge-card wide"><span class="b-ic"><svg class="ic"><use href="#i-receipt"/></svg></span><div><b>Proveedor tecnológico DIAN</b><p>Habilitados para facturación electrónica desde febrero de 2020.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. SOPORTE (enlace externo) + FAQ ============ -->
+<section class="support" aria-label="Soporte">
+  <div class="container">
+    <div class="support-card" data-reveal>
+      <span class="support-ic"><svg class="ic"><use href="#i-life-buoy"/></svg></span>
+      <div class="support-copy">
+        <h3>¿Ya eres cliente? Abre un ticket de soporte</h3>
+        <p>Nuestro equipo de soporte funcional y técnico te atiende a través del ticket electrónico de SIO.
+          <span class="muted-i"><svg class="ic"><use href="#i-clock"/></svg> 8:00 a. m. – 12:00 m. y 2:00 – 5:30 p. m.</span></p>
+      </div>
+      <a class="btn btn-dark" href="https://tbg.sio.com.co/login" target="_blank" rel="noopener">Ir al ticket electrónico <svg class="ic"><use href="#i-arrow-up-right"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="container faq-grid">
+    <header class="faq-head">
+      <span class="pill" data-reveal>Preguntas frecuentes</span>
+      <h2 data-reveal style="--d:.06s">¿Tienes dudas? <span class="hl">Aquí las resolvemos</span></h2>
+      <p data-reveal style="--d:.12s">Si no encuentras lo que buscas, un asesor te ayuda sin costo.</p>
+      <a class="btn btn-ghost" href="https://wa.me/573185067331" target="_blank" rel="noopener" data-reveal style="--d:.18s"><svg class="ic"><use href="#i-message"/></svg> Hablar con un asesor</a>
+    </header>
+
+    <div class="acc" data-reveal style="--d:.1s">
+      <div class="acc-item is-open">
+        <button type="button" class="acc-q" aria-expanded="true"><span>¿Qué es SAMAN SOLUTION?</span><i><svg class="ic"><use href="#i-plus"/></svg></i></button>
+        <div class="acc-a"><div><p>Es la solución tecnológica integral de SIO para la gestión hospitalaria. Apoya las actividades administrativas y financieras derivadas de los procesos de atención en salud, con la historia clínica electrónica del paciente como eje central. Toda la operación en una sola solución, con un único proveedor.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc-q" aria-expanded="false"><span>¿Qué subsistemas incluye?</span><i><svg class="ic"><use href="#i-plus"/></svg></i></button>
+        <div class="acc-a"><div><p>Seis subsistemas integrados: Asistencial, Comercial, Financiero, Talento Humano, Administrativo y Análisis y Reportes. Juntos cubren desde la historia clínica y las agendas hasta la facturación, la tesorería, la nómina electrónica, el almacén y los indicadores gerenciales.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc-q" aria-expanded="false"><span>¿SIO es proveedor tecnológico autorizado por la DIAN?</span><i><svg class="ic"><use href="#i-plus"/></svg></i></button>
+        <div class="acc-a"><div><p>Sí. SIO se habilitó como proveedor tecnológico de la DIAN en febrero de 2020. A través de Saman Soft ofrece facturación electrónica, nómina electrónica, documento soporte y buzón de gestión para facturas, en una plataforma en la nube integrada con SAMAN SOLUTION.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc-q" aria-expanded="false"><span>¿Cómo se integra Saman Soft con mis otros sistemas?</span><i><svg class="ic"><use href="#i-plus"/></svg></i></button>
+        <div class="acc-a"><div><p>Además de su integración nativa con SAMAN SOLUTION, Saman Soft se conecta por servicios REST o archivos planos. Valida los documentos ante la DIAN, los distribuye por correo electrónico y los conserva por 10 años durante la vigencia del contrato.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc-q" aria-expanded="false"><span>¿Qué certificaciones respaldan a SIO?</span><i><svg class="ic"><use href="#i-plus"/></svg></i></button>
+        <div class="acc-a"><div><p>SIO ha sido evaluada bajo el modelo CMMI-SVC nivel 3 e IT Mark, cuenta con certificación ISO/IEC 27001 en seguridad de la información y es miembro de Oracle Partner Network.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <button type="button" class="acc-q" aria-expanded="false"><span>¿Cómo funciona la implementación?</span><i><svg class="ic"><use href="#i-plus"/></svg></i></button>
+        <div class="acc-a"><div><p>Iniciamos con un diagnóstico de tu operación, configuramos la plataforma a tus procesos, capacitamos a tus equipos y validamos con datos reales antes de la puesta en marcha. Después te acompañamos con soporte funcional y técnico.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. CONTACTO / CONVERSIÓN ============ -->
+<section class="contact" id="contacto">
+  <div class="panel-dark">
+    <div class="panel-glow cta" aria-hidden="true"></div>
+    <div class="container contact-grid">
+      <div class="contact-copy">
+        <span class="pill pill-dark" data-reveal>Contacto</span>
+        <h2 data-reveal style="--d:.06s">Hablemos de la operación de tu <span class="hl-y">institución</span></h2>
+        <p data-reveal style="--d:.12s">Cuéntanos qué necesitas. Un asesor de SIO te contactará para resolver tus dudas y programar una demostración sin costo.</p>
+        <ul class="contact-list" data-reveal style="--d:.18s">
+          <li><span><svg class="ic"><use href="#i-calendar"/></svg></span><div><b>Solicita una demo</b><small>Conoce SAMAN SOLUTION en acción</small></div></li>
+          <li><span><svg class="ic"><use href="#i-message"/></svg></span><div><b>Asesoría gratuita por WhatsApp</b><small>+57 318 506 7331</small></div></li>
+          <li><span><svg class="ic"><use href="#i-phone"/></svg></span><div><b>+57 (2) 485 5757 - 58</b><small>Cali, Valle del Cauca</small></div></li>
+          <li><span><svg class="ic"><use href="#i-mail"/></svg></span><div><b>mercadeo@sio.com.co</b><small>Escríbenos</small></div></li>
+          <li><span><svg class="ic"><use href="#i-map-pin"/></svg></span><div><b>Carrera 100 No. 14-96, Ciudad Jardín</b><small>Cali, Colombia</small></div></li>
+        </ul>
+      </div>
+
+      <form class="form-card" data-form data-reveal style="--d:.1s" novalidate>
+        <h3>Solicitar información o demo</h3>
+        <div class="field-row">
+          <label class="field"><span>Nombre</span><input type="text" id="f-nombre" name="nombre" autocomplete="name" placeholder="Tu nombre" required></label>
+          <label class="field"><span>Institución</span><input type="text" id="f-institucion" name="institucion" autocomplete="organization" placeholder="Nombre de tu institución" required></label>
+        </div>
+        <div class="field-row">
+          <label class="field"><span>Correo</span><input type="email" id="f-correo" name="correo" autocomplete="email" placeholder="correo@institucion.com" required></label>
+          <label class="field"><span>Teléfono</span><input type="tel" id="f-telefono" name="telefono" autocomplete="tel" placeholder="+57"></label>
+        </div>
+        <label class="field"><span>Me interesa</span>
+          <select id="f-interes" name="interes">
+            <option>SAMAN SOLUTION · Gestión hospitalaria</option>
+            <option>Saman Soft · Facturación y nómina electrónica</option>
+            <option>Health SQ · Calidad en salud</option>
+            <option>Saman RIPS</option>
+            <option>Otras soluciones</option>
+          </select>
+        </label>
+        <label class="field"><span>Mensaje</span><textarea id="f-mensaje" name="mensaje" rows="3" placeholder="Cuéntanos brevemente qué necesitas"></textarea></label>
+        <button class="btn btn-yellow btn-lg btn-block" type="submit">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></button>
+        <p class="form-note">Al enviar aceptas ser contactado por un asesor de SIO.</p>
+        <div class="form-ok" role="status" hidden><span><svg class="ic"><use href="#i-check"/></svg></span><b>¡Gracias!</b><p>Recibimos tu solicitud. Un asesor te contactará pronto.</p></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="f-brand">
+        <img src="assets/img/logo-sio-white.png" alt="SIO Soluciones Integrales de Oficina" width="300" height="138">
+        <p>Soluciones de valor agregado soportadas en TIC, con más de 30 años de experiencia.</p>
+        <a class="social" href="https://www.facebook.com/SolucionesIntegralesDeOficina" target="_blank" rel="noopener" aria-label="Facebook de SIO"><svg class="ic"><use href="#i-facebook"/></svg></a>
+      </div>
+      <div class="f-col">
+        <h4>Soluciones</h4>
+        <a href="#saman-solution">SAMAN SOLUTION</a>
+        <a href="#saman-soft">Saman Soft</a>
+        <a href="#health-sq">Health SQ</a>
+        <a href="#saman-rips">Saman RIPS</a>
+        <a href="#otras-soluciones">Otras soluciones</a>
+      </div>
+      <div class="f-col">
+        <h4>SIO</h4>
+        <a href="#inicio">Inicio</a>
+        <a href="#casos">Casos de éxito</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="https://tbg.sio.com.co/login" target="_blank" rel="noopener">Soporte ↗</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+      <div class="f-col">
+        <h4>Políticas</h4>
+        <a href="https://sio.com.co/wp-content/uploads/2025/10/PO-SI-01-POLITICA-Y-OBJETIVOS-DEL-SGSI-3-1-2.pdf" target="_blank" rel="noopener">Sistema de gestión de seguridad de la información</a>
+        <a href="https://sio.com.co/wp-content/uploads/2025/10/SOLUCIONES_INTEGRALES_DE_OFICINA_27K_V2-1.pdf" target="_blank" rel="noopener">Certificado de calidad</a>
+      </div>
+      <div class="f-col">
+        <h4>Contacto</h4>
+        <p>Carrera 100 No. 14-96<br>Ciudad Jardín · Cali, Colombia</p>
+        <a href="tel:+576024855757">+57 (2) 485 5757 - 58</a>
+        <a href="https://wa.me/573185067331" target="_blank" rel="noopener">+57 318 506 7331</a>
+        <a href="mailto:mercadeo@sio.com.co">mercadeo@sio.com.co</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> Soluciones Integrales de Oficina S.A.S. Todos los derechos reservados.</span>
+      <span class="f-mark" aria-hidden="true">SIO</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
