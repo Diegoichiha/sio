@@ -401,8 +401,7 @@ def mock_visual(cfg):
 
     return (floats
             + '<div class="device flat"><div class="device-bezel"><span class="device-cam"></span>'
-              '<div class="screen" data-screen>' + app + '</div></div></div>'
-            + '<p class="device-note">Vista ilustrativa del producto · datos de ejemplo</p>')
+              '<div class="screen" data-screen>' + app + '</div></div></div>')
 
 
 # ---- configuraciones del panel por producto (datos ilustrativos; luego se reemplazan por capturas reales)
