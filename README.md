@@ -1,15 +1,32 @@
-# SIO · Rediseño Home — Propuesta v1
+# SIO · Rediseño del sitio — v1
 
-Maqueta estática (HTML + CSS + JS vanilla, sin build) del nuevo Home de sio.com.co.
+Sitio estático (HTML + CSS + JS vanilla) generado con un script de Python sin dependencias.
 
 ```
-index.html              ← Home completo (11 secciones)
-assets/css/styles.css   ← Tokens de marca + componentes
-assets/js/main.js       ← Interacciones (nav, hub, contadores, FAQ, marquee…)
-assets/img/             ← Logos reales extraídos de sio.com.co (+ 27 logos de clientes recortados)
+build.py                 ← genera todas las páginas (python build.py)
+src/partials/            ← sprite de íconos, barra superior, header (menú) y footer compartidos
+src/pages/index.html     ← contenido de la home
+assets/css, assets/js    ← estilos y comportamiento
+assets/img/              ← logos, clientes, banners (hero/), fondos de cards (bg/) y capturas (shots/)
+*.html (raíz)            ← páginas generadas; se versionan para que GitHub Pages las sirva tal cual
 ```
 
-Servir en local: `npx http-server . -p 5180 -c-1` → http://localhost:5180
+## Páginas
+| Menú | Páginas |
+|---|---|
+| Inicio | `index.html` |
+| Soluciones | `soluciones.html`, `saman-solution`, `saman-soft`, `health-sq`, `saman-rips`, `gestion-documental`, `gestion-de-informacion`, `suministros-tecnologicos`, `servicios-publicos`, `gobierno-de-datos`, `centro-de-negocios` |
+| Casos de éxito | `casos-de-exito.html` |
+| Nosotros | `nosotros.html` |
+| Soporte | enlace externo (`https://tbg.sio.com.co/login`) |
+| Contacto | `contacto.html` |
+
+## Flujo de trabajo
+1. Editar el contenido en `build.py` (páginas internas) o en `src/` (home y componentes compartidos).
+2. Ejecutar `python build.py` para regenerar los `.html`.
+3. Probar en local: `npx http-server . -p 5180 -c-1`.
+
+> El menú, el footer y el sprite se editan una sola vez en `src/partials/` y se propagan a todas las páginas.
 
 ## Marca (extraída del sitio actual)
 | Token | Valor | Origen |

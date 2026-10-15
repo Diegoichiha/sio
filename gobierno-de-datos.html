@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gobierno de datos | Oracle · SIO</title>
+<meta name="description" content="Servicios de outsourcing especializados en captura, procesamiento y administración de información basados en las mejores prácticas: administración Oracle, tuning, migración, alta disponibilidad y nube.">
+<meta name="theme-color" content="#00102E">
+<link rel="icon" href="assets/img/logo-sio.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="page-gobierno-de-datos">
+
+<!-- ============ ICON SPRITE ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></symbol>
+    <symbol id="i-heart-pulse" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 17.5v-11"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-bar-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+    <symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-package" viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></symbol>
+    <symbol id="i-life-buoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-clipboard-check" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+    <symbol id="i-hospital" viewBox="0 0 24 24"><path d="M12 6v4M14 8h-4"/><path d="M14 22v-4a2 2 0 0 0-4 0v4"/><path d="M18 22V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v17"/><path d="M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h2"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01M6 18h.01"/></symbol>
+    <symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+  
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><path d="M12 20h.01"/></symbol>
+    <symbol id="i-wind" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2M14 2v2M6 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M17 12h2a2 2 0 0 1 0 4h-2"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
+    <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></symbol>
+    <symbol id="i-headset" viewBox="0 0 24 24"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M21 16v2a4 4 0 0 1-4 4h-5"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="i-graduation" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></symbol>
+  </defs>
+</svg>
+
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar" id="topbar">
+  <a class="topbar-link" href="saman-rips.html">
+    <span class="tag-new">Nuevo</span>
+    <span><span class="t-long">Saman RIPS: genera tus RIPS sin errores, conforme a la Resolución 2275</span><span class="t-short">Saman RIPS · Resolución 2275</span></span>
+    <svg class="ic"><use href="#i-arrow-right"/></svg>
+  </a>
+  <button class="topbar-close" type="button" aria-label="Cerrar anuncio" data-close-topbar><svg class="ic"><use href="#i-x"/></svg></button>
+</div>
+
+
+<!-- ============ NAV ============ -->
+<header class="nav-wrap" id="nav">
+  <nav class="nav" aria-label="Principal">
+    <a class="brand" href="index.html" aria-label="SIO — Soluciones Integrales de Oficina">
+      <img src="assets/img/logo-sio.png" alt="SIO Soluciones Integrales de Oficina" width="400" height="179">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" data-nav="inicio">Inicio</a></li>
+      <li class="has-mega">
+        <button type="button" class="mega-trigger is-active" data-nav="soluciones" aria-expanded="false" aria-controls="mega">Soluciones <svg class="ic"><use href="#i-chevron-down"/></svg></button>
+        <div class="mega" id="mega">
+          <div class="mega-grid">
+            <a class="mega-feature" href="saman-solution.html">
+              <span class="pill pill-yellow">Gestión hospitalaria</span>
+              <span class="mega-logo"><img src="assets/img/logo-saman-solution.png" alt="SAMAN SOLUTION Gestión hospitalaria"></span>
+              <strong>Todo tu hospital en una sola solución</strong>
+              <p>Historia clínica electrónica, facturación, cartera, finanzas y talento humano con un único proveedor.</p>
+              <span class="link-arrow">Explorar SAMAN SOLUTION <svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <div class="mega-col">
+              <span class="mega-label">Se integran con SAMAN SOLUTION</span>
+              <a class="mega-item" href="saman-soft.html">
+                <span class="mi-ic"><svg class="ic"><use href="#i-receipt"/></svg></span>
+                <span><b>Saman Soft</b><small>Facturación y nómina electrónica</small></span>
+              </a>
+              <a class="mega-item" href="health-sq.html">
+                <span class="mi-ic"><svg class="ic"><use href="#i-clipboard-check"/></svg></span>
+                <span><b>Health SQ</b><small>Sistemas obligatorios de calidad</small></span>
+              </a>
+              <a class="mega-item" href="saman-rips.html">
+                <span class="mi-ic"><svg class="ic"><use href="#i-file-text"/></svg></span>
+                <span><b>Saman RIPS</b><small>RIPS automáticos · Res. 2275</small></span>
+              </a>
+            </div>
+            <div class="mega-col">
+              <span class="mega-label">Otras soluciones</span>
+              <a class="mega-item mini" href="gestion-documental.html"><span class="mi-ic"><svg class="ic"><use href="#i-folder"/></svg></span><span><b>Gestión documental</b></span></a>
+              <a class="mega-item mini" href="gestion-de-informacion.html"><span class="mi-ic"><svg class="ic"><use href="#i-scan"/></svg></span><span><b>Gestión de información</b></span></a>
+              <a class="mega-item mini" href="suministros-tecnologicos.html"><span class="mi-ic"><svg class="ic"><use href="#i-monitor"/></svg></span><span><b>Suministros tecnológicos</b></span></a>
+              <a class="mega-item mini" href="servicios-publicos.html"><span class="mi-ic"><svg class="ic"><use href="#i-zap"/></svg></span><span><b>Servicios públicos</b></span></a>
+              <a class="mega-item mini" href="gobierno-de-datos.html"><span class="mi-ic"><svg class="ic"><use href="#i-database"/></svg></span><span><b>Gobierno de datos</b></span></a>
+              <a class="mega-item mini" href="centro-de-negocios.html"><span class="mi-ic"><svg class="ic"><use href="#i-building"/></svg></span><span><b>Centro de negocios</b></span></a>
+              <a class="mega-all" href="soluciones.html">Ver todas las soluciones <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="casos-de-exito.html" data-nav="casos">Casos de éxito</a></li>
+      <li><a href="nosotros.html" data-nav="nosotros">Nosotros</a></li>
+      <li><a class="link-support" href="https://tbg.sio.com.co/login" target="_blank" rel="noopener"><i class="dot"></i>Soporte <svg class="ic"><use href="#i-arrow-up-right"/></svg></a></li>
+      <li><a href="contacto.html" data-nav="contacto">Contacto</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a class="btn btn-dark btn-sm" href="contacto.html">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+      <button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><svg class="ic"><use href="#i-menu"/></svg></button>
+    </div>
+  </nav>
+
+  <div class="drawer" id="drawer" hidden>
+    <a href="index.html" data-nav="inicio">Inicio</a>
+    <details>
+      <summary class="is-active" data-nav="soluciones">Soluciones <svg class="ic"><use href="#i-chevron-down"/></svg></summary>
+      <a href="saman-solution.html" class="d-main">SAMAN SOLUTION</a>
+      <a href="saman-soft.html">Saman Soft</a>
+      <a href="health-sq.html">Health SQ</a>
+      <a href="saman-rips.html">Saman RIPS</a>
+      <a href="soluciones.html">Otras soluciones</a>
+    </details>
+    <a href="casos-de-exito.html" data-nav="casos">Casos de éxito</a>
+    <a href="nosotros.html" data-nav="nosotros">Nosotros</a>
+    <a href="https://tbg.sio.com.co/login" target="_blank" rel="noopener" class="d-support">Soporte <svg class="ic"><use href="#i-arrow-up-right"/></svg></a>
+    <a href="contacto.html" data-nav="contacto">Contacto</a>
+    <a class="btn btn-dark" href="contacto.html">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+  </div>
+</header>
+
+
+<main id="main">
+<section class="page-hero"><img class="page-hero-bg" src="assets/img/hero/data.jpg" alt="" style="--pos:50% 50%"><div class="container page-hero-inner"><nav class="crumbs" aria-label="Ruta"><a href="index.html">Inicio</a><i>/</i><a href="soluciones.html">Soluciones</a><i>/</i><b>Gobierno de datos</b></nav><span class="hero-logo"><img src="assets/img/logo-oracle.png" alt="Oracle"></span><span class="pill">Oracle Partner Network</span><h1>Tus datos, <span class="hl-y">disponibles, seguros y optimizados</span></h1><p class="lead">Servicios de outsourcing especializados en captura, procesamiento y administración de información, basados en las mejores prácticas.</p><div class="cta-row"><a class="btn btn-yellow btn-lg" href="contacto.html">Solicitar información <svg class="ic"><use href="#i-arrow-right"/></svg></a><a class="btn btn-outline-light btn-lg" href="https://wa.me/573185067331" target="_blank" rel="noopener">Hablar por WhatsApp <svg class="ic"><use href="#i-arrow-up-right"/></svg></a></div></div></section><section class="section "><div class="container"><header class="sec-head center"><span class="pill" data-reveal>Servicios</span><h2 data-reveal style="--d:.06s">Administración integral de bases de datos Oracle</h2></header><div class="feat-grid" data-reveal><div class="feat"><span class="f-ico"><svg class="ic"><use href="#i-server"/></svg></span><h3>Instalación y configuración</h3><ul><li>Motores Oracle 9i, 10g, 11g y 12c</li><li>Ambientes de desarrollo, testing y producción</li><li>Oracle ASM e implementación de auditorías</li><li>Clonación de bases de datos</li></ul></div><div class="feat"><span class="f-ico"><svg class="ic"><use href="#i-database"/></svg></span><h3>Administración de bases de datos</h3><ul><li>Implementación de seguridades personalizadas</li><li>Solución de errores y monitoreo preventivo</li><li>Mantenimiento de filesystems y esquemas</li><li>Aplicación de parches y monitoreo de backups</li></ul></div><div class="feat"><span class="f-ico"><svg class="ic"><use href="#i-gauge"/></svg></span><h3>Tuning y optimización</h3><ul><li>Análisis de parámetros y procesos críticos</li><li>Implementación de técnicas de optimización</li></ul></div><div class="feat"><span class="f-ico"><svg class="ic"><use href="#i-refresh"/></svg></span><h3>Migración, backup y recuperación</h3><ul><li>Migraciones entre versiones y storage</li><li>Configuración de RMAN</li><li>Recuperación de bases de datos, esquemas o tablas</li></ul></div><div class="feat"><span class="f-ico"><svg class="ic"><use href="#i-zap"/></svg></span><h3>Alta disponibilidad</h3><ul><li>Implementación de Oracle RAC</li><li>Base de datos Standby con Data Guard</li></ul></div><div class="feat"><span class="f-ico"><svg class="ic"><use href="#i-cloud"/></svg></span><h3>Servicios en la nube</h3><ul><li>Bases de datos en la nube</li><li>Backup de archivos</li></ul></div></div></div></section><section class="section alt"><div class="container"><div class="split"><div class="split-copy" data-reveal><span class="pill">Respaldo</span><h2>Con el respaldo tecnológico de Oracle</h2><p>Nuestros productos cuentan con el respaldo tecnológico de ORACLE, líder mundial en motores de bases de datos robustas e infraestructura tecnológica en la nube. SIO cuenta con la membresía de Oracle Partner Network.</p><ul class="checks"><li>Capacitación según las necesidades de tu equipo</li></ul></div><div class="split-visual" data-reveal style="--d:.1s"><div class="shot pad" style="display:grid;place-items:center;min-height:220px"><img src="assets/img/logo-oracle.png" alt="Oracle" style="max-width:300px"></div></div></div></div></section><section class="section "><div class="container"><div class="rel-head"><div><span class="pill">Soluciones relacionadas</span><h2 class="h2-sm" style="margin-top:14px">Descubre más soluciones</h2></div></div><div class="rel-grid" data-reveal><a class="rel-card" href="servicios-publicos.html"><img class="bg" src="assets/img/bg/utilities.jpg" alt="" loading="lazy"><span class="go"><svg class="ic"><use href="#i-arrow-up-right"/></svg></span><span class="tag">Energía, agua y gas</span><h3>Servicios públicos</h3><p>Supernova S.C. e inteligencia de negocios.</p></a><a class="rel-card" href="gestion-de-informacion.html"><img class="bg" src="assets/img/bg/info.jpg" alt="" loading="lazy"><span class="go"><svg class="ic"><use href="#i-arrow-up-right"/></svg></span><span class="tag">Servicios BPO</span><h3>Gestión de información</h3><p>Captura masiva con OCR, ICR, OMR, QR y RFID.</p></a><a class="rel-card" href="saman-solution.html"><img class="bg" src="assets/img/hero/solution.jpg" alt="" loading="lazy"><span class="go"><svg class="ic"><use href="#i-arrow-up-right"/></svg></span><span class="tag">Gestión hospitalaria</span><h3>SAMAN SOLUTION</h3><p>Toda la operación de tu institución en una sola solución.</p></a></div></div></section><section class="section tight"><div class="container"><div class="cta-band" data-reveal><div><h2>Pon tus bases de datos en manos expertas</h2><p>Cuéntanos tu ambiente actual y te proponemos un plan de administración.</p></div><div class="cta-actions"><a class="btn btn-yellow btn-lg" href="contacto.html">Solicitar demo <svg class="ic"><use href="#i-arrow-right"/></svg></a><a class="btn btn-outline-light btn-lg" href="https://wa.me/573185067331" target="_blank" rel="noopener">Hablar con un asesor <svg class="ic"><use href="#i-arrow-up-right"/></svg></a></div></div></div></section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="f-brand">
+        <img src="assets/img/logo-sio-white.png" alt="SIO Soluciones Integrales de Oficina" width="300" height="138">
+        <p>Soluciones de valor agregado soportadas en TIC, con más de 30 años de experiencia.</p>
+        <a class="social" href="https://www.facebook.com/SolucionesIntegralesDeOficina" target="_blank" rel="noopener" aria-label="Facebook de SIO"><svg class="ic"><use href="#i-facebook"/></svg></a>
+      </div>
+      <div class="f-col">
+        <h4>Soluciones</h4>
+        <a href="saman-solution.html">SAMAN SOLUTION</a>
+        <a href="saman-soft.html">Saman Soft</a>
+        <a href="health-sq.html">Health SQ</a>
+        <a href="saman-rips.html">Saman RIPS</a>
+        <a href="soluciones.html">Todas las soluciones</a>
+      </div>
+      <div class="f-col">
+        <h4>SIO</h4>
+        <a href="index.html">Inicio</a>
+        <a href="casos-de-exito.html">Casos de éxito</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="https://tbg.sio.com.co/login" target="_blank" rel="noopener">Soporte ↗</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+      <div class="f-col">
+        <h4>Políticas</h4>
+        <a href="https://sio.com.co/wp-content/uploads/2025/10/PO-SI-01-POLITICA-Y-OBJETIVOS-DEL-SGSI-3-1-2.pdf" target="_blank" rel="noopener">Sistema de gestión de seguridad de la información</a>
+        <a href="https://sio.com.co/wp-content/uploads/2025/10/SOLUCIONES_INTEGRALES_DE_OFICINA_27K_V2-1.pdf" target="_blank" rel="noopener">Certificado de calidad</a>
+      </div>
+      <div class="f-col">
+        <h4>Contacto</h4>
+        <p>Carrera 100 No. 14-96<br>Ciudad Jardín · Cali, Colombia</p>
+        <a href="tel:+576024855757">+57 (2) 485 5757 - 58</a>
+        <a href="https://wa.me/573185067331" target="_blank" rel="noopener">+57 318 506 7331</a>
+        <a href="mailto:mercadeo@sio.com.co">mercadeo@sio.com.co</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> Soluciones Integrales de Oficina S.A.S. Todos los derechos reservados.</span>
+      <span class="f-mark" aria-hidden="true">SIO</span>
+    </div>
+  </div>
+</footer>
+
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
