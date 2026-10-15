@@ -247,6 +247,37 @@
     timeline.addEventListener('focusout', e => { if (!timeline.contains(e.relatedTarget)) mark(null); });
   }
 
+  /* ---------- Línea de tiempo horizontal: la línea avanza y enciende los pasos uno a uno ---------- */
+  const ht = $('[data-htimeline]');
+  if (ht) {
+    const hItems = $$('.ht-item', ht);
+    const last = Math.max(1, hItems.length - 1);
+    const STEP = 950; // coincide con la transición del relleno (.95s)
+    const runH = () => {
+      ht.classList.add('is-run');
+      hItems.forEach((it, i) => {
+        setTimeout(() => {
+          it.classList.add('is-on');
+          if (i < hItems.length - 1) ht.style.setProperty('--p', ((i + 1) / last).toFixed(3));
+          else setTimeout(() => ht.classList.add('is-done'), STEP);
+        }, reduceMotion ? 0 : i * STEP);
+      });
+    };
+    if ('IntersectionObserver' in window) {
+      const hio = new IntersectionObserver(entries => { if (entries.some(en => en.isIntersecting)) { runH(); hio.disconnect(); } }, { threshold: 0.3 });
+      hio.observe(ht);
+    } else runH();
+
+    const markH = (it) => hItems.forEach(o => o.classList.toggle('is-current', o === it));
+    hItems.forEach(it => {
+      it.addEventListener('mouseenter', () => markH(it));
+      it.addEventListener('focus', () => markH(it));
+      it.addEventListener('click', () => markH(it));
+    });
+    ht.addEventListener('mouseleave', () => markH(null));
+    ht.addEventListener('focusout', e => { if (!ht.contains(e.relatedTarget)) markH(null); });
+  }
+
   /* ---------- Otras soluciones: acordeón horizontal (la primera activa por defecto) ---------- */
   const oGrid = $('.o-grid');
   if (oGrid) {

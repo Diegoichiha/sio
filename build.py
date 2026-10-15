@@ -125,6 +125,39 @@ def timeline(head_pill, head_h2, head_p, steps, cta=None):
             f'<ol class="timeline" data-timeline>{"".join(items)}</ol></div></section>')
 
 
+
+def h_timeline(pill, h2, p, items):
+    """Línea de tiempo horizontal en zigzag. items: (icono, etiqueta, título, texto)"""
+    lis = []
+    for icon, tag, title, text in items:
+        lis.append(
+            f'<li class="ht-item" tabindex="0"><span class="ht-node" aria-hidden="true">{ic(icon)}</span>'
+            f'<div class="ht-card"><span class="ht-tag">{tag}</span><h3>{title}</h3><p>{text}</p></div></li>')
+    return (sec_head(pill, h2, p)
+            + '<div class="h-timeline" data-htimeline><div class="ht-track" aria-hidden="true"></div>'
+              '<div class="ht-fill" aria-hidden="true"></div>'
+              f'<ol class="ht-list">{"".join(lis)}</ol></div>')
+
+
+
+def sub_cards(subs):
+    """Cards con imagen de fondo + overlay azul SIO. Estado inactivo: ícono y título abajo.
+    Hover: los bullets aparecen de abajo hacia arriba y el overlay se refuerza.
+    subs: (color, icono, titulo, [bullets], imagen, posición)"""
+    out = []
+    for color, icon, title, items, img, pos in subs:
+        n = len(items)
+        lis = ''.join(f'<li style="--i:{n - 1 - k}">{t}</li>' for k, t in enumerate(items))
+        out.append(
+            f'<article class="sub-card" style="--c:{color}" tabindex="0">'
+            f'<img class="sub-bg" src="assets/img/{img}" alt="" loading="lazy" style="--pos:{pos}">'
+            '<span class="sub-shade" aria-hidden="true"></span>'
+            f'<div class="sub-body"><div class="sub-list-wrap"><ul class="sub-list">{lis}</ul></div>'
+            f'<div class="sub-head"><span class="f-ico">{ic(icon)}</span><h3>{title}</h3></div></div>'
+            '</article>')
+    return '<div class="sub-grid" data-reveal>' + ''.join(out) + '</div>'
+
+
 # ------------------------------------------------------------------ catálogo de soluciones
 SOL = {
     'saman-solution':          dict(name='SAMAN SOLUTION', tag='Gestión hospitalaria', desc='Toda la operación de tu institución en una sola solución.', img='hero/solution.jpg', icon='hospital'),
@@ -269,35 +302,39 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
     + section(
         sec_head('Atributos por subsistema', 'Todo lo que cubre cada subsistema',
                  'Cada subsistema se integra con los demás y comparte la información de la historia clínica electrónica.')
-        + '<div class="attr-grid" data-reveal>'
-        + ''.join(
-            f'<div class="attr" style="--c:{c}"><h3><span class="f-ico">{ic(i)}</span>{t}</h3>'
-            f'{checks(items)}</div>'
-            for c, i, t, items in [
-                ('#17998A', 'heart-pulse', 'Subsistema Asistencial',
-                 ['Historia clínica electrónica', 'Registro de enfermería', 'Interoperabilidad', 'Órdenes médicas electrónicas integradas',
-                  'Mecanismos de seguridad', 'Historias clínicas por especialidades', 'Citas web', 'Salud móvil', 'Auditoría interna y concurrente']),
-                ('#7B3A8F', 'receipt', 'Subsistema Comercial',
-                 ['Control total de la cartera', 'Facturación electrónica', 'Radicación electrónica']),
-                ('#0F4C7A', 'wallet', 'Subsistema Financiero',
-                 ['Contabilidad', 'Buzón para gestión de facturas', 'Gestión y contratación con proveedores', 'Documento soporte',
-                  'Tesorería', 'Seguimiento y control del presupuesto']),
-                ('#EB5757', 'bar-chart', 'Subsistema de Análisis y Reportes',
-                 ['Trazabilidad de facturación, de inicio a fin', 'Módulo gerencial para análisis de información']),
-                ('#F59E1B', 'package', 'Subsistema Administrativo',
-                 ['Gestión de almacén', 'Control total de activos fijos']),
-                ('#63C3CC', 'users', 'Subsistema del Talento Humano',
-                 ['Nómina electrónica', 'Gestión del talento humano', 'Liquidación de nómina, prenómina y nómina definitiva']),
-            ])
-        + '</div>', 'alt')
-    + section(
-        sec_head('Por qué SAMAN SOLUTION', 'Una sola solución, un único proveedor')
-        + feats([
-            ('layers', 'Toda la operación integrada', 'Lo asistencial, lo comercial, lo financiero, el talento humano y lo administrativo trabajan sobre la misma información.'),
-            ('heart-pulse', 'La historia clínica como eje', 'La atención del paciente alimenta de forma natural la facturación, la cartera y los indicadores.'),
-            ('link', 'Se conecta con tu ecosistema', 'Se integra con Saman Soft para documentos electrónicos, Health SQ para calidad en salud y Saman RIPS.'),
-            ('award', 'Respaldo certificado', 'Procesos evaluados bajo CMMI-SVC nivel 3, seguridad de la información ISO/IEC 27001 y respaldo tecnológico de Oracle.'),
-        ], cols=4))
+        + sub_cards([
+            ('#17998A', 'heart-pulse', 'Subsistema Asistencial',
+             ['Historia clínica electrónica', 'Registro de enfermería', 'Interoperabilidad', 'Órdenes médicas electrónicas integradas',
+              'Mecanismos de seguridad', 'Historias clínicas por especialidades', 'Citas web', 'Salud móvil', 'Auditoría interna y concurrente'],
+             'hero/solution.jpg', '12% 50%'),
+            ('#7B3A8F', 'receipt', 'Subsistema Comercial',
+             ['Control total de la cartera', 'Facturación electrónica', 'Radicación electrónica'],
+             'bg/soft.jpg', '50% 45%'),
+            ('#0F4C7A', 'wallet', 'Subsistema Financiero',
+             ['Contabilidad', 'Buzón para gestión de facturas', 'Gestión y contratación con proveedores', 'Documento soporte',
+              'Tesorería', 'Seguimiento y control del presupuesto'],
+             'bg/info.jpg', '50% 55%'),
+            ('#EB5757', 'bar-chart', 'Subsistema de Análisis y Reportes',
+             ['Trazabilidad de facturación, de inicio a fin', 'Módulo gerencial para análisis de información'],
+             'bg/health.jpg', '50% 50%'),
+            ('#F59E1B', 'package', 'Subsistema Administrativo',
+             ['Gestión de almacén', 'Control total de activos fijos'],
+             'bg/supply.jpg', '50% 50%'),
+            ('#63C3CC', 'users', 'Subsistema del Talento Humano',
+             ['Nómina electrónica', 'Gestión del talento humano', 'Liquidación de nómina, prenómina y nómina definitiva'],
+             'bg/center.jpg', '50% 50%'),
+        ]), 'alt')
+    + section(h_timeline(
+        'Por qué SAMAN SOLUTION', 'Una sola solución, un único proveedor',
+        'Toda la operación de tu institución trabaja sobre la misma información, de la atención del paciente a los indicadores gerenciales.',
+        [('layers', 'Operación', 'Toda la operación integrada',
+          'Lo asistencial, lo comercial, lo financiero, el talento humano y lo administrativo trabajan sobre la misma información.'),
+         ('heart-pulse', 'Historia clínica', 'La historia clínica como eje',
+          'La atención del paciente alimenta de forma natural la facturación, la cartera y los indicadores.'),
+         ('link', 'Ecosistema', 'Se conecta con tu ecosistema',
+          'Se integra con Saman Soft para documentos electrónicos, Health SQ para calidad en salud y Saman RIPS.'),
+         ('award', 'Respaldo', 'Respaldo certificado',
+          'Procesos evaluados bajo CMMI-SVC nivel 3, seguridad de la información ISO/IEC 27001 y respaldo tecnológico de Oracle.')]))
     + related(['saman-soft', 'health-sq', 'saman-rips'], 'Se integra con', 'Soluciones que potencian SAMAN SOLUTION')
     + cta_band('Conoce SAMAN SOLUTION en acción', 'Solicita una demostración sin costo y descubre cómo unificar la operación de tu institución.'))
 
