@@ -754,7 +754,6 @@ section { position: relative; }
 .f-col a:hover { color: var(--yellow); }
 .f-col p { line-height: 1.6; color: #D5DFF2; }
 .footer-bottom { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 24px 0 28px; border-top: 1px solid rgba(255, 255, 255, .1); font-size: .8125rem; }
-.f-mark { position: absolute; right: -10px; bottom: -48px; font: 800 clamp(8rem, 5rem + 14vw, 17rem)/1 var(--font-display); letter-spacing: -.08em; color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, .09); pointer-events: none; user-select: none; }
 
 /* =========================================================
    RESPONSIVE
@@ -1245,3 +1244,10 @@ a.info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
   .ip-copy { max-width: none; }
   .ip-tag { display: none; }
 }
+
+/* AJUSTE ÓPTICO: la fuente de títulos asienta el texto ~1 px por debajo del centro de la caja;
+   se compensa en el menú y los botones para que el texto quede centrado verticalmente. */
+.nav-links > li > a,
+.mega-trigger,
+.btn { line-height: 1; padding-bottom: 3px; }
+.drawer a, .drawer summary { line-height: 1; padding-top: 13px; padding-bottom: 16px; }
