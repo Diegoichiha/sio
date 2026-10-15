@@ -96,13 +96,13 @@
 
   /* ---------- Mockup del producto: escala + inclinación según scroll ---------- */
   const device = $('[data-device]');
-  const screen = $('[data-screen]');
-  const app = screen && $('.app', screen);
-  if (screen && app) {
+  $$('[data-screen]').forEach(screen => {
+    const app = $('.app', screen);
+    if (!app) return;
     const fit = () => app.style.setProperty('--s', screen.clientWidth / 1000);
     fit();
     new ResizeObserver(fit).observe(screen);
-  }
+  });
   if (device && !reduceMotion) {
     let ticking = false;
     const update = () => {

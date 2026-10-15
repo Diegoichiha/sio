@@ -186,21 +186,22 @@ def related(slugs, pill='Soluciones relacionadas', title='Descubre más solucion
 
 
 def hero(spec):
-    """Cabecera de página interna. spec: crumbs, pill, h1, lead, img(optional), logo(optional), ctas"""
+    """Cabecera de página interna. spec: crumbs, pill, h1, lead, logo(optional), ctas, visual(optional)
+    Con 'visual' el hero se divide: texto a la izquierda y la pieza visual a la derecha."""
     crumbs = []
     for i, (label, href) in enumerate(spec['crumbs']):
         last = i == len(spec['crumbs']) - 1
         crumbs.append(f'<b>{label}</b>' if last else f'<a href="{href}">{label}</a><i>/</i>')
-    bg = ''      # cabecera limpia (sin foto), igual que el hero de la home
-    plain = ''
     logo = (f'<span class="hero-logo"><img src="assets/img/{spec["logo"]}" alt="{spec.get("logo_alt", "")}"></span>'
             if spec.get('logo') else '')
     ctas = ''.join(spec.get('ctas', []))
     cta_row = f'<div class="cta-row">{ctas}</div>' if ctas else ''
-    return (f'<section class="page-hero{plain}">{bg}<div class="container page-hero-inner">'
-            f'<nav class="crumbs" aria-label="Ruta">{"".join(crumbs)}</nav>{logo}'
-            f'<span class="pill">{spec["pill"]}</span><h1>{spec["h1"]}</h1><p class="lead">{spec["lead"]}</p>{cta_row}'
-            '</div></section>')
+    copy = (f'<div class="page-hero-inner"><nav class="crumbs" aria-label="Ruta">{"".join(crumbs)}</nav>{logo}'
+            f'<span class="pill">{spec["pill"]}</span><h1>{spec["h1"]}</h1><p class="lead">{spec["lead"]}</p>{cta_row}</div>')
+    if spec.get('visual'):
+        return (f'<section class="page-hero has-visual"><div class="container hero-split">{copy}'
+                f'<div class="hero-visual">{spec["visual"]}</div></div></section>')
+    return f'<section class="page-hero"><div class="container">{copy}</div></section>'
 
 
 def crumbs_sol(name):
@@ -274,6 +275,100 @@ def logos(keys):
     return ''.join(f'<span class="client"><img src="assets/img/clients/{k}.png" alt="{d[k]}" loading="lazy"></span>' for k in keys)
 
 
+def _qr_svg(n=9, seed=7):
+    """QR decorativo determinista (no es un código real)."""
+    cells = []
+    x = seed
+    def finder(ox, oy):
+        for dx in range(3):
+            for dy in range(3):
+                cells.append((ox + dx, oy + dy))
+    finder(0, 0); finder(n - 3, 0); finder(0, n - 3)
+    for yy in range(n):
+        for xx in range(n):
+            x = (x * 1103515245 + 12345) & 0x7fffffff
+            in_finder = (xx < 3 and yy < 3) or (xx >= n - 3 and yy < 3) or (xx < 3 and yy >= n - 3)
+            if not in_finder and (x >> 16) % 2 == 0:
+                cells.append((xx, yy))
+    rects = ''.join(f'<rect x="{cx}" y="{cy}" width="1" height="1"/>' for cx, cy in cells)
+    return f'<svg viewBox="0 0 {n} {n}" width="100%" height="100%" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">{rects}</svg>'
+
+
+def soft_visual():
+    """Monitor con el panel de Saman Soft y ventanas flotantes (datos ilustrativos)."""
+    nav = ''.join(
+        f'<a{" class=on" if i == 0 else ""}>{ic(icon)}{label}</a>'
+        for i, (icon, label) in enumerate([
+            ('bar-chart', 'Panel'), ('receipt', 'Facturas'), ('file-text', 'Notas'),
+            ('users', 'Nómina electrónica'), ('layers', 'Doc. soporte'), ('inbox', 'Buzón de facturas'),
+            ('trending-up', 'Reportes'), ('lock', 'Configuración')]))
+    kpis = ''.join(
+        f'<div class="s-kpi {c}"><span class="k-ic">{ic(i)}</span><div><span>{l}</span><b>{v}</b><em class="{d}">{t}</em></div></div>'
+        for c, i, l, v, d, t in [
+            ('k-blue', 'file-text', 'Documentos hoy', '1.284', 'up', '▲ 12%'),
+            ('k-green', 'shield-check', 'Validados DIAN', '1.271', 'up', '▲ 8%'),
+            ('k-orange', 'clock', 'En proceso', '9', '', 'En línea'),
+            ('k-purple', 'x', 'Rechazados', '4', 'down', '▼ 3%')])
+    rows = ''.join(
+        f'<div class="s-tr"><span>{h}</span><b>{doc}</b><span>{tipo}</span><em class="{cls}">{est}</em></div>'
+        for h, doc, tipo, est, cls in [
+            ('08:00', 'FE-1284', 'Factura electrónica', 'Validada', 's-ok'),
+            ('09:30', 'NC-0312', 'Nota crédito', 'Enviada', 's-sent'),
+            ('11:00', 'NE-0987', 'Nómina electrónica', 'En proceso', 's-wait'),
+            ('12:30', 'DS-0145', 'Documento soporte', 'Validada', 's-ok')])
+    bars = ''.join(f'<i style="--h:{h}%"{" class=hi" if k == 4 else ""}></i>' for k, h in enumerate([46, 58, 52, 70, 88, 40, 34]))
+    axis = ''.join(f'<span>{d}</span>' for d in ['L', 'M', 'M', 'J', 'V', 'S', 'D'])
+
+    app = f'''<div class="app app-soft" aria-hidden="true">
+      <aside class="m-side">
+        <div class="m-brand"><span class="m-tree"></span><span><b>Saman</b> Soft</span></div>
+        <nav class="m-nav">{nav}</nav>
+        <div class="m-user"><span class="m-av">SS</span><span>Mi institución<small>Administrador</small></span></div>
+      </aside>
+      <div class="m-main">
+        <div class="m-top">
+          <div><h4>Panel de documentos</h4><span>Resumen de la operación de hoy</span></div>
+          <div class="m-search">{ic('search')}Buscar documento, CUFE o cliente…</div>
+          <span class="m-chip">Octubre</span>
+        </div>
+        <div class="s-kpis">{kpis}</div>
+        <div class="s-row">
+          <div class="m-card s-table"><div class="m-ch-head"><b>Documentos recientes</b><span>Ver todos</span></div>
+            <div class="s-th"><span>Hora</span><span>Documento</span><span>Tipo</span><span>Estado</span></div>{rows}</div>
+          <div class="m-card s-donut"><div class="m-ch-head"><b>Validación DIAN</b></div>
+            <div class="m-donut s-ring"><span>99%</span></div>
+            <ul class="m-legend"><li><i style="--c:#1FB36B"></i>Validados 1.271</li><li><i style="--c:#F59E1B"></i>En proceso 9</li><li><i style="--c:#EB5757"></i>Rechazados 4</li></ul></div>
+        </div>
+        <div class="s-row r2">
+          <div class="m-card m-chart"><div class="m-ch-head"><b>Documentos por día</b><span>Última semana</span></div>
+            <div class="m-bars s-bars">{bars}</div><div class="m-axis">{axis}</div></div>
+          <div class="m-card s-inbox"><div class="m-ch-head"><b>Buzón de facturas</b></div>
+            <div class="s-ib"><span>Recibidas</span><b>18</b></div><div class="s-ib"><span>Por gestionar</span><b class="w">6</b></div><div class="s-ib"><span>Gestionadas</span><b class="g">12</b></div></div>
+        </div>
+      </div>
+    </div>'''
+
+    floats = (
+        f'<div class="float sf sf1 tilt" style="--r:-4deg;animation-duration:7s"><span class="f-ic ok">{ic("check")}</span>'
+        '<div><b>Factura electrónica</b><small>FE-1284 · Validada ante la DIAN</small></div></div>'
+        f'<div class="float sf sf2 tilt" style="--r:3deg;animation-duration:8s;animation-delay:-2s"><span class="f-ic">{ic("users")}</span>'
+        '<div><b>Nómina electrónica</b><small>Periodo de octubre generado</small></div></div>'
+        f'<div class="float sf sf3 tilt" style="--r:-3deg;animation-duration:9s;animation-delay:-4s"><span class="qr">{_qr_svg()}</span>'
+        f'<div><b>Código QR</b><small>CUFE verificable</small></div><span class="sf-dl">{ic("arrow-up")}</span></div>'
+        '<div class="float sf sf4 tilt" style="--r:4deg;animation-duration:7.5s;animation-delay:-1s"><b>Buzón de facturas</b>'
+        '<ul class="sf-list"><li><i class="g"></i>Factura recibida</li><li><i class="y"></i>Por gestionar</li><li><i class="g"></i>Gestionada</li></ul></div>'
+        f'<div class="float sf sf5 tilt" style="--r:-2deg;animation-duration:8.5s;animation-delay:-3s"><span class="f-ic">{ic("layers")}</span>'
+        '<div><b>Documento soporte</b><small>DS-0145 · Generado</small></div><span class="f-chip">Listo</span></div>'
+        '<div class="float sf sf6 dark tilt" style="--r:3deg;animation-duration:9.5s;animation-delay:-5s">'
+        '<div class="f-head"><span class="mono">Envío por correo</span><span class="f-val">100%</span></div>'
+        '<b>Distribución automática</b><div class="f-bar"><i></i></div><small>1.284 documentos entregados</small></div>')
+
+    return (floats
+            + '<div class="pc"><div class="pc-screen"><div class="screen" data-screen>' + app + '</div></div>'
+              '<div class="pc-stand"></div><div class="pc-base"></div></div>'
+            + '<p class="device-note">Vista ilustrativa del producto · datos de ejemplo</p>')
+
+
 # ------------------------------------------------------------------ páginas
 PAGES = {}   # nombre.html -> dict(title, description, nav, content)
 
@@ -341,12 +436,13 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
     'Proveedor tecnológico autorizado por la DIAN. Facturación electrónica, nómina electrónica, documento soporte y buzón de gestión de facturas en la nube.',
     'soluciones',
     hero(dict(
-        crumbs=crumbs_sol('Saman Soft'), img='hero/soft.jpg', pos='50% 40%',
+        crumbs=crumbs_sol('Saman Soft'),
         logo='logo-saman-soft.png', logo_alt='Saman Soft Documentación electrónica',
         pill='Documentos electrónicos · DIAN',
         h1='Facturación y nómina electrónica, <span class="hl-y">en la nube</span>',
         lead='Somos proveedores autorizados por la DIAN. Genera, valida y distribuye tus documentos electrónicos desde una plataforma integrada con SAMAN SOLUTION.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
+        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)],
+        visual=soft_visual()))
     + section(split(
         'Autorizados por la DIAN', 'Un proveedor tecnológico habilitado desde 2020',
         ['SIO SAS se habilitó como proveedor tecnológico de la DIAN en febrero de 2020. A través de Saman Soft ofrece sus servicios en una plataforma en la nube, integrada con SAMAN SOLUTION.'],
