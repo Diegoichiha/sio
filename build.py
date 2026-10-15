@@ -191,9 +191,8 @@ def hero(spec):
     for i, (label, href) in enumerate(spec['crumbs']):
         last = i == len(spec['crumbs']) - 1
         crumbs.append(f'<b>{label}</b>' if last else f'<a href="{href}">{label}</a><i>/</i>')
-    img = spec.get('img')
-    bg = f'<img class="page-hero-bg" src="assets/img/{img}" alt="" style="--pos:{spec.get("pos", "50% 50%")}">' if img else ''
-    plain = '' if img else ' plain'
+    bg = ''      # cabecera limpia (sin foto), igual que el hero de la home
+    plain = ''
     logo = (f'<span class="hero-logo"><img src="assets/img/{spec["logo"]}" alt="{spec.get("logo_alt", "")}"></span>'
             if spec.get('logo') else '')
     ctas = ''.join(spec.get('ctas', []))
@@ -711,7 +710,7 @@ add('nosotros.html', 'Nosotros | SIO',
             ('graduation', 'Formación continua', 'Mantener la organización actualizada mediante la capacitación permanente.'),
             ('wallet', 'Viabilidad financiera', 'Lograr la viabilidad financiera de la organización.'),
         ], cols=4))
-    + '''<section class="about" style="margin-block:clamp(24px,4vw,56px)"><div class="panel-dark"><div class="panel-glow alt" aria-hidden="true"></div>
+    + '''<section class="about" style="margin-block:clamp(12px,2vw,28px)"><div class="panel-dark"><div class="panel-glow alt" aria-hidden="true"></div>
         <div class="container about-grid">
           <div class="about-copy">
             <span class="pill pill-dark" data-reveal>Certificaciones y respaldo</span>
