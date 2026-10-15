@@ -146,14 +146,13 @@ def sub_cards(subs):
     subs: (color, icono, titulo, [bullets], imagen, posición)"""
     out = []
     for color, icon, title, items, img, pos in subs:
-        n = len(items)
-        lis = ''.join(f'<li style="--i:{n - 1 - k}">{t}</li>' for k, t in enumerate(items))
+        lis = ''.join(f'<li style="--i:{k}">{t}</li>' for k, t in enumerate(items))
         out.append(
             f'<article class="sub-card" style="--c:{color}" tabindex="0">'
             f'<img class="sub-bg" src="assets/img/{img}" alt="" loading="lazy" style="--pos:{pos}">'
             '<span class="sub-shade" aria-hidden="true"></span>'
-            f'<div class="sub-body"><div class="sub-list-wrap"><ul class="sub-list">{lis}</ul></div>'
-            f'<div class="sub-head"><span class="f-ico">{ic(icon)}</span><h3>{title}</h3></div></div>'
+            f'<div class="sub-body"><div class="sub-head"><span class="f-ico">{ic(icon)}</span><h3>{title}</h3></div>'
+            f'<div class="sub-list-wrap"><ul class="sub-list">{lis}</ul></div></div>'
             '</article>')
     return '<div class="sub-grid" data-reveal>' + ''.join(out) + '</div>'
 
@@ -306,23 +305,23 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
             ('#17998A', 'heart-pulse', 'Subsistema Asistencial',
              ['Historia clínica electrónica', 'Registro de enfermería', 'Interoperabilidad', 'Órdenes médicas electrónicas integradas',
               'Mecanismos de seguridad', 'Historias clínicas por especialidades', 'Citas web', 'Salud móvil', 'Auditoría interna y concurrente'],
-             'hero/solution.jpg', '12% 50%'),
+             'stock/sub-asistencial.jpg', '50% 40%'),
             ('#7B3A8F', 'receipt', 'Subsistema Comercial',
              ['Control total de la cartera', 'Facturación electrónica', 'Radicación electrónica'],
-             'bg/soft.jpg', '50% 45%'),
+             'stock/sub-comercial.jpg', '50% 50%'),
             ('#0F4C7A', 'wallet', 'Subsistema Financiero',
              ['Contabilidad', 'Buzón para gestión de facturas', 'Gestión y contratación con proveedores', 'Documento soporte',
               'Tesorería', 'Seguimiento y control del presupuesto'],
-             'bg/info.jpg', '50% 55%'),
+             'stock/sub-financiero.jpg', '50% 55%'),
             ('#EB5757', 'bar-chart', 'Subsistema de Análisis y Reportes',
              ['Trazabilidad de facturación, de inicio a fin', 'Módulo gerencial para análisis de información'],
-             'bg/health.jpg', '50% 50%'),
+             'stock/sub-analisis.jpg', '50% 50%'),
             ('#F59E1B', 'package', 'Subsistema Administrativo',
              ['Gestión de almacén', 'Control total de activos fijos'],
-             'bg/supply.jpg', '50% 50%'),
+             'stock/sub-administrativo.jpg', '50% 50%'),
             ('#63C3CC', 'users', 'Subsistema del Talento Humano',
              ['Nómina electrónica', 'Gestión del talento humano', 'Liquidación de nómina, prenómina y nómina definitiva'],
-             'bg/center.jpg', '50% 50%'),
+             'stock/sub-talento.jpg', '50% 50%'),
         ]), 'alt')
     + section(h_timeline(
         'Por qué SAMAN SOLUTION', 'Una sola solución, un único proveedor',

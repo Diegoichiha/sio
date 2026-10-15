@@ -268,6 +268,25 @@
       hio.observe(ht);
     } else runH();
 
+    // todas las tarjetas con el mismo alto (el de la que tiene más contenido); en móvil es vertical y no aplica
+    const fitHt = () => {
+      const cards = $$('.ht-card', ht);
+      cards.forEach(c => { c.style.minHeight = '0px'; });
+      ht.style.removeProperty('--ht-ch');
+      ht.style.removeProperty('--card-h');
+      if (matchMedia('(min-width: 981px)').matches) {
+        const max = Math.max(...cards.map(c => c.offsetHeight));
+        ht.style.setProperty('--ht-ch', max + 'px');
+        ht.style.setProperty('--card-h', (max + 24 + 12) + 'px'); // 24 = tallo hasta el nodo
+      }
+      cards.forEach(c => { c.style.minHeight = ''; });
+    };
+    fitHt();
+    let htT;
+    addEventListener('resize', () => { clearTimeout(htT); htT = setTimeout(fitHt, 120); });
+    addEventListener('load', fitHt);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHt);
+
     const markH = (it) => hItems.forEach(o => o.classList.toggle('is-current', o === it));
     hItems.forEach(it => {
       it.addEventListener('mouseenter', () => markH(it));
@@ -276,6 +295,28 @@
     });
     ht.addEventListener('mouseleave', () => markH(null));
     ht.addEventListener('focusout', e => { if (!ht.contains(e.relatedTarget)) markH(null); });
+  }
+
+  /* ---------- Subsistemas: todas las cards con la altura de la que tiene más contenido ---------- */
+  const subGrid = $('.sub-grid');
+  if (subGrid) {
+    const subCards = $$('.sub-card', subGrid);
+    const fitSub = () => {
+      let max = 0;
+      subCards.forEach(c => {
+        const body = $('.sub-body', c);
+        const cs = getComputedStyle(body);
+        const need = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)
+          + $('.sub-head', c).offsetHeight + 16 /* separación al abrir */ + $('.sub-list', c).scrollHeight;
+        max = Math.max(max, need);
+      });
+      subGrid.style.setProperty('--sub-h', Math.ceil(max) + 'px');
+    };
+    fitSub();
+    let subT;
+    addEventListener('resize', () => { clearTimeout(subT); subT = setTimeout(fitSub, 120); });
+    addEventListener('load', fitSub);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSub);
   }
 
   /* ---------- Otras soluciones: acordeón horizontal (la primera activa por defecto) ---------- */
