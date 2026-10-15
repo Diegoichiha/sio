@@ -157,6 +157,21 @@ def sub_cards(subs):
     return '<div class="sub-grid" data-reveal>' + ''.join(out) + '</div>'
 
 
+
+def img_panel(img, pos, pill, h2, p, items, cta=None, tag=''):
+    """Panel con imagen de fondo: overlay oscuro a la izquierda con el texto y tarjetas;
+    hacia la derecha el overlay se desvanece y la imagen se ve completa."""
+    steps = ''.join(
+        f'<div class="ip-step"><span class="f-ico">{ic(icon)}</span>'
+        f'<div><span class="mono">{label}</span><b>{title}</b><p>{text}</p></div></div>'
+        for icon, label, title, text in items)
+    c = cta or ''
+    t = f'<span class="ip-tag"><i></i>{tag}</span>' if tag else ''
+    return (f'<div class="img-panel" data-reveal><img class="ip-bg" src="assets/img/{img}" alt="" loading="lazy" style="--pos:{pos}">'
+            f'<div class="ip-copy"><span class="pill pill-dark">{pill}</span><h2>{h2}</h2><p>{p}</p>'
+            f'<div class="ip-steps">{steps}</div>{c}</div>{t}</div>')
+
+
 # ------------------------------------------------------------------ catálogo de soluciones
 SOL = {
     'saman-solution':          dict(name='SAMAN SOLUTION', tag='Gestión hospitalaria', desc='Toda la operación de tu institución en una sola solución.', img='hero/solution.jpg', icon='hospital'),
@@ -519,9 +534,14 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
         lead='Solución tecnológica integral para la gestión hospitalaria que apoya las actividades administrativas y financieras derivadas de los procesos de atención en salud, con la historia clínica electrónica del paciente como eje central.',
         ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Ver subsistemas', '#subsistemas', 'light', arrow=False)],
         visual=mock_visual(CFG_SOLUTION)))
-    + section(
-        '<div class="sec-head center" style="margin-bottom:0"><h2 class="h2-sm" data-reveal>30 años de experiencia brindando soluciones integrales para las IPS, '
-        'en <span class="hl">gestión asistencial, financiera y administrativa</span>.</h2></div>', 'tight')
+    + section(img_panel(
+        'panels/solution.jpg', '78% 35%', 'Experiencia',
+        '30 años integrando la <span class="hl-y">gestión hospitalaria</span>',
+        'Brindamos soluciones integrales para las IPS, en gestión asistencial, financiera y administrativa, con la historia clínica electrónica del paciente como eje central.',
+        [('heart-pulse', 'Asistencial', 'Historia clínica electrónica', 'Agendas, enfermería, órdenes médicas y auditoría concurrente.'),
+         ('receipt', 'Comercial y financiero', 'Facturación, cartera y contabilidad', 'Facturación y radicación electrónicas, tesorería y presupuesto.'),
+         ('bar-chart', 'Análisis y reportes', 'Decisiones con datos', 'Módulo gerencial, trazabilidad e indicadores de gestión.')],
+        cta=btn('Cotiza ya', 'contacto.html', 'yellow'), tag='Gestión hospitalaria integrada'), 'tight')
     + hub_section()
     + section(
         sec_head('Atributos por subsistema', 'Todo lo que cubre cada subsistema',
@@ -574,11 +594,14 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
         lead='Somos proveedores autorizados por la DIAN. Genera, valida y distribuye tus documentos electrónicos desde una plataforma integrada con SAMAN SOLUTION.',
         ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)],
         visual=mock_visual(CFG_SOFT)))
-    + section(split(
-        'Autorizados por la DIAN', 'Un proveedor tecnológico habilitado desde 2020',
-        ['SIO SAS se habilitó como proveedor tecnológico de la DIAN en febrero de 2020. A través de Saman Soft ofrece sus servicios en una plataforma en la nube, integrada con SAMAN SOLUTION.'],
-        ['Facturación electrónica', 'Nómina electrónica', 'Documento soporte', 'Buzón de gestión para facturas'],
-        shot('assets/img/shots/soft-ui.jpg', 'Pantalla de Saman Soft con documentos electrónicos y código QR')))
+    + section(img_panel(
+        'panels/soft.jpg', '100% 50%', 'Autorizados por la DIAN',
+        'Un proveedor tecnológico <span class="hl-y">habilitado desde 2020</span>',
+        'SIO SAS se habilitó como proveedor tecnológico de la DIAN en febrero de 2020. A través de Saman Soft ofrece sus servicios en una plataforma en la nube, integrada con SAMAN SOLUTION.',
+        [('receipt', 'Facturación', 'Facturación electrónica', 'Facturas, notas débito y notas crédito validadas ante la DIAN.'),
+         ('users', 'Nómina', 'Nómina electrónica y documento soporte', 'Genera y distribuye tus documentos electrónicos desde un solo lugar.'),
+         ('inbox', 'Proveedores', 'Buzón de gestión para facturas', 'Recibe y gestiona las facturas de tus proveedores.')],
+        cta=btn('Solicitar información', 'contacto.html', 'yellow'), tag='Saman Soft en la nube'), 'tight')
     + section(
         sec_head('Funcionalidades', 'Todo el ciclo del documento electrónico')
         + feats([
@@ -606,16 +629,14 @@ add('health-sq.html', 'Health SQ | Calidad en salud · SIO',
         lead='Una solución tecnológica completa que permite la administración, el seguimiento y el control integral de los Sistemas Obligatorios de Calidad en salud.',
         ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)],
         visual=mock_visual(CFG_HEALTH)))
-    + section(split(
-        'Beneficios', 'Calidad asistencial con evidencia y trazabilidad',
-        ['Health SQ integra la información del sistema obligatorio de garantía de calidad y facilita la mejora continua con énfasis en la acreditación.'],
-        ['Integración de la información del sistema obligatorio de garantía de calidad',
-         'Optimiza recursos mediante la gestión de procesos de mejoramiento institucional',
-         'Seguimiento y control a los estándares de habilitación',
-         'Monitoreo de los riesgos relacionados con la seguridad del paciente',
-         'Mejora continua de la calidad asistencial, con énfasis en la acreditación',
-         'Facilita la recopilación de evidencia para las auditorías de calidad'],
-        shot('assets/img/shots/health-ring.jpg', 'Módulos de Health SQ: habilitación, acreditación, seguridad del paciente e indicadores', pad=True), rev=True))
+    + section(img_panel(
+        'panels/health.jpg', '72% 50%', 'Beneficios',
+        'Calidad asistencial con <span class="hl-y">evidencia y trazabilidad</span>',
+        'Health SQ integra la información del sistema obligatorio de garantía de calidad y facilita la mejora continua con énfasis en la acreditación.',
+        [('clipboard-check', 'Habilitación', 'Seguimiento a los estándares', 'Control a los estándares de habilitación con semaforización de tiempos.'),
+         ('shield-check', 'Seguridad', 'Riesgos del paciente bajo monitoreo', 'Gestión de eventos adversos, barreras y fallas latentes.'),
+         ('award', 'Acreditación', 'Evidencia para las auditorías', 'Recopila la evidencia y optimiza los procesos de mejoramiento.')],
+        cta=btn('Solicitar información', 'contacto.html', 'yellow'), tag='Sistemas obligatorios de calidad'), 'tight')
     + section(
         sec_head('Módulos principales', 'Cuatro módulos, una sola visión de la calidad')
         + feats([
@@ -639,12 +660,14 @@ add('saman-rips.html', 'Saman RIPS | RIPS automáticos · Resolución 2275 · SI
         lead='¿Confundido con los RIPS? Te lo ponemos fácil. Saman RIPS tiene la solución.',
         ctas=[btn('Solicita una demo gratis', 'contacto.html', 'yellow'), btn('Asesoría gratuita por WhatsApp', WA, 'light', ext=True)],
         visual=mock_visual(CFG_RIPS)))
-    + section(split(
-        'Cómo funciona', 'Consulta, gestiona y controla tus RIPS',
-        ['Software en la nube que permite la consulta, gestión y control de la generación de tus RIPS de forma rápida, automática y segura, dando cumplimiento a la Resolución 2275.'],
-        ['Generación automática de archivos RIPS sin errores', 'Cumplimiento de la Resolución 2275',
-         'Consulta, gestión y control desde la nube', 'Información segura y disponible cuando la necesites'],
-        shot('assets/img/bg/rips.jpg', 'Saman RIPS: generación automática de RIPS'), rev=False))
+    + section(img_panel(
+        'panels/rips.jpg', '75% 50%', 'Cómo funciona',
+        'Consulta, gestiona y controla tus <span class="hl-y">RIPS</span>',
+        'Software en la nube que permite la consulta, gestión y control de la generación de tus RIPS de forma rápida, automática y segura, dando cumplimiento a la Resolución 2275.',
+        [('file-text', 'Automático', 'Generación sin errores', 'Archivos RIPS generados y validados de forma automática.'),
+         ('clipboard-check', 'Normativo', 'Resolución 2275', 'Estructura y cumplimiento conforme a la norma vigente.'),
+         ('cloud', 'En la nube', 'Información segura', 'Consulta, gestión y control disponibles cuando los necesites.')],
+        cta=btn('Solicita una demo gratis', 'contacto.html', 'yellow'), tag='Saman RIPS'), 'tight')
     + timeline('Implementación', 'Listo para usar, paso a paso',
                'Un proceso claro para que tu institución genere sus RIPS sin complicaciones.',
                [('search', 'Diagnóstico inicial', 'Revisamos cómo gestionas hoy los RIPS en tu institución.'),
