@@ -294,79 +294,209 @@ def _qr_svg(n=9, seed=7):
     return f'<svg viewBox="0 0 {n} {n}" width="100%" height="100%" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">{rects}</svg>'
 
 
-def soft_visual():
-    """Monitor con el panel de Saman Soft y ventanas flotantes (datos ilustrativos)."""
+def _f_item(cls, r, dur, delay, icon, title, sub, chip='', ok=False):
+    c = ' ok' if ok else ''
+    ch = f'<span class="f-chip">{chip}</span>' if chip else ''
+    return (f'<div class="float sf {cls}" style="animation-duration:{dur}s;animation-delay:{delay}s">'
+            f'<span class="f-ic{c}">{ic(icon)}</span><div><b>{title}</b><small>{sub}</small></div>{ch}</div>')
+
+
+def _f_qr(cls, r, dur, delay, title, sub):
+    return (f'<div class="float sf {cls}" style="animation-duration:{dur}s;animation-delay:{delay}s">'
+            f'<span class="qr">{_qr_svg()}</span><div><b>{title}</b><small>{sub}</small></div>'
+            f'<span class="sf-dl">{ic("arrow-up")}</span></div>')
+
+
+def _f_list(cls, r, dur, delay, title, items):
+    lis = ''.join(f'<li><i class="{c}"></i>{t}</li>' for c, t in items)
+    return (f'<div class="float sf {cls}" style="animation-duration:{dur}s;animation-delay:{delay}s">'
+            f'<b>{title}</b><ul class="sf-list">{lis}</ul></div>')
+
+
+def _f_dark(cls, r, dur, delay, label, pct, title, sub):
+    return (f'<div class="float sf {cls} dark" style="animation-duration:{dur}s;animation-delay:{delay}s">'
+            f'<div class="f-head"><span class="mono">{label}</span><span class="f-val">{pct}</span></div>'
+            f'<b>{title}</b><div class="f-bar"><i></i></div><small>{sub}</small></div>')
+
+
+_R = [-4, 3, -3, 4, -2, 3]
+_DUR = [7, 8, 9, 7.5, 8.5, 9.5]
+_DEL = [0, -2, -4, -1, -3, -5]
+
+
+def mock_visual(cfg):
+    """Monitor con el panel del software y 6 ventanas flotantes (datos ilustrativos). cfg: ver CFG_*"""
     nav = ''.join(
-        f'<a{" class=on" if i == 0 else ""}>{ic(icon)}{label}</a>'
-        for i, (icon, label) in enumerate([
-            ('bar-chart', 'Panel'), ('receipt', 'Facturas'), ('file-text', 'Notas'),
-            ('users', 'Nómina electrónica'), ('layers', 'Doc. soporte'), ('inbox', 'Buzón de facturas'),
-            ('trending-up', 'Reportes'), ('lock', 'Configuración')]))
+        f'<a{" class=on" if i == 0 else ""}>{ic(icon)}{label}</a>' for i, (icon, label) in enumerate(cfg['nav']))
     kpis = ''.join(
         f'<div class="s-kpi {c}"><span class="k-ic">{ic(i)}</span><div><span>{l}</span><b>{v}</b><em class="{d}">{t}</em></div></div>'
-        for c, i, l, v, d, t in [
-            ('k-blue', 'file-text', 'Documentos hoy', '1.284', 'up', '▲ 12%'),
-            ('k-green', 'shield-check', 'Validados DIAN', '1.271', 'up', '▲ 8%'),
-            ('k-orange', 'clock', 'En proceso', '9', '', 'En línea'),
-            ('k-purple', 'x', 'Rechazados', '4', 'down', '▼ 3%')])
+        for c, i, l, v, d, t in cfg['kpis'])
+    t = cfg['table']
     rows = ''.join(
-        f'<div class="s-tr"><span>{h}</span><b>{doc}</b><span>{tipo}</span><em class="{cls}">{est}</em></div>'
-        for h, doc, tipo, est, cls in [
-            ('08:00', 'FE-1284', 'Factura electrónica', 'Validada', 's-ok'),
-            ('09:30', 'NC-0312', 'Nota crédito', 'Enviada', 's-sent'),
-            ('11:00', 'NE-0987', 'Nómina electrónica', 'En proceso', 's-wait'),
-            ('12:30', 'DS-0145', 'Documento soporte', 'Validada', 's-ok')])
-    bars = ''.join(f'<i style="--h:{h}%"{" class=hi" if k == 4 else ""}></i>' for k, h in enumerate([46, 58, 52, 70, 88, 40, 34]))
-    axis = ''.join(f'<span>{d}</span>' for d in ['L', 'M', 'M', 'J', 'V', 'S', 'D'])
+        f'<div class="s-tr"><span>{c1}</span><b>{c2}</b><span>{c3}</span><em class="{cls}">{est}</em></div>'
+        for c1, c2, c3, est, cls in t['rows'])
+    th = ''.join(f'<span>{h}</span>' for h in t['head'])
+    d = cfg['donut']
+    legend = ''.join(f'<li><i style="--c:{c}"></i>{l}</li>' for c, l in d['legend'])
+    ch = cfg['chart']
+    hi = ch.get('hi', 4)
+    bars = ''.join(f'<i style="--h:{h}%"{" class=hi" if k == hi else ""}></i>' for k, h in enumerate(ch['values']))
+    axis = ''.join(f'<span>{a}</span>' for a in ch['axis'])
+    sd = cfg['side']
+    side_rows = ''.join(f'<div class="s-ib"><span>{l}</span><b class="{c}">{v}</b></div>' for l, v, c in sd['rows'])
+    av, org, role = cfg['user']
+    top = cfg['top']
 
     app = f'''<div class="app app-soft" aria-hidden="true">
       <aside class="m-side">
-        <div class="m-brand"><span class="m-tree"></span><span><b>Saman</b> Soft</span></div>
+        <div class="m-brand"><span class="m-tree"></span><span>{cfg['brand']}</span></div>
         <nav class="m-nav">{nav}</nav>
-        <div class="m-user"><span class="m-av">SS</span><span>Mi institución<small>Administrador</small></span></div>
+        <div class="m-user"><span class="m-av">{av}</span><span>{org}<small>{role}</small></span></div>
       </aside>
       <div class="m-main">
         <div class="m-top">
-          <div><h4>Panel de documentos</h4><span>Resumen de la operación de hoy</span></div>
-          <div class="m-search">{ic('search')}Buscar documento, CUFE o cliente…</div>
-          <span class="m-chip">Octubre</span>
+          <div><h4>{top['title']}</h4><span>{top['sub']}</span></div>
+          <div class="m-search">{ic('search')}{top['search']}</div>
+          <span class="m-chip">{top['chip']}</span>
         </div>
         <div class="s-kpis">{kpis}</div>
         <div class="s-row">
-          <div class="m-card s-table"><div class="m-ch-head"><b>Documentos recientes</b><span>Ver todos</span></div>
-            <div class="s-th"><span>Hora</span><span>Documento</span><span>Tipo</span><span>Estado</span></div>{rows}</div>
-          <div class="m-card s-donut"><div class="m-ch-head"><b>Validación DIAN</b></div>
-            <div class="m-donut s-ring"><span>99%</span></div>
-            <ul class="m-legend"><li><i style="--c:#1FB36B"></i>Validados 1.271</li><li><i style="--c:#F59E1B"></i>En proceso 9</li><li><i style="--c:#EB5757"></i>Rechazados 4</li></ul></div>
+          <div class="m-card s-table"><div class="m-ch-head"><b>{t['title']}</b><span>{t['link']}</span></div>
+            <div class="s-th">{th}</div>{rows}</div>
+          <div class="m-card s-donut"><div class="m-ch-head"><b>{d['title']}</b></div>
+            <div class="m-donut s-ring" style="background:{d['gradient']}"><span>{d['center']}</span></div>
+            <ul class="m-legend">{legend}</ul></div>
         </div>
         <div class="s-row r2">
-          <div class="m-card m-chart"><div class="m-ch-head"><b>Documentos por día</b><span>Última semana</span></div>
+          <div class="m-card m-chart"><div class="m-ch-head"><b>{ch['title']}</b><span>{ch['sub']}</span></div>
             <div class="m-bars s-bars">{bars}</div><div class="m-axis">{axis}</div></div>
-          <div class="m-card s-inbox"><div class="m-ch-head"><b>Buzón de facturas</b></div>
-            <div class="s-ib"><span>Recibidas</span><b>18</b></div><div class="s-ib"><span>Por gestionar</span><b class="w">6</b></div><div class="s-ib"><span>Gestionadas</span><b class="g">12</b></div></div>
+          <div class="m-card s-inbox"><div class="m-ch-head"><b>{sd['title']}</b></div>{side_rows}</div>
         </div>
       </div>
     </div>'''
 
-    floats = (
-        f'<div class="float sf sf1 tilt" style="--r:-4deg;animation-duration:7s"><span class="f-ic ok">{ic("check")}</span>'
-        '<div><b>Factura electrónica</b><small>FE-1284 · Validada ante la DIAN</small></div></div>'
-        f'<div class="float sf sf2 tilt" style="--r:3deg;animation-duration:8s;animation-delay:-2s"><span class="f-ic">{ic("users")}</span>'
-        '<div><b>Nómina electrónica</b><small>Periodo de octubre generado</small></div></div>'
-        f'<div class="float sf sf3 tilt" style="--r:-3deg;animation-duration:9s;animation-delay:-4s"><span class="qr">{_qr_svg()}</span>'
-        f'<div><b>Código QR</b><small>CUFE verificable</small></div><span class="sf-dl">{ic("arrow-up")}</span></div>'
-        '<div class="float sf sf4 tilt" style="--r:4deg;animation-duration:7.5s;animation-delay:-1s"><b>Buzón de facturas</b>'
-        '<ul class="sf-list"><li><i class="g"></i>Factura recibida</li><li><i class="y"></i>Por gestionar</li><li><i class="g"></i>Gestionada</li></ul></div>'
-        f'<div class="float sf sf5 tilt" style="--r:-2deg;animation-duration:8.5s;animation-delay:-3s"><span class="f-ic">{ic("layers")}</span>'
-        '<div><b>Documento soporte</b><small>DS-0145 · Generado</small></div><span class="f-chip">Listo</span></div>'
-        '<div class="float sf sf6 dark tilt" style="--r:3deg;animation-duration:9.5s;animation-delay:-5s">'
-        '<div class="f-head"><span class="mono">Envío por correo</span><span class="f-val">100%</span></div>'
-        '<b>Distribución automática</b><div class="f-bar"><i></i></div><small>1.284 documentos entregados</small></div>')
+    fl = cfg['floats']
+    # 4 ventanas discretas en los bordes (como en la home): arriba-derecha, izquierda, abajo-izquierda, abajo-derecha
+    floats = ''.join([
+        _f_dark('sfa', 0, _DUR[5], _DEL[5], *fl[5]),
+        _f_item('sfb', 0, _DUR[0], _DEL[0], *fl[0][:3], ok=True),
+        _f_item('sfc', 0, _DUR[4], _DEL[4], *fl[4]),
+        _f_list('sfd', 0, _DUR[3], _DEL[3], fl[3][0], fl[3][1]),
+    ])
 
     return (floats
-            + '<div class="pc"><div class="pc-screen"><div class="screen" data-screen>' + app + '</div></div>'
-              '<div class="pc-stand"></div><div class="pc-base"></div></div>'
+            + '<div class="device flat"><div class="device-bezel"><span class="device-cam"></span>'
+              '<div class="screen" data-screen>' + app + '</div></div></div>'
             + '<p class="device-note">Vista ilustrativa del producto · datos de ejemplo</p>')
+
+
+# ---- configuraciones del panel por producto (datos ilustrativos; luego se reemplazan por capturas reales)
+CFG_SOFT = dict(
+    brand='<b>Saman</b> Soft', user=('SS', 'Mi institución', 'Administrador'),
+    top=dict(title='Panel de documentos', sub='Resumen de la operación de hoy', search='Buscar documento, CUFE o cliente…', chip='Octubre'),
+    nav=[('bar-chart', 'Panel'), ('receipt', 'Facturas'), ('file-text', 'Notas'), ('users', 'Nómina electrónica'),
+         ('layers', 'Doc. soporte'), ('inbox', 'Buzón de facturas'), ('trending-up', 'Reportes'), ('lock', 'Configuración')],
+    kpis=[('k-blue', 'file-text', 'Documentos hoy', '1.284', 'up', '▲ 12%'),
+          ('k-green', 'shield-check', 'Validados DIAN', '1.271', 'up', '▲ 8%'),
+          ('k-orange', 'clock', 'En proceso', '9', '', 'En línea'),
+          ('k-purple', 'x', 'Rechazados', '4', 'down', '▼ 3%')],
+    table=dict(title='Documentos recientes', link='Ver todos', head=['Hora', 'Documento', 'Tipo', 'Estado'],
+               rows=[('08:00', 'FE-1284', 'Factura electrónica', 'Validada', 's-ok'),
+                     ('09:30', 'NC-0312', 'Nota crédito', 'Enviada', 's-sent'),
+                     ('11:00', 'NE-0987', 'Nómina electrónica', 'En proceso', 's-wait'),
+                     ('12:30', 'DS-0145', 'Documento soporte', 'Validada', 's-ok')]),
+    donut=dict(title='Validación DIAN', center='99%', gradient='conic-gradient(#1FB36B 0 99%, #F59E1B 0 99.6%, #EB5757 0 100%)',
+               legend=[('#1FB36B', 'Validados 1.271'), ('#F59E1B', 'En proceso 9'), ('#EB5757', 'Rechazados 4')]),
+    chart=dict(title='Documentos por día', sub='Última semana', values=[46, 58, 52, 70, 88, 40, 34], axis=list('LMMJVSD'), hi=4),
+    side=dict(title='Buzón de facturas', rows=[('Recibidas', '18', ''), ('Por gestionar', '6', 'w'), ('Gestionadas', '12', 'g')]),
+    floats=[('check', 'Factura electrónica', 'FE-1284 · Validada ante la DIAN'),
+            ('users', 'Nómina electrónica', 'Periodo de octubre generado'),
+            ('qr', 'Código QR', 'CUFE verificable'),
+            ('Buzón de facturas', [('g', 'Factura recibida'), ('y', 'Por gestionar'), ('g', 'Gestionada')]),
+            ('layers', 'Documento soporte', 'DS-0145 · Generado', 'Listo'),
+            ('Envío por correo', '100%', 'Distribución automática', '1.284 documentos entregados')],
+)
+
+CFG_SOLUTION = dict(
+    brand='<b>Saman</b> Solution', user=('SS', 'Sede principal', 'Cali'),
+    top=dict(title='Panel gerencial', sub='Resumen de la operación', search='Buscar paciente, factura o RIPS…', chip='Octubre'),
+    nav=[('bar-chart', 'Panel gerencial'), ('heart-pulse', 'Asistencial'), ('receipt', 'Comercial'), ('wallet', 'Financiero'),
+         ('users', 'Talento humano'), ('package', 'Administrativo'), ('trending-up', 'Análisis y reportes'), ('lock', 'Configuración')],
+    kpis=[('k-blue', 'heart-pulse', 'Atenciones hoy', '1.284', 'up', '▲ 8%'),
+          ('k-green', 'receipt', 'Facturas radicadas', '312', 'up', '▲ 5%'),
+          ('k-orange', 'clipboard-check', 'RIPS validados', '100%', '', 'Res. 2275'),
+          ('k-purple', 'wallet', 'Cartera recuperada', '76%', 'up', '▲ 3%')],
+    table=dict(title='Cuentas por radicar', link='Ver todas', head=['Hora', 'Servicio', 'Cuentas', 'Estado'],
+               rows=[('08:00', 'Consulta externa', '128 cuentas', 'Radicadas', 's-ok'),
+                     ('09:30', 'Urgencias', '64 cuentas', 'En auditoría', 's-wait'),
+                     ('11:00', 'Hospitalización', '41 cuentas', 'Radicadas', 's-ok'),
+                     ('12:30', 'Cirugía', '19 cuentas', 'Programada', 's-sent')]),
+    donut=dict(title='Cartera por edades', center='76%',
+               gradient='conic-gradient(#1C4593 0 46%, #F4D53B 0 74%, #7B3A8F 0 90%, #EB5757 0 100%)',
+               legend=[('#1C4593', '0-30 días'), ('#F4D53B', '31-60 días'), ('#7B3A8F', '61-90 días'), ('#EB5757', '+90 días')]),
+    chart=dict(title='Atenciones por día', sub='Última semana', values=[52, 60, 56, 74, 90, 48, 38], axis=list('LMMJVSD'), hi=4),
+    side=dict(title='Agenda de hoy', rows=[('Citas programadas', '36', ''), ('En sala', '9', 'w'), ('Atendidas', '27', 'g')]),
+    floats=[('check', 'Factura electrónica', 'Validada ante la DIAN'),
+            ('heart-pulse', 'Historia clínica', 'Evolución registrada'),
+            ('item', 'calendar', 'Cita web', 'Confirmada · 09:30'),
+            ('Auditoría concurrente', [('g', 'Cuenta revisada'), ('y', 'Pendiente de glosa'), ('g', 'Cerrada')]),
+            ('smartphone', 'H.C.E. móvil', 'Registro de enfermería sincronizado'),
+            ('Resultados', 'Listo', 'Apoyo diagnóstico', 'Disponibles en la historia clínica')],
+)
+
+CFG_HEALTH = dict(
+    brand='<b>health</b>SQ', user=('HQ', 'Calidad', 'Coordinador'),
+    top=dict(title='Panel de calidad', sub='Cumplimiento y seguimiento de hoy', search='Buscar estándar, plan o evento…', chip='2026'),
+    nav=[('bar-chart', 'Panel'), ('clipboard-check', 'Habilitación'), ('award', 'Acreditación'), ('shield-check', 'Seguridad'),
+         ('trending-up', 'Indicadores'), ('layers', 'Planes de mejora'), ('file-text', 'Reportes'), ('lock', 'Configuración')],
+    kpis=[('k-blue', 'clipboard-check', 'Cumplimiento', '92%', 'up', '▲ 4%'),
+          ('k-green', 'award', 'Planes de mejora', '14', '', 'Activos'),
+          ('k-orange', 'clock', 'Por vencer', '5', '', 'Esta semana'),
+          ('k-purple', 'shield-check', 'Eventos adversos', '3', 'down', '▼ 2%')],
+    table=dict(title='Plan de auditoría', link='Ver todo', head=['Fecha', 'Estándar', 'Responsable', 'Estado'],
+               rows=[('08 oct', 'Habilitación', 'Calidad', 'En tiempo', 's-ok'),
+                     ('10 oct', 'Seguridad', 'Enfermería', 'Por vencer', 's-wait'),
+                     ('14 oct', 'Acreditación', 'Planeación', 'En tiempo', 's-ok'),
+                     ('18 oct', 'Indicadores', 'Gerencia', 'Programada', 's-sent')]),
+    donut=dict(title='Cumplimiento', center='92%',
+               gradient='conic-gradient(#1FB36B 0 92%, #F4D53B 0 97%, #EB5757 0 100%)',
+               legend=[('#1FB36B', 'En tiempo'), ('#F4D53B', 'Por vencer'), ('#EB5757', 'Vencido')]),
+    chart=dict(title='Indicadores en meta', sub='Últimos 7 meses', values=[48, 54, 60, 58, 72, 80, 90], axis=list('AMJJASO'), hi=6),
+    side=dict(title='Seguridad del paciente', rows=[('Reportados', '3', ''), ('En análisis', '2', 'w'), ('Cerrados', '1', 'g')]),
+    floats=[('check', 'Habilitación', 'Semaforización de tiempos'),
+            ('award', 'Acreditación', 'Ciclo PAMEC en seguimiento'),
+            ('item', 'shield-check', 'Evento adverso', 'Análisis con protocolo de Londres'),
+            ('Plan de mejora', [('g', 'Acción asignada'), ('y', 'En ejecución'), ('g', 'Verificada')]),
+            ('bar-chart', 'Ficha técnica', 'Indicador dentro de la meta', 'Meta'),
+            ('Notificaciones', '100%', 'Alertas automáticas', 'Responsables avisados a tiempo')],
+)
+
+CFG_RIPS = dict(
+    brand='<b>Saman</b> RIPS', user=('SR', 'Mi institución', 'Facturación'),
+    top=dict(title='Panel de RIPS', sub='Generación y control del periodo', search='Buscar archivo, factura o periodo…', chip='Octubre'),
+    nav=[('bar-chart', 'Panel'), ('file-text', 'Generar RIPS'), ('shield-check', 'Validaciones'), ('archive', 'Archivos'),
+         ('clock', 'Historial'), ('users', 'Usuarios'), ('lock', 'Configuración')],
+    kpis=[('k-blue', 'file-text', 'Archivos del periodo', '4', '', 'Generados'),
+          ('k-green', 'shield-check', 'Registros validados', '12.840', 'up', '▲ 9%'),
+          ('k-orange', 'clock', 'Inconsistencias', '0', '', 'Sin errores'),
+          ('k-purple', 'clipboard-check', 'Cumplimiento', '100%', '', 'Res. 2275')],
+    table=dict(title='Archivos del periodo', link='Ver historial', head=['Código', 'Archivo', 'Registros', 'Estado'],
+               rows=[('US', 'Usuarios', '2.310', 'Validado', 's-ok'),
+                     ('AC', 'Consultas', '4.120', 'Validado', 's-ok'),
+                     ('AP', 'Procedimientos', '3.045', 'Validado', 's-ok'),
+                     ('AM', 'Medicamentos', '3.365', 'Generado', 's-sent')]),
+    donut=dict(title='Validación del periodo', center='100%',
+               gradient='conic-gradient(#1FB36B 0 100%)',
+               legend=[('#1FB36B', 'Válidos 12.840'), ('#F59E1B', 'Con advertencia 0'), ('#EB5757', 'Con error 0')]),
+    chart=dict(title='RIPS generados', sub='Últimos 7 meses', values=[40, 52, 58, 62, 70, 84, 92], axis=list('AMJJASO'), hi=6),
+    side=dict(title='Radicación', rows=[('Listos para radicar', '4', ''), ('Pendientes', '0', 'w'), ('Radicados', '18', 'g')]),
+    floats=[('check', 'Resolución 2275', 'Estructura validada'),
+            ('cloud', 'En la nube', 'Información segura'),
+            ('item', 'search', 'Consulta', 'RIPS por periodo y entidad'),
+            ('Validaciones', [('g', 'Estructura correcta'), ('g', 'Datos completos'), ('g', 'Sin inconsistencias')]),
+            ('file-text', 'Archivo RIPS', 'Listo para radicar', 'Listo'),
+            ('Generación automática', '100%', 'Sin errores', 'Archivos generados y validados')],
+)
 
 
 # ------------------------------------------------------------------ páginas
@@ -387,7 +517,8 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
         pill='Gestión hospitalaria',
         h1='Toda la operación de tu institución, <span class="hl-y">en una sola solución</span>',
         lead='Solución tecnológica integral para la gestión hospitalaria que apoya las actividades administrativas y financieras derivadas de los procesos de atención en salud, con la historia clínica electrónica del paciente como eje central.',
-        ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Ver subsistemas', '#subsistemas', 'light', arrow=False)]))
+        ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Ver subsistemas', '#subsistemas', 'light', arrow=False)],
+        visual=mock_visual(CFG_SOLUTION)))
     + section(
         '<div class="sec-head center" style="margin-bottom:0"><h2 class="h2-sm" data-reveal>30 años de experiencia brindando soluciones integrales para las IPS, '
         'en <span class="hl">gestión asistencial, financiera y administrativa</span>.</h2></div>', 'tight')
@@ -442,7 +573,7 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
         h1='Facturación y nómina electrónica, <span class="hl-y">en la nube</span>',
         lead='Somos proveedores autorizados por la DIAN. Genera, valida y distribuye tus documentos electrónicos desde una plataforma integrada con SAMAN SOLUTION.',
         ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)],
-        visual=soft_visual()))
+        visual=mock_visual(CFG_SOFT)))
     + section(split(
         'Autorizados por la DIAN', 'Un proveedor tecnológico habilitado desde 2020',
         ['SIO SAS se habilitó como proveedor tecnológico de la DIAN en febrero de 2020. A través de Saman Soft ofrece sus servicios en una plataforma en la nube, integrada con SAMAN SOLUTION.'],
@@ -473,7 +604,8 @@ add('health-sq.html', 'Health SQ | Calidad en salud · SIO',
         pill='Calidad en salud · SOGC',
         h1='El Sistema Obligatorio de Garantía de Calidad, <span class="hl-y">bajo control</span>',
         lead='Una solución tecnológica completa que permite la administración, el seguimiento y el control integral de los Sistemas Obligatorios de Calidad en salud.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
+        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)],
+        visual=mock_visual(CFG_HEALTH)))
     + section(split(
         'Beneficios', 'Calidad asistencial con evidencia y trazabilidad',
         ['Health SQ integra la información del sistema obligatorio de garantía de calidad y facilita la mejora continua con énfasis en la acreditación.'],
@@ -505,7 +637,8 @@ add('saman-rips.html', 'Saman RIPS | RIPS automáticos · Resolución 2275 · SI
         pill='RIPS · Resolución 2275',
         h1='RIPS automáticos, seguros y <span class="hl-y">sin errores</span>',
         lead='¿Confundido con los RIPS? Te lo ponemos fácil. Saman RIPS tiene la solución.',
-        ctas=[btn('Solicita una demo gratis', 'contacto.html', 'yellow'), btn('Asesoría gratuita por WhatsApp', WA, 'light', ext=True)]))
+        ctas=[btn('Solicita una demo gratis', 'contacto.html', 'yellow'), btn('Asesoría gratuita por WhatsApp', WA, 'light', ext=True)],
+        visual=mock_visual(CFG_RIPS)))
     + section(split(
         'Cómo funciona', 'Consulta, gestiona y controla tus RIPS',
         ['Software en la nube que permite la consulta, gestión y control de la generación de tus RIPS de forma rápida, automática y segura, dando cumplimiento a la Resolución 2275.'],
