@@ -557,7 +557,7 @@ section { position: relative; }
   .o-text b { font-size: .9rem; transition: font-size .7s var(--ease), color .4s; }
   .o-tile.is-active .o-text b { font-size: 1.7rem; line-height: 1.1; letter-spacing: -.03em; color: var(--yellow); }
   .o-text small, .o-tile:hover .o-text small { display: block; max-height: 0; opacity: 0; margin-top: 0; }
-  .o-tile.is-active .o-text small { max-height: 3.4em; opacity: 1; margin-top: 10px; color: #fff; font-size: .875rem; }
+  .o-tile.is-active .o-text small { max-height: 3.4em; opacity: 1; margin-top: 10px; color: #fff; }
 }
 
 /* =========================================================
@@ -1245,24 +1245,19 @@ a.info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 /* =========================================================
    SISTEMA TIPOGRÁFICO (única fuente de verdad)
    Una sola medida por etiqueta en todo el sitio.
+   Todos los párrafos y textos corridos miden lo mismo: --fs-p.
    ========================================================= */
 :root {
   --fs-h1: clamp(2.25rem, 1.55rem + 2.2vw, 3.5rem);    /* 56 px escritorio · 36 px móvil */
   --fs-h2: clamp(1.75rem, 1.35rem + 1.3vw, 2.5rem);    /* 40 px escritorio · 28 px móvil */
   --fs-h3: clamp(1.25rem, 1.1rem + .45vw, 1.5rem);     /* 24 px escritorio · 20 px móvil */
-  --fs-lead: clamp(1rem, .95rem + .2vw, 1.125rem);     /* 18 px escritorio · 16 px móvil */
-  --fs-p: 1rem;                                        /* 16 px */
-  --fs-sm: .875rem;                                    /* 14 px */
+  --fs-p: 1rem;                                        /* 16 px: párrafo único */
 }
 h1 { font-size: var(--fs-h1); line-height: 1.1; letter-spacing: -.04em; }
 h2 { font-size: var(--fs-h2); line-height: 1.15; letter-spacing: -.035em; }
 h3 { font-size: var(--fs-h3); line-height: 1.25; letter-spacing: -.02em; }
-p { font-size: var(--fs-p); line-height: 1.65; }
 
-/* texto de entrada: bajo el H1 y bajo el título de cada sección */
-.lead, .sec-head p, .process-head p, .cases-head p, .faq-head p,
-.contact-copy > p, .about-copy > p, .cta-band p { font-size: var(--fs-lead); line-height: 1.6; }
-
-/* texto pequeño: descripciones dentro de tarjetas, notas y pie */
-.feat p, .tl-card p, .ht-card p, .p-copy p, .rel-card p, .ip-step p, .case-body p,
-.badge-card p, .stat p, .mv p, .f-brand p, .f-col p, .form-note { font-size: var(--fs-sm); line-height: 1.55; }
+/* párrafo único: <p> (incluye .lead y .form-note) y los textos corridos que hacen de párrafo */
+p, .lead, .form-note,
+.feat li, .mods li, .sub-list li,
+.info-card span, .info-card small, .o-text small { font-size: var(--fs-p); line-height: 1.65; }
