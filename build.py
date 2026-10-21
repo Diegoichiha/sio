@@ -199,7 +199,7 @@ def tour(label, steps, caption):
             f'<span class="tt-main"><b>{title}</b><span class="tt-body"><span><span class="tt-text">{text}</span></span></span></span></button>')
         imgs.append(
             f'<img class="{"is-on" if first else ""}" src="assets/img/shots/{img}" alt="{label}: {title}" '
-            f'style="--z:{z};--o:{o}" width="1600" height="796" loading="lazy">')
+            f'style="--z:{z};--o:{o}" width="1600" height="1000" loading="lazy">')
     return ('<div class="tour" data-tour>'
             f'<div class="tour-tabs" role="tablist" aria-label="Recorrido por la plataforma" data-reveal>{"".join(tabs)}</div>'
             '<figure class="tour-stage" data-reveal style="--d:.1s"><div class="tour-frame">'

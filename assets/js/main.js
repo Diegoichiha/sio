@@ -407,6 +407,23 @@
     };
     const userPick = (i) => { stopped = true; syncAuto(); show(i); };
 
+    // el visor ocupa el alto de las pestañas: se fija el alto del estado más alto para que nada salte al cambiar de pestaña
+    const list = $('.tour-tabs', tour);
+    const fitTabs = () => {
+      list.style.minHeight = '';
+      if (!matchMedia('(min-width: 981px)').matches) return;
+      const keep = cur;
+      let max = 0;
+      tour.classList.add('is-measuring');
+      tabs.forEach((_, k) => {
+        tabs.forEach((o, j) => o.classList.toggle('is-on', j === k));
+        max = Math.max(max, list.offsetHeight);
+      });
+      tabs.forEach((o, j) => o.classList.toggle('is-on', j === keep));
+      list.style.minHeight = Math.ceil(max) + 'px';
+      tour.classList.remove('is-measuring');
+    };
+
     tabs.forEach((t, k) => {
       t.addEventListener('click', () => userPick(k));
       t.addEventListener('keydown', e => {
@@ -433,6 +450,11 @@
       }, { threshold: 0.4 }).observe(tour);
     }
     show(0);
+    fitTabs();
+    let tourT;
+    addEventListener('resize', () => { clearTimeout(tourT); tourT = setTimeout(fitTabs, 150); });
+    addEventListener('load', fitTabs);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTabs);
   }
 
   /* ---------- Formulario (maqueta: sin backend) ---------- */
