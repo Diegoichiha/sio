@@ -4,12 +4,13 @@ SIO · generador del sitio estático.
 
 Uso:  python build.py
 Lee  src/partials/*.html (sprite, topbar, header, footer) y src/pages/index.html
-y genera en la raíz: index.html + las páginas internas (soluciones, casos, nosotros, contacto…).
+y genera en la raíz: index.html + las páginas internas (soluciones, nosotros, trabaja con nosotros, soporte, contacto…).
 El HTML generado se versiona para que GitHub Pages lo sirva tal cual.
 """
 import json
 import os
 import re
+from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 WA = 'https://wa.me/573185067331'
@@ -44,6 +45,7 @@ EXTRA_ICONS = '''
     <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
     <symbol id="i-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></symbol>
     <symbol id="i-expand" viewBox="0 0 24 24"><path d="m15 3 6 0 0 6"/><path d="m9 21-6 0 0-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></symbol>
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
     <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></symbol>
@@ -592,7 +594,7 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
         visual=mock_visual(CFG_SOLUTION)))
     + section(img_panel(
         'panels/solution.jpg', '78% 35%', 'Experiencia',
-        '30 años integrando la <span class="hl-y">gestión hospitalaria</span>',
+        '34 años integrando la <span class="hl-y">gestión hospitalaria</span>',
         'Brindamos soluciones integrales para las IPS, en gestión asistencial, financiera y administrativa, con la historia clínica electrónica del paciente como eje central.',
         [('heart-pulse', 'Asistencial', 'Historia clínica electrónica', 'Agendas, enfermería, órdenes médicas y auditoría concurrente.'),
          ('receipt', 'Comercial y financiero', 'Facturación, cartera y contabilidad', 'Facturación y radicación electrónicas, tesorería y presupuesto.'),
@@ -964,51 +966,57 @@ add('soluciones.html', 'Soluciones | SIO',
       + otiles(OTHER) + '</div></section>'
     + cta_band('¿No sabes por dónde empezar?', 'Un asesor de SIO te ayuda a identificar la solución que mejor se ajusta a tu operación.'))
 
-# ---------- CASOS DE ÉXITO
-sectors = [
-    ('hospital', 'Hospitales, clínicas e IPS',
-     'Gestión asistencial, financiera y administrativa integrada en una sola solución, con la calidad y los RIPS bajo control.',
-     ['r1-02', 'r3-02', 'r3-03', 'r2-05', 'r2-01', 'r3-04'],
-     ['saman-solution', 'health-sq', 'saman-rips', 'saman-soft']),
-    ('users', 'Cajas de compensación y aseguradoras',
-     'Documentos electrónicos y procesos de información a gran escala, con trazabilidad y cumplimiento.',
-     ['r1-07', 'r1-06', 'r1-08', 'r3-08'],
-     ['saman-soft', 'gestion-de-informacion', 'gestion-documental']),
-    ('building', 'Sector público y servicios públicos',
-     'Gestión documental, gobierno de datos y soluciones comerciales para energía, agua y gas.',
-     ['r3-07', 'r3-09', 'r3-06'],
-     ['gestion-documental', 'servicios-publicos', 'gobierno-de-datos']),
-]
-def case_logos(keys):
-    names = dict(CLIENTS)
-    return ''.join(f'<img src="assets/img/clients/{k}.png" alt="{names[k]}" loading="lazy">' for k in keys)
+# ---------- TRABAJA CON NOSOTROS
+CV_MAIL = 'mercadeo@sio.com.co'   # PENDIENTE: confirmar el correo de talento humano / selección
+CV_HREF = f'mailto:{CV_MAIL}?subject=' + quote('Hoja de vida')
+
+# Vacantes publicadas. Para publicar una, agrégala a la lista y ejecuta `python build.py`:
+#   dict(titulo='Analista de soporte', area='Soporte', ciudad='Cali', modalidad='Tiempo completo',
+#        resumen='Qué hará la persona en el cargo.', requisitos=['Requisito 1', 'Requisito 2'])
+VACANTES = []
 
 
-sector_html = ''
-for icon, title, text, cl, sols in sectors:
-    chips = ''.join(f'<a class="chip" href="{s}.html">{SOL[s]["name"]}</a>' for s in sols)
-    sector_html += (
-        f'<div class="sector"><span class="case-ic">{ic(icon)}</span><div><h3>{title}</h3><p>{text}</p>'
-        f'<div class="case-logos">{case_logos(cl)}</div>'
-        f'<div class="chips">{chips}</div></div></div>')
+def _job(v, i):
+    href = f'mailto:{CV_MAIL}?subject=' + quote('Postulación: ' + v['titulo'])
+    tags = ''.join(f'<li>{t}</li>' for t in (v.get('area'), v.get('ciudad'), v.get('modalidad')) if t)
+    reqs = checks(v['requisitos']) if v.get('requisitos') else ''
+    resumen = f'<p>{v["resumen"]}</p>' if v.get('resumen') else ''
+    return (f'<article class="job" data-reveal style="--d:{i * .06:.2f}s">'
+            f'<div class="job-top"><span class="f-ico">{ic("briefcase")}</span><ul class="job-tags">{tags}</ul></div>'
+            f'<h3>{v["titulo"]}</h3>{resumen}{reqs}'
+            f'<div class="job-foot">{btn("Postularme", href, "dark", size="")}</div></article>')
 
-add('casos-de-exito.html', 'Casos de éxito | SIO',
-    'Más de tres décadas implementando soluciones para hospitales, clínicas, cajas de compensación y entidades del sector público en Colombia.',
-    'casos',
+
+JOBS = ('<div class="jobs-grid">' + ''.join(_job(v, i) for i, v in enumerate(VACANTES)) + '</div>') if VACANTES else (
+    '<div class="jobs-empty" data-reveal>'
+    f'<span class="f-ico">{ic("briefcase")}</span>'
+    '<div><h3>Por ahora no tenemos vacantes publicadas</h3>'
+    '<p>Déjanos tu hoja de vida y te tendremos en cuenta para las próximas oportunidades.</p></div>'
+    + btn('Enviar hoja de vida', CV_HREF, 'dark') + '</div>')
+
+add('trabaja-con-nosotros.html', 'Trabaja con nosotros | SIO',
+    'Conoce las vacantes disponibles en Soluciones Integrales de Oficina SIO S.A.S y envía tu hoja de vida. Más de 34 años construyendo confianza en TI.',
+    'trabaja',
     hero(dict(
-        crumbs=[('Inicio', 'index.html'), ('Casos de éxito', '')],
-        pill='Casos de éxito',
-        h1='Experiencia comprobada <span class="hl-y">en cada sector</span>',
-        lead='Más de tres décadas implementando soluciones para instituciones de salud, cajas de compensación y entidades del sector público.',
-        ctas=[btn('Hablar con un asesor', 'contacto.html', 'yellow')]))
+        crumbs=[('Inicio', 'index.html'), ('Trabaja con nosotros', '')],
+        pill='Trabaja con nosotros',
+        h1='Haz parte del equipo que <span class="hl-y">genera valor con la información</span>',
+        lead='En SIO llevamos más de 34 años desarrollando, implementando y operando soluciones de tecnología. Conoce nuestras vacantes y envíanos tu hoja de vida.',
+        ctas=[btn('Ver vacantes', '#vacantes', 'yellow', arrow=False), btn('Enviar hoja de vida', CV_HREF, 'light')]))
+    + '<section class="section" id="vacantes"><div class="container">'
+    + sec_head('Vacantes', 'Vacantes disponibles', 'Conoce las oportunidades abiertas y postúlate enviando tu hoja de vida.')
+    + JOBS + '</div></section>'
     + section(
-        sec_head('Sectores', 'Soluciones aplicadas a la realidad de cada institución')
-        + f'<div class="feat-grid c2" data-reveal style="grid-template-columns:1fr">{sector_html}</div>')
-    + section(
-        sec_head('Clientes', 'Instituciones que confían en SIO',
-                 'Hospitales, clínicas, cajas de compensación y entidades públicas que operan con nuestras soluciones.')
-        + f'<div class="client-grid" data-reveal>{logos([k for k, _ in CLIENTS])}</div>', 'alt')
-    + cta_band('Que tu institución sea el próximo caso de éxito', 'Cuéntanos tu reto y construimos juntos la solución.'))
+        sec_head('Por qué SIO', 'Un lugar para crecer profesionalmente',
+                 'Prestamos servicios y soluciones de calidad apoyando el desarrollo de nuestros colaboradores.')
+        + feats([
+            ('graduation', 'Formación continua', 'Mantenemos a nuestro equipo actualizado mediante la capacitación permanente.'),
+            ('users', 'Buen clima laboral', 'Construimos un clima organizacional que satisface las necesidades de nuestros colaboradores.'),
+            ('trending-up', 'Desarrollo profesional', 'Apoyamos el desarrollo de nuestros colaboradores como parte de nuestra política de calidad.'),
+            ('award', 'Procesos de calidad', 'Trabajarás en una organización evaluada bajo CMMI-SVC nivel 3 y con seguridad de la información ISO/IEC 27001.'),
+        ], cols=4), 'alt')
+    + cta_band('¿No encuentras la vacante ideal?', 'Envíanos tu hoja de vida y te tendremos en cuenta para las próximas oportunidades.',
+               primary=('Enviar hoja de vida', CV_HREF), secondary=None))
 
 # ---------- NOSOTROS
 IHCE_SRC = 'assets/img/cert/ihce-reconocimiento.webp'
@@ -1045,12 +1053,12 @@ TECH = ''.join([
 ])
 
 add('nosotros.html', 'Nosotros | SIO',
-    'Soluciones Integrales de Oficina S.A.S: más de 30 años de experiencia en soluciones TIC, con procesos evaluados bajo CMMI nivel 3, ISO/IEC 27001 y respaldo de Oracle.',
+    'Soluciones Integrales de Oficina S.A.S: más de 34 años de experiencia en soluciones TIC, con procesos evaluados bajo CMMI nivel 3, ISO/IEC 27001 y respaldo de Oracle.',
     'nosotros',
     hero(dict(
         crumbs=[('Inicio', 'index.html'), ('Nosotros', '')],
         pill='Nosotros',
-        h1='Más de 30 años construyendo <span class="hl-y">confianza</span> en TI',
+        h1='Más de 34 años construyendo <span class="hl-y">confianza</span> en TI',
         lead='Soluciones Integrales de Oficina S.A.S es una organización colombiana, fundada en 1992, que brinda soluciones de valor agregado soportadas en las tecnologías de la información y las comunicaciones.',
         ctas=[btn('Hablar con un asesor', 'contacto.html', 'yellow')]))
     + section(split(
@@ -1059,7 +1067,7 @@ add('nosotros.html', 'Nosotros | SIO',
          'También ofrecemos servicios de outsourcing en captura, procesamiento y administración de la información, basados en las mejores prácticas.'],
         ['Fundada en 1992 y con sede en Cali, Colombia', 'Evaluada bajo el modelo CMMI nivel III y IT Mark',
          'Procesos caracterizados y descritos en estándares, procedimientos, herramientas y métodos'],
-        '<div class="stats-card" style="grid-template-columns:1fr 1fr"><div class="stat"><div class="stat-n"><span data-count="30">0</span><i>+</i></div><b>años de experiencia</b></div>'
+        '<div class="stats-card" style="grid-template-columns:1fr 1fr"><div class="stat"><div class="stat-n"><span data-count="34">0</span><i>+</i></div><b>años de experiencia</b></div>'
         '<div class="stat"><div class="stat-n"><span data-count="1992">0</span></div><b>año de fundación</b></div>'
         '<div class="stat"><div class="stat-n"><i class="pre">Nivel</i><span data-count="3">0</span></div><b>CMMI-SVC</b></div>'
         '<div class="stat"><div class="stat-n"><span data-count="10">0</span><i>años</i></div><b>de conservación documental</b></div></div>'))

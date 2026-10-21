@@ -16,8 +16,8 @@ assets/img/              ← logos (SVG en alta), clientes, banners (hero/), fon
 |---|---|
 | Inicio | `index.html` |
 | Soluciones | `soluciones.html`, `saman-solution`, `saman-soft`, `health-sq`, `saman-rips`, `gestion-documental`, `gestion-de-informacion`, `suministros-tecnologicos`, `servicios-publicos`, `gobierno-de-datos`, `centro-de-negocios` |
-| Casos de éxito | `casos-de-exito.html` |
 | Nosotros | `nosotros.html` |
+| Trabaja con nosotros | `trabaja-con-nosotros.html` (vacantes: lista `VACANTES` en `build.py`) |
 | Soporte | `soporte.html` (canal por software; el ticket es externo: `https://tbg.sio.com.co/login`) |
 | Contacto | `contacto.html` |
 
@@ -42,7 +42,7 @@ assets/img/              ← logos (SVG en alta), clientes, banners (hero/), fon
 Tipografía: el sitio actual usa Montserrat. La propuesta usa **Plus Jakarta Sans** (display) + **Inter** (texto) + **JetBrains Mono** (pills) para lograr el look de la plantilla de referencia. Se cambia en una línea (`--font-display`).
 
 ## Estructura / jerarquía
-Inicio → Soluciones (mega-menú) → Casos de éxito → Nosotros → **Soporte** (página interna con enlace al ticket) → Contacto.
+Inicio → Soluciones (mega-menú) → Nosotros → Trabaja con nosotros → **Soporte** (página interna con enlace al ticket) → Contacto.
 Peso visual: SAMAN SOLUTION (panel oscuro a pantalla completa + hub interactivo) > Saman Soft / Health SQ / Saman RIPS (bento) > Otras soluciones (lista compacta).
 
 ## Material del cliente (carpeta Drive "VENTANAS")
@@ -55,7 +55,7 @@ Peso visual: SAMAN SOLUTION (panel oscuro a pantalla completa + hub interactivo)
 ## Pendientes de validar con SIO
 - WhatsApp: `+57 318 506 7331` (dato del sitio anterior; el doc nuevo solo trae el teléfono 300 677 0106).
 - SAMAN HC / HCM / FCA: confirmar nombre completo y si tendrán página propia.
-- Casos de éxito: hoy son tarjetas por sector con clientes reales. Faltan resultados, métricas y testimonios aprobados por cada cliente.
+- Trabaja con nosotros: no hay vacantes cargadas (muestra "Por ahora no tenemos vacantes") y el correo de hojas de vida es `mercadeo@sio.com.co`; confirmar el de talento humano.
 - Mockup del producto: es ilustrativo (datos de ejemplo). Reemplazar por capturas reales de SAMAN SOLUTION.
 - Logos de clientes: recortados de una imagen de 1024 px; pedir originales vectoriales/alta resolución.
 - Formulario: solo maqueta (sin backend).
