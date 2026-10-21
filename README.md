@@ -28,6 +28,8 @@ assets/img/              ← logos (SVG en alta), clientes, banners (hero/), fon
 
 > El menú, el footer y el sprite se editan una sola vez en `src/partials/` y se propagan a todas las páginas.
 
+> **URLs limpias:** los enlaces internos se generan sin `.html` (`/saman-rips`, `/soporte`; la home es `./`). GitHub Pages y `http-server` sirven `nombre.html` en `/nombre` por sí solos. Si el sitio se mueve a Apache/Nginx hace falta una regla de reescritura (p. ej. `.htaccess` con `RewriteCond %{REQUEST_FILENAME}.html -f`).
+
 ## Marca (extraída del sitio actual)
 | Token | Valor | Origen |
 |---|---|---|

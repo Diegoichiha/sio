@@ -1269,7 +1269,15 @@ def render(name, page, sprite, topbar, header, footer):
     html = SHELL.format(
         title=page['title'], description=page['description'], body_class='page-' + name.replace('.html', ''),
         sprite=sprite, topbar=topbar, header=mark_nav(header, page['nav']), content=page['content'], footer=footer)
-    return html
+    return clean_urls(html)
+
+
+def clean_urls(html):
+    """Enlaces internos sin extensión: saman-rips.html -> saman-rips ; index.html -> ./ (conserva #anclas)."""
+    def fix(m):
+        name, frag = m.group(1), m.group(2)
+        return f'href="./{frag}"' if name == 'index' else f'href="{name}{frag}"'
+    return re.sub(r'href="([A-Za-z0-9-]+)\.html((?:#[^"]*)?)"', fix, html)
 
 
 def main():
