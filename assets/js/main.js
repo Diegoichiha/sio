@@ -342,6 +342,99 @@
     });
   });
 
+  /* ---------- Visor de imágenes: cualquier [data-lightbox="ruta"] se amplía ---------- */
+  let lb;
+  const closeLb = () => {
+    if (!lb) return;
+    lb.classList.remove('is-open');
+    document.body.classList.remove('lb-lock');
+    lb._opener?.focus?.({ preventScroll: true });
+  };
+  const openLb = (src, caption, opener) => {
+    if (!lb) {
+      lb = document.createElement('div');
+      lb.className = 'lb';
+      lb.setAttribute('role', 'dialog');
+      lb.setAttribute('aria-modal', 'true');
+      lb.setAttribute('aria-label', 'Vista ampliada');
+      lb.innerHTML = '<button class="lb-close" type="button" aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button>'
+        + '<figure><img alt=""><figcaption></figcaption></figure>';
+      document.body.appendChild(lb);
+      lb.addEventListener('click', e => { if (!e.target.closest('figure') || e.target.closest('.lb-close')) closeLb(); });
+    }
+    const img = $('img', lb);
+    img.src = src;
+    img.alt = caption || '';
+    $('figcaption', lb).textContent = caption || '';
+    lb._opener = opener;
+    document.body.classList.add('lb-lock');
+    requestAnimationFrame(() => lb.classList.add('is-open'));
+    $('.lb-close', lb).focus({ preventScroll: true });
+  };
+  addEventListener('keydown', e => { if (e.key === 'Escape' && lb?.classList.contains('is-open')) closeLb(); });
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-lightbox]');
+    if (!t) return;
+    e.preventDefault();
+    openLb(t.dataset.lightbox, t.dataset.caption, t);
+  });
+
+  /* ---------- Recorrido por la plataforma: pestañas + pantallazo (avanza solo hasta que el usuario interactúa) ---------- */
+  const tour = $('[data-tour]');
+  if (tour) {
+    const tabs = $$('.tour-tab', tour);
+    const shots = $$('.tour-shots img', tour);
+    const urlEl = $('.tour-url', tour);
+    const stage = $('.tour-shots', tour);
+    let cur = 0;
+    let stopped = reduceMotion;          // sin animación automática si el usuario la desactivó
+    let visible = false;
+
+    const syncAuto = () => {
+      if (!stopped && visible) tour.dataset.auto = 'on';
+      else tour.removeAttribute('data-auto');
+    };
+    const show = (i) => {
+      cur = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, k) => {
+        const on = k === cur;
+        t.classList.toggle('is-on', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+      });
+      shots.forEach((s, k) => s.classList.toggle('is-on', k === cur));
+      if (urlEl) urlEl.textContent = tabs[cur].dataset.label || '';
+    };
+    const userPick = (i) => { stopped = true; syncAuto(); show(i); };
+
+    tabs.forEach((t, k) => {
+      t.addEventListener('click', () => userPick(k));
+      t.addEventListener('keydown', e => {
+        const map = { ArrowDown: cur + 1, ArrowRight: cur + 1, ArrowUp: cur - 1, ArrowLeft: cur - 1, Home: 0, End: tabs.length - 1 };
+        if (!(e.key in map)) return;
+        e.preventDefault();
+        userPick(map[e.key]);
+        tabs[cur].focus();
+      });
+    });
+    tour.addEventListener('animationend', e => { if (e.animationName === 'tour-fill' && !stopped) show(cur + 1); });
+    tour.addEventListener('mouseenter', () => tour.setAttribute('data-paused', ''));
+    tour.addEventListener('mouseleave', () => tour.removeAttribute('data-paused'));
+    tour.addEventListener('focusin', () => tour.setAttribute('data-paused', ''));
+    tour.addEventListener('focusout', () => tour.removeAttribute('data-paused'));
+
+    const zoom = () => { stopped = true; syncAuto(); openLb(shots[cur].currentSrc || shots[cur].src, tabs[cur].dataset.label, stage); };
+    stage.addEventListener('click', zoom);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        visible = entries.some(en => en.isIntersecting);
+        syncAuto();
+      }, { threshold: 0.4 }).observe(tour);
+    }
+    show(0);
+  }
+
   /* ---------- Formulario (maqueta: sin backend) ---------- */
   const form = $('[data-form]');
   if (form) {

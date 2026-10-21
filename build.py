@@ -44,6 +44,12 @@ EXTRA_ICONS = '''
     <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
     <symbol id="i-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="m15 3 6 0 0 6"/><path d="m9 21-6 0 0-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></symbol>
+    <symbol id="i-log-in" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol>
 '''
 
 # ------------------------------------------------------------------ helpers de marcado
@@ -170,6 +176,57 @@ def img_panel(img, pos, pill, h2, p, items, cta=None, tag=''):
     return (f'<div class="img-panel" data-reveal><img class="ip-bg" src="assets/img/{img}" alt="" loading="lazy" style="--pos:{pos}">'
             f'<div class="ip-copy"><span class="pill pill-dark">{pill}</span><h2>{h2}</h2><p>{p}</p>'
             f'<div class="ip-steps">{steps}</div>{c}</div>{t}</div>')
+
+
+def real_visual(img, alt, floats=''):
+    """Monitor con un pantallazo real (recorte de la plataforma) y ventanas flotantes."""
+    return (floats + '<div class="device flat"><div class="device-bezel"><span class="device-cam"></span>'
+            f'<div class="screen real"><img src="assets/img/shots/{img}" alt="{alt}"></div></div></div>')
+
+
+def tour(label, steps, caption):
+    """Recorrido interactivo por pantallazos reales.
+    steps: (icono, título, texto, imagen, zoom, origen_del_zoom)"""
+    tabs, imgs = [], []
+    for i, (icon, title, text, img, z, o) in enumerate(steps):
+        first = i == 0
+        on = ' is-on' if first else ''
+        sel = 'true' if first else 'false'
+        idx = '' if first else ' tabindex="-1"'
+        tabs.append(
+            f'<button type="button" class="tour-tab{on}" role="tab" aria-selected="{sel}"{idx} data-label="{label} · {title}">'
+            f'<span class="f-ico">{ic(icon)}</span>'
+            f'<span class="tt-main"><b>{title}</b><span class="tt-body"><span><span class="tt-text">{text}</span></span></span></span></button>')
+        imgs.append(
+            f'<img class="{"is-on" if first else ""}" src="assets/img/shots/{img}" alt="{label}: {title}" '
+            f'style="--z:{z};--o:{o}" width="1600" height="796" loading="lazy">')
+    return ('<div class="tour" data-tour>'
+            f'<div class="tour-tabs" role="tablist" aria-label="Recorrido por la plataforma" data-reveal>{"".join(tabs)}</div>'
+            '<figure class="tour-stage" data-reveal style="--d:.1s"><div class="tour-frame">'
+            f'<div class="tour-bar"><i></i><i></i><i></i><span class="tour-url">{label} · {steps[0][1]}</span></div>'
+            f'<div class="tour-shots">{"".join(imgs)}'
+            f'<button type="button" class="tour-zoom" aria-label="Ampliar el pantallazo">{ic("expand")}<span>Ampliar</span></button></div></div>'
+            f'<figcaption class="tour-cap">{caption}</figcaption></figure></div>')
+
+
+def support_strip(name, kind='tbg', detail=''):
+    """Franja de soporte para cada software. kind: 'tbg' (ticket electrónico) o 'soon' (canal en preparación)."""
+    if kind == 'tbg':
+        h3 = f'Soporte para {name}'
+        text = (f'{detail}Registra tus solicitudes en The Bug Genie, el ticket electrónico de SIO. '
+                'Te atendemos de 8:00 a. m. a 12:00 m. y de 2:00 a 5:30 p. m.')
+        actions = (btn('Ir al ticket electrónico', SUPPORT, 'dark', ext=True, size='')
+                   + btn('Soporte por solución', 'soporte.html', 'ghost', arrow=False, size=''))
+    else:
+        h3 = f'Soporte para {name}'
+        text = (f'Estamos habilitando el aplicativo de soporte para los clientes de {name}. '
+                'Mientras tanto, nuestro equipo te atiende desde la página de contacto.')
+        actions = (btn('Contactar a SIO', 'contacto.html', 'dark', size='')
+                   + btn('Soporte por solución', 'soporte.html', 'ghost', arrow=False, size=''))
+    return ('<section class="support"><div class="container"><div class="support-card" data-reveal>'
+            f'<span class="support-ic">{ic("life-buoy")}</span>'
+            f'<div class="support-copy"><h3>{h3}</h3><p>{text}</p></div>'
+            f'<div class="support-actions">{actions}</div></div></div></section>')
 
 
 # ------------------------------------------------------------------ catálogo de soluciones
@@ -527,7 +584,7 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
     'soluciones',
     hero(dict(
         crumbs=crumbs_sol('SAMAN SOLUTION'), img='hero/solution.jpg', pos='50% 35%',
-        logo='logo-saman-solution.png', logo_alt='SAMAN SOLUTION Gestión hospitalaria',
+        logo='logo-saman-solution.svg', logo_alt='SAMAN SOLUTION Gestión hospitalaria',
         pill='Gestión hospitalaria',
         h1='Toda la operación de tu institución, <span class="hl-y">en una sola solución</span>',
         lead='Solución tecnológica integral para la gestión hospitalaria que apoya las actividades administrativas y financieras derivadas de los procesos de atención en salud, con la historia clínica electrónica del paciente como eje central.',
@@ -578,6 +635,7 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
           'Se integra con Saman Soft para documentos electrónicos, Health SQ para calidad en salud y Saman RIPS.'),
          ('award', 'Respaldo', 'Respaldo certificado',
           'Procesos evaluados bajo CMMI-SVC nivel 3, seguridad de la información ISO/IEC 27001 y respaldo tecnológico de Oracle.')]))
+    + support_strip('SAMAN SOLUTION', detail='Los clientes de SAMAN HC, SAMAN HCM y SAMAN FCA cuentan con soporte funcional y técnico. ')
     + related(['saman-soft', 'health-sq', 'saman-rips'], 'Se integra con', 'Soluciones que potencian SAMAN SOLUTION')
     + cta_band('Conoce SAMAN SOLUTION en acción', 'Solicita una demostración sin costo y descubre cómo unificar la operación de tu institución.'))
 
@@ -613,6 +671,7 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
             ('layers', 'Plantillas a tu medida', 'Plantillas prediseñadas o personalizadas con la imagen de tu institución.'),
             ('life-buoy', 'Soporte funcional y técnico', 'Acompañamiento de nuestro equipo para resolver tus dudas y novedades.'),
         ], cols=4), 'alt')
+    + support_strip('Saman Soft', 'soon')
     + related(['saman-solution', 'health-sq', 'saman-rips'], 'Se integra con', 'Más soluciones para tu institución')
     + cta_band('Pon al día tu facturación y nómina electrónica', 'Cuéntanos tu operación y te mostramos cómo funciona Saman Soft.'))
 
@@ -644,6 +703,7 @@ add('health-sq.html', 'Health SQ | Calidad en salud · SIO',
             ('shield-check', 'Seguridad del paciente', 'Captura de eventos adversos con análisis mediante el protocolo de Londres y gestión de barreras y fallas latentes.', None, '#0F4C7A'),
             ('bar-chart', 'Indicadores', 'Diseño de fichas técnicas para medir la eficiencia y la calidad de los procesos organizacionales.', None, '#F59E1B'),
         ], cols=4), 'alt')
+    + support_strip('Health SQ')
     + related(['saman-solution', 'saman-rips', 'saman-soft'], 'Se integra con', 'Más soluciones para tu institución')
     + cta_band('Lleva la calidad de tu institución al siguiente nivel', 'Agenda una demostración de Health SQ con un asesor de SIO.'))
 
@@ -658,7 +718,11 @@ add('saman-rips.html', 'Saman RIPS | RIPS automáticos · Resolución 2275 · SI
         h1='RIPS automáticos, seguros y <span class="hl-y">sin errores</span>',
         lead='¿Confundido con los RIPS? Te lo ponemos fácil. Saman RIPS tiene la solución.',
         ctas=[btn('Solicita una demo gratis', 'contacto.html', 'yellow'), btn('Asesoría gratuita por WhatsApp', WA, 'light', ext=True)],
-        visual=mock_visual(CFG_RIPS)))
+        visual=real_visual(
+            'rips-hero.jpg', 'Saman RIPS: documentos y opciones de exportación en ZIP, RIPS y CUV',
+            _f_dark('sfa', 0, _DUR[5], _DEL[5], 'Historial', '', 'Trazabilidad de envíos', 'Fecha, hora y resultado')
+            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'check', 'Resolución 2275', 'Estructura validada', ok=True)
+            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'download', 'ZIP · RIPS · CUV', 'Exporta con clic secundario'))))
     + section(img_panel(
         'panels/rips.jpg', '75% 50%', 'Cómo funciona',
         'Consulta, gestiona y controla tus <span class="hl-y">RIPS</span>',
@@ -667,6 +731,26 @@ add('saman-rips.html', 'Saman RIPS | RIPS automáticos · Resolución 2275 · SI
          ('clipboard-check', 'Normativo', 'Resolución 2275', 'Estructura y cumplimiento conforme a la norma vigente.'),
          ('cloud', 'En la nube', 'Información segura', 'Consulta, gestión y control disponibles cuando los necesites.')],
         cta=btn('Solicita una demo gratis', 'contacto.html', 'yellow'), tag='Saman RIPS'), 'tight')
+    + section(
+        sec_head('Conoce la plataforma', 'Así se ve <span class="hl">Saman RIPS</span> por dentro',
+                 'Recorre las pantallas reales de la plataforma: elige una opción y mira cómo funciona.')
+        + tour('Saman RIPS', [
+            ('file-text', 'Documentos',
+             'Consulta todos tus documentos en una sola tabla: tipo, número, código único de validación (CUV), fecha y estado. Filtra por tipo, estado y fechas, o busca un documento.',
+             'rips-documentos.jpg', 1.15, '100% 0%'),
+            ('pointer', 'Acciones con clic secundario',
+             'Haz clic derecho sobre un documento para modificar sus RIPS, enviarlo de nuevo, ver su histórico, exportarlo o eliminarlo.',
+             'rips-acciones.jpg', 1.5, '100% 18%'),
+            ('download', 'Exporta lo que necesitas',
+             'Descarga el paquete en ZIP, el archivo RIPS o el CUV de cada documento, directamente desde la plataforma.',
+             'rips-exportar.jpg', 1.5, '100% 24%'),
+            ('clock', 'Historial de envíos',
+             'Revisa cada envío con su fecha, hora y resultado, y consulta las reglas de validación aplicadas.',
+             'rips-historial.jpg', 1.0, '50% 40%'),
+            ('users', 'Usuarios y roles',
+             'Administra quién accede a la plataforma: busca, agrega y elimina usuarios según su rol.',
+             'rips-usuarios.jpg', 1.15, '100% 0%'),
+        ], 'Pantallas reales de Saman RIPS. Haz clic en la imagen para ampliarla.'), 'alt')
     + timeline('Implementación', 'Listo para usar, paso a paso',
                'Un proceso claro para que tu institución genere sus RIPS sin complicaciones.',
                [('search', 'Diagnóstico inicial', 'Revisamos cómo gestionas hoy los RIPS en tu institución.'),
@@ -675,6 +759,7 @@ add('saman-rips.html', 'Saman RIPS | RIPS automáticos · Resolución 2275 · SI
                 ('clipboard-check', 'Pruebas con datos reales', 'Validamos la generación de RIPS con tu información.'),
                 ('check', 'Sistema listo para usar', 'Tu operación queda automatizada y en marcha.')],
                cta=btn('Solicitar demo gratis', 'contacto.html', 'dark'))
+    + support_strip('Saman RIPS')
     + related(['saman-solution', 'saman-soft', 'health-sq'], 'Se integra con', 'Más soluciones para tu institución')
     + cta_band('Deja de preocuparte por los RIPS', 'Escríbenos por WhatsApp para una asesoría gratuita o solicita una demostración.'))
 
@@ -790,7 +875,7 @@ add('gobierno-de-datos.html', 'Gobierno de datos | Oracle · SIO',
     'soluciones',
     hero(dict(
         crumbs=crumbs_sol('Gobierno de datos'), img='hero/data.jpg', pos='50% 50%',
-        logo='logo-oracle.png', logo_alt='Oracle',
+        logo='cert/oracle-partner.png', logo_alt='Oracle Partner',
         pill='Oracle Partner Network',
         h1='Tus datos, <span class="hl-y">disponibles, seguros y optimizados</span>',
         lead='Servicios de outsourcing especializados en captura, procesamiento y administración de información, basados en las mejores prácticas.',
@@ -815,7 +900,7 @@ add('gobierno-de-datos.html', 'Gobierno de datos | Oracle · SIO',
         'Respaldo', 'Con el respaldo tecnológico de Oracle',
         ['Nuestros productos cuentan con el respaldo tecnológico de ORACLE, líder mundial en motores de bases de datos robustas e infraestructura tecnológica en la nube. SIO cuenta con la membresía de Oracle Partner Network.'],
         ['Capacitación según las necesidades de tu equipo'],
-        '<div class="shot pad" style="display:grid;place-items:center;min-height:220px"><img src="assets/img/logo-oracle.png" alt="Oracle" style="max-width:300px"></div>'), 'alt')
+        '<div class="shot pad" style="display:grid;place-items:center;min-height:220px"><img src="assets/img/cert/oracle-partner.png" alt="Oracle Partner Network" style="max-width:320px"></div>'), 'alt')
     + related(['servicios-publicos', 'gestion-de-informacion', 'saman-solution'])
     + cta_band('Pon tus bases de datos en manos expertas', 'Cuéntanos tu ambiente actual y te proponemos un plan de administración.'))
 
@@ -864,7 +949,7 @@ add('soluciones.html', 'Soluciones | SIO',
         f'''<a class="sol-feature" href="saman-solution.html" data-reveal>
           <img class="bg" src="assets/img/hero/solution.jpg" alt="" loading="lazy">
           <div class="sol-feature-copy">
-            <span class="hero-logo"><img src="assets/img/logo-saman-solution.png" alt="SAMAN SOLUTION"></span>
+            <span class="hero-logo"><img src="assets/img/logo-saman-solution.svg" alt="SAMAN SOLUTION"></span>
             <h2>Toda la operación de tu institución, en una sola solución</h2>
             <p>Gestión asistencial, comercial, financiera, administrativa y de talento humano con la historia clínica electrónica como eje central.</p>
             <span class="link-arrow" style="color:var(--yellow)">Conocer SAMAN SOLUTION {ic("arrow-right")}</span>
@@ -926,6 +1011,39 @@ add('casos-de-exito.html', 'Casos de éxito | SIO',
     + cta_band('Que tu institución sea el próximo caso de éxito', 'Cuéntanos tu reto y construimos juntos la solución.'))
 
 # ---------- NOSOTROS
+IHCE_SRC = 'assets/img/cert/ihce-reconocimiento.webp'
+IHCE_CAP = 'Reconocimiento del Ministerio de Salud y Protección Social (IHCE) a Soluciones Integrales de Oficina SIO S.A.S. · 17 de abril de 2026'
+
+
+def _tech_card(title, logos, text, extra=''):
+    return (f'<article class="tech-card" data-reveal><h3>{title}</h3><span class="tech-rule" aria-hidden="true"></span>'
+            f'<div class="tech-logos">{logos}</div><p>{text}</p>{extra}</article>')
+
+
+TECH = ''.join([
+    _tech_card(
+        'Integración total sin terceros',
+        '<img class="tl-sio" src="assets/img/logo-sio.svg" alt="SIO" loading="lazy">'
+        '<img class="tl-saman" src="assets/img/logo-saman-solution.svg" alt="SAMAN SOLUTION Gestión hospitalaria" loading="lazy">',
+        'SIO integra la operación asistencial, comercial, financiera, administrativa y de talento humano en SAMAN SOLUTION, con un único proveedor para toda la institución.'),
+    _tech_card(
+        'Respaldo y escalabilidad global',
+        '<img class="tl-oci" src="assets/img/cert/oracle-cloud-infrastructure.png" alt="Oracle Cloud Infrastructure" loading="lazy">'
+        '<img class="tl-partner" src="assets/img/cert/oracle-partner.png" alt="Oracle Partner" loading="lazy">',
+        'Nuestros productos cuentan con el respaldo de Oracle, líder mundial en bases de datos e infraestructura en la nube, y SIO hace parte de Oracle Partner Network.'),
+    _tech_card(
+        'Cumplimiento normativo automatizado',
+        '<img class="tl-dian" src="assets/img/cert/dian.png" alt="DIAN, Dirección de Impuestos y Aduanas Nacionales" loading="lazy">'
+        f'<button type="button" class="tech-doc" data-lightbox="{IHCE_SRC}" data-caption="{IHCE_CAP}" aria-label="Ampliar el reconocimiento del Ministerio de Salud (IHCE)">'
+        f'<img src="{IHCE_SRC}" alt="Reconocimiento del Ministerio de Salud y Protección Social (IHCE) a SIO" loading="lazy"></button>',
+        'Proveedor tecnológico autorizado por la DIAN y reconocido por el Ministerio de Salud por su aporte a la validación técnica del Resumen Digital de Atención (RDA) en el proyecto de Interoperabilidad de la Historia Clínica Electrónica (IHCE).',
+        f'<button type="button" class="link-arrow tech-link" data-lightbox="{IHCE_SRC}" data-caption="{IHCE_CAP}">Ver reconocimiento {ic("expand")}</button>'),
+    _tech_card(
+        'Seguridad de clase mundial',
+        '<img class="tl-iso" src="assets/img/cert/iso-27001-bureau-veritas.webp" alt="ISO 27001 Bureau Veritas Certification" loading="lazy">',
+        'Sistema de gestión de seguridad de la información certificado bajo la norma ISO/IEC 27001 por Bureau Veritas.'),
+])
+
 add('nosotros.html', 'Nosotros | SIO',
     'Soluciones Integrales de Oficina S.A.S: más de 30 años de experiencia en soluciones TIC, con procesos evaluados bajo CMMI nivel 3, ISO/IEC 27001 y respaldo de Oracle.',
     'nosotros',
@@ -961,6 +1079,10 @@ add('nosotros.html', 'Nosotros | SIO',
             ('graduation', 'Formación continua', 'Mantener la organización actualizada mediante la capacitación permanente.'),
             ('wallet', 'Viabilidad financiera', 'Lograr la viabilidad financiera de la organización.'),
         ], cols=4))
+    + section(
+        sec_head('Respaldo', 'Tecnología que <span class="hl">respalda</span> tu operación',
+                 'Integración, infraestructura, cumplimiento y seguridad al nivel que exige el sector salud.')
+        + f'<div class="tech-grid">{TECH}</div>', 'alt')
     + '''<section class="about" style="margin-block:clamp(12px,2vw,28px)"><div class="panel-dark"><div class="panel-glow alt" aria-hidden="true"></div>
         <div class="container about-grid">
           <div class="about-copy">
@@ -975,6 +1097,77 @@ add('nosotros.html', 'Nosotros | SIO',
           <div data-reveal style="--d:.1s"><div class="cert-shot"><img src="assets/img/certificaciones.svg" alt="Certificaciones de SIO: CMMI, ISO/IEC 27001 e IT Mark, Oracle Partner Network"></div></div>
         </div></div></section>'''
     + cta_band('Trabajemos juntos', 'Conversemos sobre los retos de tu organización y cómo SIO puede ayudarte.'))
+
+# ---------- SOPORTE
+HORARIO = '8:00 a. m. – 12:00 m. y 2:00 – 5:30 p. m.'
+
+# (monograma, nombre, etiqueta, color, con ticket electrónico)
+SOPORTE_SW = [
+    ('RIPS', 'Saman RIPS', 'RIPS · Resolución 2275', '#17998A', True),
+    ('SQ', 'Health SQ', 'Calidad en salud · SOGC', '#0F4C7A', True),
+    ('HC', 'SAMAN HC', 'Familia SAMAN', '#7B3A8F', True),
+    ('HCM', 'SAMAN HCM', 'Familia SAMAN', '#EB5757', True),
+    ('FCA', 'SAMAN FCA', 'Familia SAMAN', '#F59E1B', True),
+    ('SOFT', 'Saman Soft', 'Documentos electrónicos · DIAN', '#63C3CC', False),
+]
+
+
+def _sp_card(mono, name, tag, color, ready, delay):
+    if ready:
+        status = '<span class="sp-status"><i></i>Disponible</span>'
+        text = f'Soporte funcional y técnico para los clientes de {name}. Registra tu solicitud en el ticket electrónico de SIO.'
+        foot = btn('Abrir ticket', SUPPORT, 'dark', ext=True, size='')
+        cls = ''
+    else:
+        status = '<span class="sp-status is-soon"><i></i>Próximamente</span>'
+        text = f'Estamos habilitando el aplicativo de soporte para los clientes de {name}. Mientras tanto, contáctanos y te atendemos.'
+        foot = btn('Contactar a SIO', 'contacto.html', 'ghost', size='')
+        cls = ' is-pending'
+    return (f'<article class="sp-card{cls}" style="--c:{color};--d:{delay:.2f}s" data-reveal>'
+            f'<div class="sp-top"><span class="sp-mono">{mono}</span>{status}</div>'
+            f'<span class="sp-tag">{tag}</span><h3>{name}</h3><p>{text}</p><div class="sp-foot">{foot}</div></article>')
+
+
+PORTAL = ('<div class="sp-portal" data-reveal style="--d:.1s">'
+          f'<div class="spp-head"><span class="f-ico">{ic("ticket")}</span><div><span class="mono">Ticket electrónico</span><b>The Bug Genie</b></div></div>'
+          '<p>Registra tus solicitudes de soporte funcional y técnico para estas soluciones:</p>'
+          '<ul class="spp-chips"><li>Saman RIPS</li><li>Health SQ</li><li>SAMAN HC</li><li>SAMAN HCM</li><li>SAMAN FCA</li></ul>'
+          f'<div class="spp-hours">{ic("clock")}<span>{HORARIO}</span></div>'
+          + btn('Ingresar al ticket electrónico', SUPPORT, 'yellow', ext=True) + '</div>')
+
+add('soporte.html', 'Soporte | SIO',
+    'Soporte funcional y técnico para los clientes de SIO: ticket electrónico The Bug Genie para Saman RIPS, Health SQ, SAMAN HC, SAMAN HCM y SAMAN FCA. Saman Soft, próximamente.',
+    'soporte',
+    hero(dict(
+        crumbs=[('Inicio', 'index.html'), ('Soporte', '')],
+        pill='Soporte',
+        h1='Soporte cercano para <span class="hl-y">cada solución</span>',
+        lead='Los clientes de SIO cuentan con un ticket electrónico para registrar sus solicitudes de soporte funcional y técnico. Encuentra aquí el canal de cada software.',
+        ctas=[btn('Ir al ticket electrónico', SUPPORT, 'yellow', ext=True), btn('Ver soporte por solución', '#software', 'light', arrow=False)],
+        visual=PORTAL))
+    + '<section class="section" id="software"><div class="container">'
+    + sec_head('Soporte por solución', 'El canal de soporte de cada software',
+               'Elige tu solución y abre una solicitud. Todas las soluciones con ticket electrónico comparten el mismo portal.')
+    + '<div class="sp-grid">' + ''.join(_sp_card(*sw, i * .06) for i, sw in enumerate(SOPORTE_SW)) + '</div></div></section>'
+    + timeline('Cómo funciona', 'Abre tu ticket en tres pasos',
+               'Un proceso sencillo para que nuestro equipo atienda tu solicitud.',
+               [('log-in', 'Ingresa al ticket electrónico', 'Entra a The Bug Genie desde cualquiera de los botones de esta página.'),
+                ('lock', 'Inicia sesión', 'Accede con tu usuario y contraseña.'),
+                ('pen', 'Registra tu solicitud', 'Describe lo que necesitas y nuestro equipo de soporte funcional y técnico la atenderá.')],
+               cta=btn('Ir al ticket electrónico', SUPPORT, 'dark', ext=True))
+    + section(
+        '<div class="sp-contact"><div class="split-copy" data-reveal><span class="pill">Contacto</span>'
+        '<h2>Otros canales para encontrarnos</h2>'
+        '<p>Si necesitas ayuda con otro tema o quieres conocer una solución de SIO, aquí nos encuentras.</p>'
+        + btn('Hablar con un asesor', 'contacto.html', 'dark') + '</div>'
+        '<div class="info-grid" data-reveal style="--d:.1s">'
+        f'<a class="info-card" href="tel:+573006770106"><span class="f-ico">{ic("phone")}</span><div><b>Teléfono</b><span>+57 300 677 0106</span></div></a>'
+        f'<a class="info-card" href="mailto:mercadeo@sio.com.co"><span class="f-ico">{ic("mail")}</span><div><b>Correo electrónico</b><span>mercadeo@sio.com.co</span></div></a>'
+        f'<div class="info-card"><span class="f-ico">{ic("clock")}</span><div><b>Horario de soporte</b><span>{HORARIO}</span></div></div>'
+        f'<a class="info-card" href="https://www.google.com/maps/search/?api=1&query=Centro+Empresarial+Versalles+Calle+22+Norte+%233N-15+Cali" target="_blank" rel="noopener"><span class="f-ico">{ic("map-pin")}</span>'
+        '<div><b>Dirección</b><span>Calle 22 Norte # 3N&nbsp;–&nbsp;15 · Piso&nbsp;4</span><small>Edificio Centro Empresarial Versalles · San Vicente, Cali</small></div></a>'
+        '</div></div>', 'alt')
+    + cta_band('¿Aún no eres cliente de SIO?', 'Cuéntanos tu operación y te mostramos la solución que mejor se ajusta a tu institución.'))
 
 # ---------- CONTACTO
 FORM = '''<form class="form-card" data-form novalidate>
@@ -1008,7 +1201,7 @@ FORM = '''<form class="form-card" data-form novalidate>
         </form>'''
 
 add('contacto.html', 'Contacto | SIO',
-    'Solicita información o una demo. Carrera 100 No. 14-96, Ciudad Jardín, Cali. Teléfonos +57 (2) 485 5757 - 58, WhatsApp +57 318 506 7331, mercadeo@sio.com.co.',
+    'Solicita información o una demo. Edificio Centro Empresarial Versalles, Calle 22 Norte # 3N-15, piso 4, barrio San Vicente, Cali. Teléfono +57 300 677 0106, WhatsApp +57 318 506 7331, mercadeo@sio.com.co.',
     'contacto',
     hero(dict(
         crumbs=[('Inicio', 'index.html'), ('Contacto', '')],
@@ -1019,9 +1212,9 @@ add('contacto.html', 'Contacto | SIO',
         '<div class="contact-layout"><div data-reveal>' + FORM + '</div>'
         '<div class="info-stack" data-reveal style="--d:.1s">'
         f'<a class="info-card" href="{WA}" target="_blank" rel="noopener"><span class="f-ico">{ic("message")}</span><div><b>Asesoría gratuita por WhatsApp</b><span>+57 318 506 7331</span></div></a>'
-        f'<div class="info-card"><span class="f-ico">{ic("phone")}</span><div><b>Teléfonos</b><span>+57 (2) 485 5757 - 58</span></div></div>'
+        f'<a class="info-card" href="tel:+573006770106"><span class="f-ico">{ic("phone")}</span><div><b>Teléfono</b><span>+57 300 677 0106</span></div></a>'
         f'<a class="info-card" href="mailto:mercadeo@sio.com.co"><span class="f-ico">{ic("mail")}</span><div><b>Correo electrónico</b><span>mercadeo@sio.com.co</span></div></a>'
-        f'<a class="info-card" href="https://www.google.com/maps/search/?api=1&query=Carrera+100+No.+14-96+Ciudad+Jard%C3%ADn+Cali" target="_blank" rel="noopener"><span class="f-ico">{ic("map-pin")}</span><div><b>Dirección</b><span>Carrera 100 No. 14-96, Ciudad Jardín</span><small>Cali, Valle del Cauca, Colombia</small></div></a>'
+        f'<a class="info-card" href="https://www.google.com/maps/search/?api=1&query=Centro+Empresarial+Versalles+Calle+22+Norte+%233N-15+Cali" target="_blank" rel="noopener"><span class="f-ico">{ic("map-pin")}</span><div><b>Dirección</b><span>Edificio Centro Empresarial Versalles</span><small>Calle 22 Norte # 3N&nbsp;–&nbsp;15 · Piso&nbsp;4 · Barrio San Vicente, Cali</small></div></a>'
         f'<a class="info-card dark" href="{SUPPORT}" target="_blank" rel="noopener"><span class="f-ico">{ic("life-buoy")}</span><div><b>¿Ya eres cliente? Soporte {ic("arrow-up-right")}</b><span>Abre un ticket en el sistema electrónico de SIO.</span><small>8:00 a. m. – 12:00 m. y 2:00 – 5:30 p. m.</small></div></a>'
         '</div></div>'))
 
@@ -1064,6 +1257,11 @@ def mark_nav(html, nav):
     html = html.replace(f'class="mega-trigger" data-nav="{nav}"', f'class="mega-trigger is-active" data-nav="{nav}"')
     html = html.replace(f'<summary data-nav="{nav}"', f'<summary class="is-active" data-nav="{nav}"')
     html = re.sub(rf'<a href="([^"]+)" data-nav="{nav}">', rf'<a href="\1" data-nav="{nav}" class="is-active" aria-current="page">', html)
+    if nav == 'soporte':
+        html = html.replace('class="link-support" href="soporte.html" data-nav="soporte"',
+                            'class="link-support is-active" href="soporte.html" data-nav="soporte" aria-current="page"')
+        html = html.replace('href="soporte.html" data-nav="soporte" class="d-support"',
+                            'href="soporte.html" data-nav="soporte" class="d-support is-active" aria-current="page"')
     return html
 
 
