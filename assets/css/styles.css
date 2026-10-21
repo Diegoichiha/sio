@@ -736,7 +736,7 @@ section { position: relative; }
    FOOTER
    ========================================================= */
 .footer { margin: 16px clamp(8px, 1.6vw, 24px) clamp(8px, 1.6vw, 24px); border-radius: var(--r-xl); padding: clamp(28px, 3.5vw, 44px) 0 0; background: #000B22; color: #B3C1DD; overflow: hidden; position: relative; }
-.footer-grid { display: grid; grid-template-columns: 1.4fr .8fr .8fr 1.2fr 1.2fr; gap: 36px; padding-bottom: 56px; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr minmax(152px, .85fr) minmax(112px, .8fr) 1.1fr minmax(300px, 1.65fr); gap: 36px; padding-bottom: 56px; }
 .f-brand { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
 .f-brand img { height: 64px; width: auto; }
 .f-brand p { max-width: 280px; }
@@ -747,6 +747,12 @@ section { position: relative; }
 .f-col a { color: #D5DFF2; transition: color .2s; line-height: 1.4; }
 .f-col a:hover { color: var(--yellow); }
 .f-col p { color: #D5DFF2; }
+/* contacto: filas con ícono; mismo tamaño que los demás enlaces del footer */
+.f-contact { gap: 14px; }
+.f-row { display: grid; grid-template-columns: 16px 1fr; column-gap: 12px; align-items: start; font-style: normal; font-size: inherit; line-height: 1.4; color: #D5DFF2; }
+.f-row .ic { width: 16px; height: 16px; margin-top: 2px; color: var(--yellow); }
+.f-row > span { display: flex; flex-direction: column; gap: 3px; }
+a.f-row:hover { color: var(--yellow); }
 .footer-bottom { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 24px 0 28px; border-top: 1px solid rgba(255, 255, 255, .1); font-size: .8125rem; }
 
 /* =========================================================
@@ -1407,4 +1413,13 @@ body.lb-lock { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .tour[data-auto="on"] .tour-tab.is-on::after { animation: none; transform: scaleX(1); }
   .tour-shots img, .lb, .lb figure { transition: none; }
+}
+
+/* footer · contacto en tabletas: ocupa el ancho completo y las filas fluyen en horizontal */
+@media (max-width: 1100px) {
+  .f-contact { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; gap: 14px 44px; }
+  .f-contact h4 { flex-basis: 100%; margin-bottom: -4px; }
+}
+@media (max-width: 480px) {
+  .f-contact { flex-direction: column; flex-wrap: nowrap; gap: 14px; }
 }
