@@ -1274,6 +1274,7 @@ p, .lead, .form-note,
 /* --- pantallazo real dentro del marco del equipo (hero de Saman RIPS) --- */
 .screen.real { aspect-ratio: 1000 / 600; container-type: normal; background: #fff; }
 .screen.real img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.screen.real.full::after { display: none; }
 .screen.real::after { content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(90deg, #fff 0, rgba(255, 255, 255, 0) 16%); }
 
@@ -1306,12 +1307,33 @@ p, .lead, .form-note,
 .tour-frame { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; border-radius: 16px; background: #fff; box-shadow: 0 28px 60px -26px rgba(0, 16, 46, .5), 0 0 0 1px rgba(0, 16, 46, .08); }
 .tour.is-measuring, .tour.is-measuring * { transition: none !important; animation: none !important; }
 .tour-bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; background: #EEF2F8; border-bottom: 1px solid #E1E7F1; }
+/* recorrido con capturas completas: el visor toma su proporción y las pestañas se reparten el alto */
+.tour.is-natural .tour-shots { flex: none; min-height: 0; aspect-ratio: var(--ar, 1365 / 600); }
+.tour.is-natural .tour-frame { flex: none; }
+.tour.is-natural .tour-tab { align-items: center; }
+.tour.is-natural .tour-tab b { padding-top: 0; }
+/* explorador de módulos: pestañas compactas para que 9 módulos no alarguen la sección */
+.tour.is-modules .tour-tabs { gap: 8px; }
+.tour.is-modules .tour-tab { padding: 10px 16px 12px; }
+.tour.is-modules .tour-tab .f-ico { width: 36px; height: 36px; font-size: 18px; border-radius: 12px; }
+.tour.is-modules .tour-tab b { padding-top: 6px; font-size: 1rem; }
+.tour.is-modules .tour-tab.is-on b { padding-top: 2px; }
+/* explorador de módulos: recorte real del menú + opciones */
+.tour.is-modules .tour-shots { min-height: 690px; cursor: default; background: linear-gradient(180deg, #F7F9FD, #fff); }
+.mx-pane { position: absolute; inset: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 3.4vw, 44px); align-items: start; padding: clamp(18px, 2.6vw, 32px); overflow: auto;
+  opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .45s var(--ease), transform .7s var(--ease), visibility 0s .45s; }
+.mx-pane.is-on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.mx-menu { line-height: 0; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 22px 44px -22px rgba(0, 16, 46, .5), 0 0 0 1px rgba(0, 16, 46, .1); }
+.mx-menu img { display: block; width: auto; max-width: 100%; height: auto; }
+.mx-opts .mono { color: var(--blue); }
+.mx-opts h3 { margin: 8px 0 16px; }
+.mx-opts .checks { gap: 10px; }
 .tour-bar i { width: 10px; height: 10px; border-radius: 50%; background: #CBD3E1; }
 .tour-url { margin-left: 10px; display: inline-flex; align-items: center; height: 24px; padding: 0 12px; border-radius: 999px; background: #fff; border: 1px solid #E1E7F1; font: 500 .75rem/1 var(--font-mono); color: #6B7689; }
 .tour-shots { position: relative; flex: 1; min-height: 260px; overflow: hidden; background: #fff; cursor: zoom-in; }
-.tour-shots img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left top; opacity: 0;
+.tour-shots > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left top; opacity: 0;
   transform: scale(1) translateZ(0); transform-origin: var(--o, 50% 0); transition: opacity .55s var(--ease), transform 1.1s var(--ease); }
-.tour-shots img.is-on { opacity: 1; transform: scale(var(--z, 1)); }
+.tour-shots > img.is-on { opacity: 1; transform: scale(var(--z, 1)); }
 .tour-zoom { position: absolute; left: 12px; bottom: 12px; z-index: 3; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 3px; border-radius: 999px;
   background: var(--ink); color: #fff; border: 0; cursor: pointer; font: 600 .8125rem/1 var(--font-body); box-shadow: 0 12px 28px -10px rgba(0, 16, 46, .6); transition: transform .35s var(--ease), background .3s; }
 .tour-zoom:hover { transform: translateY(-2px); background: var(--blue); }
@@ -1400,9 +1422,15 @@ body.lb-lock { overflow: hidden; }
   .tour { grid-template-columns: 1fr; }
   .tour-stage { order: -1; }
   .tour-shots { flex: none; min-height: 0; aspect-ratio: 1600 / 880; }
+  .tour.is-modules .tour-shots { aspect-ratio: auto; min-height: 0; }
+  .tour.is-modules .mx-pane { position: static; display: none; opacity: 1; visibility: visible; transform: none; overflow: visible; }
+  .tour.is-modules .mx-pane.is-on { display: grid; }
   .sp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sp-contact { grid-template-columns: 1fr; }
   .support-card .support-actions { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .mx-pane { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
   .tech-grid, .sp-grid, .info-grid { grid-template-columns: 1fr; }

@@ -180,35 +180,70 @@ def img_panel(img, pos, pill, h2, p, items, cta=None, tag=''):
             f'<div class="ip-steps">{steps}</div>{c}</div>{t}</div>')
 
 
-def real_visual(img, alt, floats=''):
-    """Monitor con un pantallazo real (recorte de la plataforma) y ventanas flotantes."""
+def real_visual(img, alt, floats='', ratio=None):
+    """Monitor con un pantallazo real y ventanas flotantes. ratio='1365 / 600' muestra la captura completa (sin recorte)."""
+    cls = ' full' if ratio else ''
+    style = f' style="aspect-ratio:{ratio}"' if ratio else ''
     return (floats + '<div class="device flat"><div class="device-bezel"><span class="device-cam"></span>'
-            f'<div class="screen real"><img src="assets/img/shots/{img}" alt="{alt}"></div></div></div>')
+            f'<div class="screen real{cls}"{style}><img src="assets/img/shots/{img}" alt="{alt}"></div></div></div>')
 
 
-def tour(label, steps, caption):
-    """Recorrido interactivo por pantallazos reales.
-    steps: (icono, título, texto, imagen, zoom, origen_del_zoom)"""
-    tabs, imgs = [], []
-    for i, (icon, title, text, img, z, o) in enumerate(steps):
-        first = i == 0
-        on = ' is-on' if first else ''
-        sel = 'true' if first else 'false'
-        idx = '' if first else ' tabindex="-1"'
-        tabs.append(
-            f'<button type="button" class="tour-tab{on}" role="tab" aria-selected="{sel}"{idx} data-label="{label} · {title}">'
+def _tour_tab(i, icon, title, text, label):
+    first = i == 0
+    on = ' is-on' if first else ''
+    sel = 'true' if first else 'false'
+    idx = '' if first else ' tabindex="-1"'
+    return (f'<button type="button" class="tour-tab{on}" role="tab" aria-selected="{sel}"{idx} data-label="{label} · {title}">'
             f'<span class="f-ico">{ic(icon)}</span>'
             f'<span class="tt-main"><b>{title}</b><span class="tt-body"><span><span class="tt-text">{text}</span></span></span></span></button>')
-        imgs.append(
-            f'<img class="{"is-on" if first else ""}" src="assets/img/shots/{img}" alt="{label}: {title}" '
-            f'style="--z:{z};--o:{o}" width="1600" height="1000" loading="lazy">')
-    return ('<div class="tour" data-tour>'
+
+
+def _tour_shell(label, first_title, tabs, shots, caption, cls='', attrs='', zoom=True):
+    zbtn = (f'<button type="button" class="tour-zoom" aria-label="Ampliar el pantallazo">{ic("expand")}<span>Ampliar</span></button>'
+            if zoom else '')
+    return (f'<div class="tour{cls}" data-tour{attrs}>'
             f'<div class="tour-tabs" role="tablist" aria-label="Recorrido por la plataforma" data-reveal>{"".join(tabs)}</div>'
             '<figure class="tour-stage" data-reveal style="--d:.1s"><div class="tour-frame">'
-            f'<div class="tour-bar"><i></i><i></i><i></i><span class="tour-url">{label} · {steps[0][1]}</span></div>'
-            f'<div class="tour-shots">{"".join(imgs)}'
-            f'<button type="button" class="tour-zoom" aria-label="Ampliar el pantallazo">{ic("expand")}<span>Ampliar</span></button></div></div>'
+            f'<div class="tour-bar"><i></i><i></i><i></i><span class="tour-url">{label} · {first_title}</span></div>'
+            f'<div class="tour-shots">{shots}{zbtn}</div></div>'
             f'<figcaption class="tour-cap">{caption}</figcaption></figure></div>')
+
+
+def tour(label, steps, caption, ratio=None):
+    """Recorrido interactivo por pantallazos reales.
+    steps: (icono, título, texto, imagen, zoom, origen_del_zoom).
+    ratio='1365 / 600': el visor toma la proporción de las capturas y las pestañas se reparten su alto."""
+    tabs, imgs = [], []
+    for i, (icon, title, text, img, z, o) in enumerate(steps):
+        tabs.append(_tour_tab(i, icon, title, text, label))
+        imgs.append(
+            f'<img class="{"is-on" if i == 0 else ""}" src="assets/img/shots/{img}" alt="{label}: {title}" '
+            f'style="--z:{z};--o:{o}" width="1600" height="1000" loading="lazy">')
+    cls = ' is-natural' if ratio else ''
+    attrs = f' style="--ar:{ratio}"' if ratio else ''
+    return _tour_shell(label, steps[0][1], tabs, ''.join(imgs), caption, cls, attrs)
+
+
+def _png_size(img):
+    """Ancho y alto reales de un recorte (se declaran en el <img> para que la página no salte al cargar)."""
+    import struct
+    with open(os.path.join(ROOT, 'assets', 'img', 'shots', img), 'rb') as f:
+        head = f.read(24)
+    return struct.unpack('>II', head[16:24])
+
+
+def modules(label, items, caption):
+    """Explorador de módulos: cada pestaña muestra el recorte real del menú y sus opciones.
+    items: (icono, título, texto, imagen_del_menú, [opciones])"""
+    tabs, panes = [], []
+    for i, (icon, title, text, img, opts) in enumerate(items):
+        tabs.append(_tour_tab(i, icon, title, text, label))
+        lis = ''.join(f'<li>{o}</li>' for o in opts)
+        panes.append(
+            f'<div class="mx-pane{" is-on" if i == 0 else ""}">'
+            f'<div class="mx-menu"><img src="assets/img/shots/{img}" alt="{label}: menú del módulo {title}" width="{_png_size(img)[0]}" height="{_png_size(img)[1]}"></div>'
+            f'<div class="mx-opts"><span class="mono">Opciones del módulo</span><h3>{title}</h3><ul class="checks">{lis}</ul></div></div>')
+    return _tour_shell(label, items[0][1], tabs, ''.join(panes), caption, ' is-modules', ' data-autoplay="off"', zoom=False)
 
 
 def support_strip(name, kind='tbg', detail=''):
@@ -688,7 +723,11 @@ add('health-sq.html', 'Health SQ | Calidad en salud · SIO',
         h1='El Sistema Obligatorio de Garantía de Calidad, <span class="hl-y">bajo control</span>',
         lead='Una solución tecnológica completa que permite la administración, el seguimiento y el control integral de los Sistemas Obligatorios de Calidad en salud.',
         ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)],
-        visual=mock_visual(CFG_HEALTH)))
+        visual=real_visual(
+            'hsq-inicio.jpg', 'Health SQ: pantalla de inicio con el Sistema Obligatorio de Garantía de la Calidad', ratio='1365 / 600',
+            floats=_f_dark('sfa', 0, _DUR[5], _DEL[5], 'Indicadores', '', 'Fichas técnicas', 'Registro, consolidado e importación')
+            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'clipboard-check', 'Habilitación', 'Autoevaluación y acciones', ok=True)
+            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'shield-check', 'Seguridad del paciente', 'Reporte y análisis de casos'))))
     + section(img_panel(
         'panels/health.jpg', '72% 50%', 'Beneficios',
         'Calidad asistencial con <span class="hl-y">evidencia y trazabilidad</span>',
@@ -698,13 +737,57 @@ add('health-sq.html', 'Health SQ | Calidad en salud · SIO',
          ('award', 'Acreditación', 'Evidencia para las auditorías', 'Recopila la evidencia y optimiza los procesos de mejoramiento.')],
         cta=btn('Solicitar información', 'contacto.html', 'yellow'), tag='Sistemas obligatorios de calidad'), 'tight')
     + section(
-        sec_head('Módulos principales', 'Cuatro módulos, una sola visión de la calidad')
-        + feats([
-            ('clipboard-check', 'Habilitación', 'Auditorías de planes y acciones de obligatorio cumplimiento, con semaforización de tiempos y notificaciones.', None, '#1C4593'),
-            ('award', 'Acreditación', 'Administración de planes de auditoría y mejoramiento asociados al PAMEC y control de los ciclos de acreditación.', None, '#2F63D1'),
-            ('shield-check', 'Seguridad del paciente', 'Captura de eventos adversos con análisis mediante el protocolo de Londres y gestión de barreras y fallas latentes.', None, '#0F4C7A'),
-            ('bar-chart', 'Indicadores', 'Diseño de fichas técnicas para medir la eficiencia y la calidad de los procesos organizacionales.', None, '#F59E1B'),
-        ], cols=4), 'alt')
+        sec_head('Conoce la plataforma', 'Así se ve <span class="hl">Health SQ</span> por dentro',
+                 'Recorre las pantallas reales de la plataforma: elige una opción y mira cómo funciona.')
+        + tour('healthSQ', [
+            ('layers', 'Inicio del SOGC',
+             'Ve el sistema de garantía de la calidad completo: PAMEC, habilitación, acreditación e información para la calidad, y sus resultados.',
+             'hsq-inicio.jpg', 1, '50% 0%'),
+            ('clipboard-check', 'Habilitación: consultar autoevaluación',
+             'Consulta la autoevaluación por ciclo, estándar, grupo, servicio de habilitación y sede.',
+             'hsq-autoevaluacion.jpg', 1.23, '100% 0%'),
+            ('bar-chart', 'Indicadores: importar desde un archivo',
+             'Carga tus indicadores desde un archivo y exporta la estructura para diligenciarlo.',
+             'hsq-indicadores.jpg', 1.23, '100% 0%'),
+        ], 'Pantallas reales de Health SQ. Haz clic en la imagen para ampliarla.', ratio='1365 / 600'), 'alt')
+    + section(
+        sec_head('Módulos', 'Explora los <span class="hl">módulos</span> de Health SQ',
+                 'Un menú lateral reúne todo el sistema de garantía de la calidad. Elige un módulo y mira sus opciones reales.')
+        + modules('healthSQ', [
+            ('clipboard-check', 'Habilitación',
+             'Auditorías de planes y acciones de obligatorio cumplimiento, con semaforización de tiempos y notificaciones.',
+             'hsq-menu-habilitacion.png',
+             ['Autoevaluación: ingresar, modificar y consultar', 'Acciones de cumplimiento', 'Seguimiento de acciones', 'Informes']),
+            ('award', 'Acreditación',
+             'Administración de planes de auditoría y mejoramiento asociados al PAMEC y control de los ciclos de acreditación.',
+             'hsq-menu-acreditacion.png', ['Autoevaluación', 'Informes']),
+            ('shield-check', 'Seguridad del paciente',
+             'Captura de eventos adversos con análisis mediante el protocolo de Londres y gestión de barreras y fallas latentes.',
+             'hsq-menu-seguridad.png',
+             ['Reportar caso', 'Analizar', 'Relacionar análisis de sucesos', 'Seguimiento de oportunidades', 'Informes', 'Des/Habilitar']),
+            ('bar-chart', 'Indicadores',
+             'Diseño de fichas técnicas para medir la eficiencia y la calidad de los procesos organizacionales.',
+             'hsq-menu-indicadores.png',
+             ['Registrar', 'Actualizar', 'Consolidado', 'Fichas técnicas', 'Indicadores sin registro', 'Importar indicadores']),
+            ('trending-up', 'Gestión estratégica',
+             'Formula y organiza la estrategia de la institución: perspectivas, objetivos e iniciativas.',
+             'hsq-menu-estrategica.png',
+             ['Formulación estratégica', 'Perspectiva', 'Objetivos estratégicos', 'Iniciativa estratégica']),
+            ('file-text', 'Actas', 'Registra y consulta las actas.',
+             'hsq-menu-actas.png', ['Registrar', 'Consultar']),
+            ('activity', 'Gestión integral de salud',
+             'Configura los indicadores y consulta los resultados, las actas de cierre y los informes.',
+             'hsq-menu-gestion-integral.png', ['Configurar indicadores', 'Acta de cierre', 'Resultado', 'Informe']),
+            ('folder', 'Biblioteca',
+             'Reúne la documentación de habilitación, acreditación, PAMEC, indicadores, seguridad del paciente y SOGCS, y el manual del usuario.',
+             'hsq-menu-biblioteca.png',
+             ['Habilitación', 'Acreditación', 'PAMEC', 'Indicadores', 'Seguridad del paciente', 'SOGCS', 'Manual del usuario']),
+            ('lock', 'Administrar aplicativo',
+             'Administra usuarios, ciclos, categorías y parametrización, y consulta el visor de eventos.',
+             'hsq-menu-administrar.png',
+             ['Usuarios', 'Ciclo', 'Categoría funcional', 'Seguridad del paciente', 'Pamec', 'Actas', 'Indicadores',
+              'Parametrización GCS', 'Visor de eventos', 'Registro de peticiones', 'Acerca de']),
+        ], 'Recortes reales del menú de Health SQ.'))
     + support_strip('Health SQ')
     + related(['saman-solution', 'saman-rips', 'saman-soft'], 'Se integra con', 'Más soluciones para tu institución')
     + cta_band('Lleva la calidad de tu institución al siguiente nivel', 'Agenda una demostración de Health SQ con un asesor de SIO.'))

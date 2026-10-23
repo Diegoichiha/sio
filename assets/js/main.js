@@ -380,14 +380,13 @@
   });
 
   /* ---------- Recorrido por la plataforma: pestañas + pantallazo (avanza solo hasta que el usuario interactúa) ---------- */
-  const tour = $('[data-tour]');
-  if (tour) {
+  $$('[data-tour]').forEach(tour => {
     const tabs = $$('.tour-tab', tour);
-    const shots = $$('.tour-shots img', tour);
+    const shots = $$('.tour-shots > img, .tour-shots > .mx-pane', tour);
     const urlEl = $('.tour-url', tour);
     const stage = $('.tour-shots', tour);
     let cur = 0;
-    let stopped = reduceMotion;          // sin animación automática si el usuario la desactivó
+    let stopped = reduceMotion || tour.dataset.autoplay === 'off';   // sin avance automático si el usuario lo desactivó o la pieza es de exploración
     let visible = false;
 
     const syncAuto = () => {
@@ -411,7 +410,7 @@
     const list = $('.tour-tabs', tour);
     const fitTabs = () => {
       list.style.minHeight = '';
-      if (!matchMedia('(min-width: 981px)').matches) return;
+      if (tour.classList.contains('is-natural') || !matchMedia('(min-width: 981px)').matches) return;
       const keep = cur;
       let max = 0;
       tour.classList.add('is-measuring');
@@ -440,7 +439,7 @@
     tour.addEventListener('focusin', () => tour.setAttribute('data-paused', ''));
     tour.addEventListener('focusout', () => tour.removeAttribute('data-paused'));
 
-    const zoom = () => { stopped = true; syncAuto(); openLb(shots[cur].currentSrc || shots[cur].src, tabs[cur].dataset.label, stage); };
+    const zoom = () => { if (shots[cur].tagName !== 'IMG') return; stopped = true; syncAuto(); openLb(shots[cur].currentSrc || shots[cur].src, tabs[cur].dataset.label, stage); };
     stage.addEventListener('click', zoom);
 
     if ('IntersectionObserver' in window) {
@@ -455,7 +454,7 @@
     addEventListener('resize', () => { clearTimeout(tourT); tourT = setTimeout(fitTabs, 150); });
     addEventListener('load', fitTabs);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTabs);
-  }
+  });
 
   /* ---------- Formulario (maqueta: sin backend) ---------- */
   const form = $('[data-form]');
