@@ -209,7 +209,7 @@ def _tour_shell(label, first_title, tabs, shots, caption, cls='', attrs='', zoom
             f'<figcaption class="tour-cap">{caption}</figcaption></figure></div>')
 
 
-def tour(label, steps, caption, ratio=None):
+def tour(label, steps, caption, ratio=None, compact=False):
     """Recorrido interactivo por pantallazos reales.
     steps: (icono, título, texto, imagen, zoom, origen_del_zoom).
     ratio='1365 / 600': el visor toma la proporción de las capturas y las pestañas se reparten su alto."""
@@ -219,7 +219,7 @@ def tour(label, steps, caption, ratio=None):
         imgs.append(
             f'<img class="{"is-on" if i == 0 else ""}" src="assets/img/shots/{img}" alt="{label}: {title}" '
             f'style="--z:{z};--o:{o}" width="1600" height="1000" loading="lazy">')
-    cls = ' is-natural' if ratio else ''
+    cls = (' is-natural' if ratio else '') + (' is-compact' if compact else '')
     attrs = f' style="--ar:{ratio}"' if ratio else ''
     return _tour_shell(label, steps[0][1], tabs, ''.join(imgs), caption, cls, attrs)
 
@@ -232,7 +232,7 @@ def _png_size(img):
     return struct.unpack('>II', head[16:24])
 
 
-def modules(label, items, caption):
+def modules(label, items, caption, open_tabs=False, min_h=None):
     """Explorador de módulos: cada pestaña muestra el recorte real del menú y sus opciones.
     items: (icono, título, texto, imagen_del_menú, [opciones])"""
     tabs, panes = [], []
@@ -243,7 +243,16 @@ def modules(label, items, caption):
             f'<div class="mx-pane{" is-on" if i == 0 else ""}">'
             f'<div class="mx-menu"><img src="assets/img/shots/{img}" alt="{label}: menú del módulo {title}" width="{_png_size(img)[0]}" height="{_png_size(img)[1]}"></div>'
             f'<div class="mx-opts"><span class="mono">Opciones del módulo</span><h3>{title}</h3><ul class="checks">{lis}</ul></div></div>')
-    return _tour_shell(label, items[0][1], tabs, ''.join(panes), caption, ' is-modules', ' data-autoplay="off"', zoom=False)
+    cls = ' is-modules' + (' is-open' if open_tabs else '')
+    attrs = ' data-autoplay="off"' + (f' style="--mh:{min_h}px"' if min_h else '')
+    return _tour_shell(label, items[0][1], tabs, ''.join(panes), caption, cls, attrs, zoom=False)
+
+
+def app_head(logo, alt, pill, h2, p):
+    """Cabecera de sección de un aplicativo: pill, logo, título y texto."""
+    return (f'<header class="sec-head center"><span class="pill" data-reveal>{pill}</span>'
+            f'<span class="hero-logo" data-reveal style="--d:.04s"><img src="assets/img/{logo}" alt="{alt}"></span>'
+            f'<h2 data-reveal style="--d:.08s">{h2}</h2><p>{p}</p></header>')
 
 
 def support_strip(name, kind='tbg', detail=''):
@@ -626,7 +635,11 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
         h1='Toda la operación de tu institución, <span class="hl-y">en una sola solución</span>',
         lead='Solución tecnológica integral para la gestión hospitalaria que apoya las actividades administrativas y financieras derivadas de los procesos de atención en salud, con la historia clínica electrónica del paciente como eje central.',
         ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Ver subsistemas', '#subsistemas', 'light', arrow=False)],
-        visual=mock_visual(CFG_SOLUTION)))
+        visual=real_visual(
+            'hc-diagnostico.jpg', 'SAMAN HC: diagnóstico y pictograma de la historia clínica electrónica', ratio='1366 / 596',
+            floats=_f_dark('sfa', 0, _DUR[5], _DEL[5], 'Historia clínica', '', 'SAMAN HC', 'La atención del paciente, en el centro')
+            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'award', 'Interoperabilidad', 'RDA conforme a IHCE', ok=True)
+            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'wallet', 'SAMAN FCA', 'Financiero, contable y administrativo'))))
     + section(img_panel(
         'panels/solution.jpg', '78% 35%', 'Experiencia',
         '34 años integrando la <span class="hl-y">gestión hospitalaria</span>',
@@ -661,6 +674,72 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
              ['Nómina electrónica', 'Gestión del talento humano', 'Liquidación de nómina, prenómina y nómina definitiva'],
              'stock/sub-talento.jpg', '50% 50%'),
         ]), 'alt')
+    + section(
+        app_head('logo-saman-hc.png', 'SAMAN HC', 'Historia clínica electrónica',
+                 'Del triage a la <span class="hl">interoperabilidad</span>',
+                 'Recorre las pantallas reales de SAMAN HC: elige una opción y mira cómo funciona.')
+        + tour('SAMAN HC', [
+            ('heart-pulse', 'Signos vitales y hallazgos',
+             'Registra los signos vitales y marca los hallazgos del examen físico por sistema: normal, anormal o no evaluado.',
+             'hc-vitales.jpg', 1, '50% 0%'),
+            ('clipboard-check', 'Diagnóstico y pictograma',
+             'Define el diagnóstico principal y los relacionados, y señala los hallazgos sobre un pictograma del cuerpo humano.',
+             'hc-diagnostico.jpg', 1, '50% 0%'),
+            ('file-text', 'Órdenes médicas',
+             'Consulta las órdenes por servicio y por estado, con el detalle de lo ordenado: medicamentos, procedimientos y más.',
+             'hc-ordenes.jpg', 1, '50% 0%'),
+            ('pen', 'Evolución SOAP',
+             'Documenta la evolución del paciente con el formato SOAP; el sistema avisa, por ejemplo, cuando falta el resumen de estancia.',
+             'hc-evolucion.jpg', 1, '50% 0%'),
+            ('shield-check', 'Escalas de riesgo',
+             'Aplica escalas como Barthel con el puntaje obtenido y el nivel de riesgo calculado.',
+             'hc-escalas.jpg', 1, '50% 0%'),
+            ('award', 'Resumen Digital de Atención',
+             'Consulta los RDA generados en el marco de la interoperabilidad de la historia clínica electrónica (IHCE) del Ministerio de Salud.',
+             'hc-rda.jpg', 1, '50% 0%'),
+            ('link', 'Envío de RDA al Ministerio',
+             'Haz seguimiento a los envíos: totales, pendientes, enviados y rechazados, por tipo de RDA y estado.',
+             'hc-envio-rda.jpg', 1, '50% 0%'),
+        ], 'Pantallas reales de SAMAN HC. Haz clic en la imagen para ampliarla.', ratio='1366 / 596', compact=True), 'alt')
+    + section(
+        app_head('logo-saman-fca.png', 'SAMAN FCA Financiero, contable y administrativo', 'Financiero · Contable · Administrativo',
+                 'La gestión financiera, contable y administrativa, <span class="hl">organizada</span>',
+                 'Recorre las pantallas reales de SAMAN FCA: ingresa, explora sus módulos y mira cómo se gestiona cada proceso.')
+        + tour('SAMAN FCA', [
+            ('lock', 'Inicio de sesión',
+             'Ingresa con tu usuario, contraseña y empresa para gestionar de forma organizada la contabilidad de los procesos internos.',
+             'fca-login.jpg', 1, '50% 0%'),
+            ('layers', 'Todos los módulos en un menú',
+             'Activos fijos, administración de personal, almacén, cartera, contabilidad, contratación, compras, nómina, presupuesto, proveedores, sistema y tesorería.',
+             'fca-menu.jpg', 1.3, '0% 0%'),
+            ('users', 'Hoja de vida del empleado',
+             'Administración de personal: registra la información personal, familiar, de educación, laboral y de publicaciones de cada empleado.',
+             'fca-hoja-vida.jpg', 1, '50% 0%'),
+        ], 'Pantallas reales de SAMAN FCA. Haz clic en la imagen para ampliarla.', ratio='1376 / 704'))
+    + section(
+        sec_head('Módulos', 'Explora los <span class="hl">módulos</span> de SAMAN FCA',
+                 'El menú del aplicativo organiza cada proceso. Elige un módulo y mira sus opciones reales.')
+        + modules('SAMAN FCA', [
+            ('package', 'Activos fijos',
+             'Administración, actualizaciones, consultas y reportes de los activos fijos de la empresa.',
+             'fca-menu-activos.png',
+             ['Administración', 'Actualizaciones: activos fijos, aspectos técnicos e impresión de placas', 'Operaciones, depreciación y ajustes en activos',
+              'Interfaz con contabilidad', 'Pólizas de seguros e inventario físico', 'Deterioro NIF', 'Carga de activos fijos por archivo plano', 'Consultas y reportes']),
+            ('wallet', 'Cartera',
+             'Actualización de clientes, facturas, recibos de caja y anticipos, con consultas, reportes y planos.',
+             'fca-menu-cartera.png',
+             ['Administración', 'Actualizaciones: clientes, facturas, recibos de caja y anticipos', 'Notas débito y crédito',
+              'Aplicación y desaplicación de documentos', 'Consultas', 'Reportes', 'Planos']),
+            ('receipt', 'Contabilidad',
+             'Comprobantes, consultas, reportes, procesos e información exógena.',
+             'fca-menu-contabilidad.png',
+             ['Administración', 'Comprobantes: grabación, actualización y copias', 'Comprobante de ajuste por inflación', 'Consultas', 'GIF', 'Reportes', 'Procesos', 'Información exógena']),
+            ('users', 'Nómina',
+             'Contratos, novedades y liquidación de nómina, con interfases, consultas y reportes.',
+             'fca-menu-nomina.png',
+             ['Administración', 'Contratos', 'Novedades: devengos y deducciones, préstamos, incapacidades y embargos', 'Programación de vacaciones y aumentos salariales',
+              'Liquidación de nómina y de prestaciones', 'Liquidación final', 'Autoliquidación de aportes', 'Interfases, consultas y reportes']),
+        ], 'Recortes reales del menú de SAMAN FCA.', open_tabs=True, min_h=640), 'alt')
     + section(h_timeline(
         'Por qué SAMAN SOLUTION', 'Una sola solución, un único proveedor',
         'Toda la operación de tu institución trabaja sobre la misma información, de la atención del paciente a los indicadores gerenciales.',
@@ -687,7 +766,11 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
         h1='Facturación y nómina electrónica, <span class="hl-y">en la nube</span>',
         lead='Somos proveedores autorizados por la DIAN. Genera, valida y distribuye tus documentos electrónicos desde una plataforma integrada con SAMAN SOLUTION.',
         ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)],
-        visual=mock_visual(CFG_SOFT)))
+        visual=real_visual(
+            'soft-tablero.jpg', 'Saman Soft: tablero con la tasa de envío, los documentos emitidos y enviados y sus valores', ratio='1365 / 590',
+            floats=_f_dark('sfa', 0, _DUR[5], _DEL[5], 'Buzón electrónico', '', 'Facturas de proveedores', 'Consulta por evento y fecha')
+            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'check', 'Tasa de envío', 'Emitidos frente a enviados', ok=True)
+            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'zap', 'Servicios públicos', 'Documento equivalente'))))
     + section(img_panel(
         'panels/soft.jpg', '100% 50%', 'Autorizados por la DIAN',
         'Un proveedor tecnológico <span class="hl-y">habilitado desde 2020</span>',
@@ -696,6 +779,26 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
          ('users', 'Nómina', 'Nómina electrónica y documento soporte', 'Genera y distribuye tus documentos electrónicos desde un solo lugar.'),
          ('inbox', 'Proveedores', 'Buzón de gestión para facturas', 'Recibe y gestiona las facturas de tus proveedores.')],
         cta=btn('Solicitar información', 'contacto.html', 'yellow'), tag='Saman Soft en la nube'), 'tight')
+    + section(
+        sec_head('Conoce la plataforma', 'Así se ve <span class="hl">Saman Soft</span> por dentro',
+                 'Recorre las pantallas reales de la plataforma: elige una opción y mira cómo funciona.')
+        + tour('Saman Soft', [
+            ('bar-chart', 'Tablero del mes',
+             'Consulta la tasa de envío, los documentos emitidos y enviados, y el valor estimado y enviado del mes.',
+             'soft-tablero.jpg', 1.23, '100% 0%'),
+            ('layers', 'Documentos con movimiento',
+             'Compara emitidos y enviados por tipo de documento: factura electrónica de venta, documento soporte, nota débito y más.',
+             'soft-movimiento.jpg', 1.23, '100% 0%'),
+            ('file-text', 'Documentos',
+             'Filtra por tipo, estado y fechas, y gestiona cada documento: número, cliente, total, fecha y estado.',
+             'soft-documentos.jpg', 1.23, '100% 0%'),
+            ('zap', 'Servicios públicos',
+             'Gestiona los documentos de servicios públicos y filtra por estado: no enviados, pendientes de envío por correo o enviados.',
+             'soft-servicios.jpg', 1.23, '100% 0%'),
+            ('inbox', 'Buzón electrónico',
+             'Consulta los documentos recibidos de tus proveedores (emisor, NIT, total, fecha y evento) y filtra por evento, forma de pago y fechas.',
+             'soft-buzon.jpg', 1.23, '100% 0%'),
+        ], 'Pantallas reales de Saman Soft. Haz clic en la imagen para ampliarla.', ratio='1365 / 590', compact=True), 'alt')
     + section(
         sec_head('Funcionalidades', 'Todo el ciclo del documento electrónico')
         + feats([
@@ -1194,16 +1297,16 @@ HORARIO = '8:00 a. m. – 12:00 m. y 2:00 – 5:30 p. m.'
 
 # (monograma, nombre, etiqueta, color, con ticket electrónico)
 SOPORTE_SW = [
-    ('RIPS', 'Saman RIPS', 'RIPS · Resolución 2275', '#17998A', True),
-    ('SQ', 'Health SQ', 'Calidad en salud · SOGC', '#0F4C7A', True),
-    ('HC', 'SAMAN HC', 'Familia SAMAN', '#7B3A8F', True),
-    ('HCM', 'SAMAN HCM', 'Familia SAMAN', '#EB5757', True),
-    ('FCA', 'SAMAN FCA', 'Familia SAMAN', '#F59E1B', True),
-    ('SOFT', 'Saman Soft', 'Documentos electrónicos · DIAN', '#63C3CC', False),
+    ('logo-saman-rips.png', 'Saman RIPS', 'RIPS · Resolución 2275', '#17998A', True),
+    ('logo-health-sq.png', 'Health SQ', 'Calidad en salud · SOGC', '#0F4C7A', True),
+    ('logo-saman-hc.png', 'SAMAN HC', 'Historia clínica electrónica', '#7B3A8F', True),
+    ('logo-saman-hcm.png', 'SAMAN HCM', 'Gestión de recursos humanos', '#EB5757', True),
+    ('logo-saman-fca.png', 'SAMAN FCA', 'Financiero · Contable · Administrativo', '#F59E1B', True),
+    ('logo-saman-soft.png', 'Saman Soft', 'Documentos electrónicos · DIAN', '#63C3CC', False),
 ]
 
 
-def _sp_card(mono, name, tag, color, ready, delay):
+def _sp_card(logo, name, tag, color, ready, delay):
     if ready:
         status = '<span class="sp-status"><i></i>Disponible</span>'
         text = f'Soporte funcional y técnico para los clientes de {name}. Registra tu solicitud en el ticket electrónico de SIO.'
@@ -1215,7 +1318,7 @@ def _sp_card(mono, name, tag, color, ready, delay):
         foot = btn('Contactar a SIO', 'contacto.html', 'ghost', size='')
         cls = ' is-pending'
     return (f'<article class="sp-card{cls}" style="--c:{color};--d:{delay:.2f}s" data-reveal>'
-            f'<div class="sp-top"><span class="sp-mono">{mono}</span>{status}</div>'
+            f'<div class="sp-top"><span class="sp-logo"><img src="assets/img/{logo}" alt="{name}" loading="lazy"></span>{status}</div>'
             f'<span class="sp-tag">{tag}</span><h3>{name}</h3><p>{text}</p><div class="sp-foot">{foot}</div></article>')
 
 

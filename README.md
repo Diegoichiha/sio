@@ -48,13 +48,13 @@ Peso visual: SAMAN SOLUTION (panel oscuro a pantalla completa + hub interactivo)
 ## Material del cliente (carpeta Drive "VENTANAS")
 - **Datos de la empresa** (docs INFORMACIÓN): Edificio Centro Empresarial Versalles, Calle 22 Norte # 3N–15, piso 4, barrio San Vicente (Cali) · Tel. 300 677 0106 · mercadeo@sio.com.co. Ya aplicados en footer, home y contacto.
 - **Logos en alta** (RECURSOS): `.ai` convertidos a SVG (`logo-sio.svg`, `logo-sio-white.svg`, `logo-saman-solution.svg`); favicons regenerados desde el PNG @4x; `assets/img/cert/` con ISO 27001 Bureau Veritas, Oracle Partner, Oracle Cloud Infrastructure, DIAN y el reconocimiento IHCE del Ministerio de Salud.
-- **Pantallazos reales** (SOLUCIONES): Saman RIPS → `assets/img/shots/rips-*.jpg`; Health SQ → `assets/img/shots/hsq-*` (hero, recorrido por 3 pantallas y explorador de 9 módulos con recortes del menú). Faltan SAMAN HC y Saman Soft (carpetas vacías). No se usó la pantalla de inicio de sesión de Health SQ porque muestra el logo de un cliente (Comfandi).
+- **Pantallazos reales** (SOLUCIONES): Saman RIPS → `assets/img/shots/rips-*.jpg`; Health SQ → `assets/img/shots/hsq-*` (hero, recorrido por 3 pantallas y explorador de 9 módulos con recortes del menú). Saman Soft → `assets/img/shots/soft-*.jpg`; SAMAN HC y SAMAN FCA (sacados de sus videos) → `hc-*.jpg`, `fca-*.jpg` y recortes de menú `fca-menu-*.png`, en la página de SAMAN SOLUTION. En capturas y fotogramas se difuminaron nombres de personas y números de documento. Los videos (60 MB y 4 de FCA) no se publicaron por peso. SAMAN HCM solo tiene logo. No se usó la pantalla de inicio de sesión de Health SQ porque muestra el logo de un cliente (Comfandi).
 - **Soporte** (doc INFORMACIÓN): The Bug Genie atiende a Saman RIPS, Health SQ, SAMAN HC, SAMAN HCM y SAMAN FCA. **Pendiente:** aplicativo de soporte para Saman Soft (se muestra como "Próximamente").
 - **PDF "pared lateral"**: panel "Tecnología que respalda tu operación" reconstruido en `nosotros.html`.
 
 ## Pendientes de validar con SIO
 - WhatsApp: `+57 318 506 7331` (dato del sitio anterior; el doc nuevo solo trae el teléfono 300 677 0106).
-- SAMAN HC / HCM / FCA: confirmar nombre completo y si tendrán página propia.
+- SAMAN HC / HCM / FCA: por los logos y pantallas son Historia Clínica, Sistemas de gestión de recursos humanos y Financiero-Contable-Administrativo; confirmar si tendrán página propia (hoy HC y FCA viven en la página de SAMAN SOLUTION y HCM solo aparece en Soporte).
 - Trabaja con nosotros: no hay vacantes cargadas (muestra "Por ahora no tenemos vacantes") y el correo de hojas de vida es `mercadeo@sio.com.co`; confirmar el de talento humano.
 - Mockup del producto: es ilustrativo (datos de ejemplo). Reemplazar por capturas reales de SAMAN SOLUTION.
 - Logos de clientes: recortados de una imagen de 1024 px; pedir originales vectoriales/alta resolución.
