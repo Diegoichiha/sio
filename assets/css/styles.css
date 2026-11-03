@@ -1484,3 +1484,9 @@ body.lb-lock { overflow: hidden; }
 @media (max-width: 520px) {
   .jobs-empty { grid-template-columns: 1fr; }
 }
+
+/* Home en móvil: la pantalla real se recorta para que se lea mejor (en escritorio se ve completa) */
+@media (max-width: 640px) {
+  .device:not(.flat) .screen.real { aspect-ratio: 16 / 11 !important; }
+  .device:not(.flat) .screen.real img { object-position: 0% 0; }
+}
