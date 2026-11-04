@@ -369,7 +369,7 @@
   /* ---------- Recorrido por la plataforma: pestañas + pantallazo (avanza solo hasta que el usuario interactúa) ---------- */
   $$('[data-tour]').forEach(tour => {
     const tabs = $$('.tour-tab', tour);
-    const shots = $$('.tour-shots > img, .tour-shots > .mx-pane', tour);
+    const shots = $$('.tour-shots > img, .tour-shots > .mx-pane, .tour-shots > .su-pane', tour);
     const urlEl = $('.tour-url', tour);
     const stage = $('.tour-shots', tour);
     let cur = 0;

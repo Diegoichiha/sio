@@ -55,7 +55,7 @@ Peso visual: SAMAN SOLUTION (la suite que integra todos los aplicativos: panel o
 
 ## Pendientes de validar con SIO
 - WhatsApp: `+57 318 506 7331` (dato del sitio anterior; el doc nuevo solo trae el teléfono 300 677 0106).
-- SAMAN HC / HCM / FCA: por los logos y pantallas son Historia Clínica, Sistemas de gestión de recursos humanos y Financiero-Contable-Administrativo; confirmar si tendrán página propia (el cliente confirmó que tienen landing independiente: `saman-hc`, `saman-fca`, `saman-hcm`; pendiente confirmar si la interna de SAMAN SOLUTION debe mostrar todos estos aplicativos; HCM aún sin pantallas).
+- SAMAN HC / HCM / FCA: por los logos y pantallas son Historia Clínica, Sistemas de gestión de recursos humanos y Financiero-Contable-Administrativo; confirmar si tendrán página propia (el cliente confirmó que tienen landing independiente: `saman-hc`, `saman-fca`, `saman-hcm`; la interna de SAMAN SOLUTION es la suite: explorador con la pantalla y la información de cada Saman; HCM aún sin pantallas).
 - Trabaja con nosotros: no hay vacantes cargadas (muestra "Por ahora no tenemos vacantes") y el correo de hojas de vida es `mercadeo@sio.com.co`; confirmar el de talento humano.
 - Mockup del producto: es ilustrativo (datos de ejemplo). Reemplazar por capturas reales de SAMAN SOLUTION.
 - Logos de clientes: recortados de una imagen de 1024 px; pedir originales vectoriales/alta resolución.

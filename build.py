@@ -269,6 +269,33 @@ def doc_view(src, caption, alt):
             f'<img src="{src}" alt="{alt}" loading="lazy"><span class="doc-zoom">{ic("expand")}Ampliar</span></button>')
 
 
+def suite(items):
+    """Explorador de la suite SAMAN SOLUTION: una pestaña por aplicativo con su pantalla real, su descripción y el enlace a su landing.
+    items: (logo, nombre, descriptor, descripción, imagen o None, [3 puntos], enlace)"""
+    tabs, panes = [], []
+    for i, (logo, name, title, text, img, pts, href) in enumerate(items):
+        first = i == 0
+        on = ' is-on' if first else ''
+        sel = 'true' if first else 'false'
+        idx = '' if first else ' tabindex="-1"'
+        tabs.append(
+            f'<button type="button" class="tour-tab{on}" role="tab" aria-selected="{sel}"{idx} data-label="SAMAN SOLUTION · {name}">'
+            f'<span class="su-row"><span class="su-logo"><img src="assets/img/{logo}" alt="{name}"></span><b>{title}</b></span>'
+            f'<span class="tt-body"><span><span class="tt-text">{text}</span></span></span></button>')
+        chips = ''.join(f'<li>{p}</li>' for p in pts)
+        go = f'<span class="su-go">{btn("Conocer " + name, href, "yellow", size="")}</span>'
+        if img:
+            panes.append(
+                f'<div class="su-pane{on}"><img src="assets/img/shots/{img}" alt="{name}: pantalla real" width="1600" height="700" loading="lazy">'
+                f'<ul class="su-chips">{chips}</ul>{go}</div>')
+        else:
+            panes.append(
+                f'<div class="su-pane su-soon{on}"><img src="assets/img/{logo}" alt="{name}">'
+                f'<p>Pronto, el recorrido por la plataforma</p><ul class="su-chips">{chips}</ul>{go}</div>')
+    return _tour_shell('SAMAN SOLUTION', items[0][1], tabs, ''.join(panes),
+                       'Pantallas reales de cada aplicativo de la suite.', ' is-natural is-compact is-suite', ' style="--ar:2.15 / 1"', zoom=False)
+
+
 def support_strip(name, kind='tbg', detail=''):
     """Franja de soporte para cada software. kind: 'tbg' (ticket electrónico) o 'soon' (canal en preparación)."""
     if kind == 'tbg':
@@ -291,7 +318,7 @@ def support_strip(name, kind='tbg', detail=''):
 
 # ------------------------------------------------------------------ catálogo de soluciones
 SOL = {
-    'saman-solution':          dict(name='SAMAN SOLUTION', tag='Gestión hospitalaria', desc='Toda la operación de tu institución en una sola solución.', img='hero/solution.jpg', icon='hospital'),
+    'saman-solution':          dict(name='SAMAN SOLUTION', tag='Gestión hospitalaria', desc='La suite que integra todos los aplicativos SAMAN.', img='hero/solution.jpg', icon='hospital'),
     'saman-soft':              dict(name='Saman Soft', tag='Documentos electrónicos · DIAN', desc='Facturación y nómina electrónica en la nube.', img='bg/soft.jpg', icon='receipt', logo='logo-saman-soft.png'),
     'health-sq':               dict(name='Health SQ', tag='Calidad en salud · SOGC', desc='Habilitación, acreditación, seguridad e indicadores.', img='bg/health.jpg', icon='clipboard-check', logo='logo-health-sq.png'),
     'saman-rips':              dict(name='Saman RIPS', tag='RIPS · Resolución 2275', desc='RIPS automáticos, seguros y sin errores.', img='bg/rips.jpg', icon='file-text', logo='logo-saman-rips.png'),
@@ -412,6 +439,12 @@ def _f_item(cls, r, dur, delay, icon, title, sub, chip='', ok=False):
     ch = f'<span class="f-chip">{chip}</span>' if chip else ''
     return (f'<div class="float sf {cls}" style="animation-duration:{dur}s;animation-delay:{delay}s">'
             f'<span class="f-ic{c}">{ic(icon)}</span><div><b>{title}</b><small>{sub}</small></div>{ch}</div>')
+
+
+def _f_logo(cls, dur, delay, logo, alt, sub):
+    """Ventana flotante con el logo de un aplicativo de la suite."""
+    return (f'<div class="float sf sf-brand {cls}" style="animation-duration:{dur}s;animation-delay:{delay}s">'
+            f'<span class="sf-logo"><img src="assets/img/{logo}" alt="{alt}"></span><small>{sub}</small></div>')
 
 
 def _f_qr(cls, r, dur, delay, title, sub):
@@ -620,21 +653,22 @@ def add(name, title, description, nav, content):
 
 
 # ---------- SAMAN SOLUTION
-add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · SIO',
-    'Solución tecnológica integral para la gestión hospitalaria con la historia clínica electrónica como eje central. Toda la operación en una sola solución, con un único proveedor.',
+add('saman-solution.html', 'SAMAN SOLUTION | La suite que integra todos los aplicativos SAMAN · SIO',
+    'SAMAN SOLUTION es la suite que integra todos los aplicativos SAMAN: historia clínica, financiero, contable y administrativo, recursos humanos, documentos electrónicos, calidad en salud y RIPS. Toda la operación en una sola solución, con un único proveedor.',
     'soluciones',
     hero(dict(
         crumbs=crumbs_sol('SAMAN SOLUTION'), img='hero/solution.jpg', pos='50% 35%',
         logo='logo-saman-solution.svg', logo_alt='SAMAN SOLUTION Gestión hospitalaria',
         pill='Gestión hospitalaria',
         h1='Toda la operación de tu institución, <span class="hl-y">en una sola solución</span>',
-        lead='Solución tecnológica integral para la gestión hospitalaria que apoya las actividades administrativas y financieras derivadas de los procesos de atención en salud, con la historia clínica electrónica del paciente como eje central.',
-        ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Ver subsistemas', '#subsistemas', 'light', arrow=False)],
+        lead='SAMAN SOLUTION es la suite que reúne todos los aplicativos SAMAN: historia clínica, financiero, contable y administrativo, recursos humanos, documentos electrónicos, calidad en salud y RIPS. Toda la operación hospitalaria, con la historia clínica electrónica como eje central y un único proveedor.',
+        ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Conocer los aplicativos', '#suite', 'light', arrow=False)],
         visual=real_visual(
-            'hc-diagnostico.jpg', 'SAMAN HC: diagnóstico y pictograma de la historia clínica electrónica', ratio='1366 / 596',
-            floats=_f_dark('sfa', 0, _DUR[5], _DEL[5], 'Historia clínica', '', 'SAMAN HC', 'La atención del paciente, en el centro')
-            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'award', 'Interoperabilidad', 'RDA conforme a IHCE', ok=True)
-            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'wallet', 'SAMAN FCA', 'Financiero, contable y administrativo'))))
+            'hc-diagnostico.jpg', 'SAMAN HC, la historia clínica electrónica de la suite SAMAN SOLUTION', ratio='1366 / 596',
+            floats=_f_logo('sfa', _DUR[5], _DEL[5], 'logo-saman-soft.png', 'Saman Soft', 'Documentos electrónicos')
+            + _f_logo('sfb', _DUR[0], _DEL[0], 'logo-saman-fca.png', 'Saman FCA', 'Financiero y contable')
+            + _f_logo('sfc', _DUR[4], _DEL[4], 'logo-health-sq.png', 'Health SQ', 'Calidad en salud')
+            + _f_logo('sfd', _DUR[3], _DEL[3], 'logo-saman-rips.png', 'Saman RIPS', 'RIPS automáticos'))))
     + section(img_panel(
         'panels/solution.jpg', '78% 35%', 'Experiencia',
         '34 años integrando la <span class="hl-y">gestión hospitalaria</span>',
@@ -643,6 +677,30 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
          ('receipt', 'Comercial y financiero', 'Facturación, cartera y contabilidad', 'Facturación y radicación electrónicas, tesorería y presupuesto.'),
          ('bar-chart', 'Análisis y reportes', 'Decisiones con datos', 'Módulo gerencial, trazabilidad e indicadores de gestión.')],
         cta=btn('Cotiza ya', 'contacto.html', 'yellow'), tag='Gestión hospitalaria integrada'), 'tight')
+    + '<section class="section alt" id="suite"><div class="container">'
+    + sec_head('La suite', 'Todos los <span class="hl">SAMAN</span>, integrados en una sola solución',
+               'Cada aplicativo resuelve una parte de la operación y comparte la información con los demás. Elige uno y mira su pantalla real.')
+    + suite([
+        ('logo-saman-hc.png', 'SAMAN HC', 'Historia clínica electrónica',
+         'La atención del paciente en una sola historia clínica: del triage al seguimiento, con interoperabilidad con el Ministerio de Salud.',
+         'hc-diagnostico.jpg', ['Triage y signos vitales', 'Órdenes y evolución SOAP', 'RDA e IHCE'], 'saman-hc.html'),
+        ('logo-saman-fca.png', 'SAMAN FCA', 'Financiero · Contable · Administrativo',
+         'Doce módulos para gestionar de forma organizada la contabilidad y los procesos internos de tu empresa.',
+         'fca-menu.jpg', ['Activos fijos y cartera', 'Contabilidad y nómina', 'Compras, presupuesto y tesorería'], 'saman-fca.html'),
+        ('logo-saman-hcm.png', 'SAMAN HCM', 'Gestión de recursos humanos',
+         'El sistema de gestión de recursos humanos: talento humano y nómina, integrados con toda la suite.',
+         None, ['Talento humano', 'Nómina electrónica', 'Liquidación de nómina'], 'saman-hcm.html'),
+        ('logo-saman-soft.png', 'Saman Soft', 'Documentos electrónicos · DIAN',
+         'Facturación y nómina electrónica en la nube, como proveedor tecnológico autorizado por la DIAN.',
+         'soft-tablero.jpg', ['Facturación y nómina electrónica', 'Documento soporte', 'Buzón de facturas'], 'saman-soft.html'),
+        ('logo-health-sq.png', 'Health SQ', 'Calidad en salud · SOGC',
+         'Administración, seguimiento y control integral de los sistemas obligatorios de calidad en salud.',
+         'hsq-inicio.jpg', ['Habilitación y acreditación', 'Seguridad del paciente', 'Indicadores'], 'health-sq.html'),
+        ('logo-saman-rips.png', 'Saman RIPS', 'RIPS · Resolución 2275',
+         'Consulta, gestión y control de tus RIPS de forma automática, segura y sin errores.',
+         'rips-documentos.jpg', ['Generación automática', 'Resolución 2275', 'Historial de envíos'], 'saman-rips.html'),
+    ])
+    + '</div></section>'
     + hub_section()
     + section(
         sec_head('Atributos por subsistema', 'Todo lo que cubre cada subsistema',
@@ -669,10 +727,6 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
              ['Nómina electrónica', 'Gestión del talento humano', 'Liquidación de nómina, prenómina y nómina definitiva'],
              'stock/sub-talento.jpg', '50% 50%'),
         ]), 'alt')
-    + section(
-        sec_head('La suite', 'Una suite que <span class="hl">integra</span> todos tus aplicativos',
-                 'SAMAN SOLUTION reúne la historia clínica, lo financiero, contable y administrativo, el talento humano, los documentos electrónicos, la calidad en salud y los RIPS.')
-        + pcards(['saman-hc', 'saman-fca', 'saman-hcm', 'saman-soft', 'health-sq', 'saman-rips']), 'alt')
     + section(h_timeline(
         'Por qué SAMAN SOLUTION', 'Una sola solución, un único proveedor',
         'Toda la operación de tu institución trabaja sobre la misma información, de la atención del paciente a los indicadores gerenciales.',
