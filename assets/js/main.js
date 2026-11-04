@@ -319,19 +319,6 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSub);
   }
 
-  /* ---------- Otras soluciones: acordeón horizontal (la primera activa por defecto) ---------- */
-  const oGrid = $('.o-grid');
-  if (oGrid) {
-    const tiles = $$('.o-tile', oGrid);
-    const setActive = (t) => tiles.forEach(x => x.classList.toggle('is-active', x === t));
-    tiles.forEach(t => {
-      t.addEventListener('mouseenter', () => setActive(t));
-      t.addEventListener('focus', () => setActive(t));
-    });
-    oGrid.addEventListener('mouseleave', () => setActive(tiles[0]));
-    oGrid.addEventListener('focusout', e => { if (!oGrid.contains(e.relatedTarget)) setActive(tiles[0]); });
-  }
-
   /* ---------- FAQ (acordeón) ---------- */
   $$('.acc-item').forEach(item => {
     const btn = $('.acc-q', item);

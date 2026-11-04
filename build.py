@@ -255,6 +255,20 @@ def app_head(logo, alt, pill, h2, p):
             f'<h2 data-reveal style="--d:.08s">{h2}</h2><p>{p}</p></header>')
 
 
+def soon_band(title, text):
+    """Franja amarilla de aviso (página sin recorrido de pantallas todavía)."""
+    return ('<section class="support"><div class="container"><div class="support-card" data-reveal>'
+            f'<span class="support-ic">{ic("clock")}</span>'
+            f'<div class="support-copy"><h3>{title}</h3><p>{text}</p></div>'
+            f'<div class="support-actions">{btn("Solicitar información", "contacto.html", "dark", size="")}</div></div></div></section>')
+
+
+def doc_view(src, caption, alt):
+    """Documento que se amplía en el visor al hacer clic."""
+    return (f'<button type="button" class="doc-view" data-lightbox="{src}" data-caption="{caption}" aria-label="Ampliar: {alt}">'
+            f'<img src="{src}" alt="{alt}" loading="lazy"><span class="doc-zoom">{ic("expand")}Ampliar</span></button>')
+
+
 def support_strip(name, kind='tbg', detail=''):
     """Franja de soporte para cada software. kind: 'tbg' (ticket electrónico) o 'soon' (canal en preparación)."""
     if kind == 'tbg':
@@ -281,12 +295,9 @@ SOL = {
     'saman-soft':              dict(name='Saman Soft', tag='Documentos electrónicos · DIAN', desc='Facturación y nómina electrónica en la nube.', img='bg/soft.jpg', icon='receipt', logo='logo-saman-soft.png'),
     'health-sq':               dict(name='Health SQ', tag='Calidad en salud · SOGC', desc='Habilitación, acreditación, seguridad e indicadores.', img='bg/health.jpg', icon='clipboard-check', logo='logo-health-sq.png'),
     'saman-rips':              dict(name='Saman RIPS', tag='RIPS · Resolución 2275', desc='RIPS automáticos, seguros y sin errores.', img='bg/rips.jpg', icon='file-text', logo='logo-saman-rips.png'),
-    'gestion-documental':      dict(name='Gestión documental', tag='Servicios BPO', desc='TRD, digitalización, custodia y ventanilla única.', img='bg/doc.jpg', icon='folder', hint='TRD, digitalización y custodia'),
-    'gestion-de-informacion':  dict(name='Gestión de información', tag='Servicios BPO', desc='Captura masiva con OCR, ICR, OMR, QR y RFID.', img='bg/info.jpg', icon='scan', hint='Captura masiva con OCR e ICR'),
-    'suministros-tecnologicos': dict(name='Suministros tecnológicos', tag='Servicios BPO', desc='Equipos, espacios de trabajo y mesa de ayuda.', img='bg/supply.jpg', icon='monitor', hint='Equipos y mesa de ayuda'),
-    'servicios-publicos':      dict(name='Servicios públicos', tag='Energía, agua y gas', desc='Supernova S.C. e inteligencia de negocios.', img='bg/utilities.jpg', icon='zap', hint='Energía, agua y gas'),
-    'gobierno-de-datos':       dict(name='Gobierno de datos', tag='Oracle', desc='Administración, tuning y alta disponibilidad.', img='bg/data.jpg', icon='database', hint='Administración Oracle'),
-    'centro-de-negocios':      dict(name='Centro de negocios', tag='Cali', desc='Oficinas, oficina virtual y salas de reuniones.', img='bg/center.jpg', icon='building', hint='Oficinas y salas en Cali'),
+    'saman-hc':                dict(name='Saman HC', tag='Historia clínica electrónica', desc='Del triage a la interoperabilidad, en una sola historia clínica.', img='stock/sub-asistencial.jpg', icon='heart-pulse', logo='logo-saman-hc.png'),
+    'saman-fca':               dict(name='Saman FCA', tag='Financiero · Contable · Administrativo', desc='Activos, cartera, nómina, compras y tesorería.', img='stock/sub-financiero.jpg', icon='wallet', logo='logo-saman-fca.png'),
+    'saman-hcm':               dict(name='Saman HCM', tag='Gestión de recursos humanos', desc='Talento humano y nómina integrados con la suite.', img='stock/sub-talento.jpg', icon='users', logo='logo-saman-hcm.png'),
 }
 
 
@@ -359,22 +370,6 @@ def pcards(slugs):
             f'<span class="p-go" aria-hidden="true">{ic("arrow-up-right")}</span></a></div>')
     return '<div class="p-grid">' + ''.join(out) + '</div>'
 
-
-def otiles(slugs, first_active=True):
-    out = []
-    for i, s in enumerate(slugs):
-        d = SOL[s]
-        act = ' is-active' if (i == 0 and first_active) else ''
-        out.append(
-            f'<a class="o-tile{act}" href="{s}.html"><img class="o-bg" src="assets/img/{d["img"]}" alt="" loading="lazy">'
-            '<span class="o-shade" aria-hidden="true"></span>'
-            f'<span class="o-ic">{ic(d["icon"])}</span>'
-            f'<span class="o-text"><b>{d["name"]}</b><small>{d["hint"]}</small></span></a>')
-    return '<div class="o-grid" data-reveal>' + ''.join(out) + '</div>'
-
-
-OTHER = ['gestion-documental', 'gestion-de-informacion', 'suministros-tecnologicos',
-         'servicios-publicos', 'gobierno-de-datos', 'centro-de-negocios']
 
 CLIENTS = [
     ('r1-01', 'Hospital San José'), ('r1-02', 'Fundación Hospital San Pedro'), ('r1-03', 'Hospital Isaías Duarte Cancino E.S.E.'),
@@ -675,71 +670,9 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
              'stock/sub-talento.jpg', '50% 50%'),
         ]), 'alt')
     + section(
-        app_head('logo-saman-hc.png', 'SAMAN HC', 'Historia clínica electrónica',
-                 'Del triage a la <span class="hl">interoperabilidad</span>',
-                 'Recorre las pantallas reales de SAMAN HC: elige una opción y mira cómo funciona.')
-        + tour('SAMAN HC', [
-            ('heart-pulse', 'Signos vitales y hallazgos',
-             'Registra los signos vitales y marca los hallazgos del examen físico por sistema: normal, anormal o no evaluado.',
-             'hc-vitales.jpg', 1, '50% 0%'),
-            ('clipboard-check', 'Diagnóstico y pictograma',
-             'Define el diagnóstico principal y los relacionados, y señala los hallazgos sobre un pictograma del cuerpo humano.',
-             'hc-diagnostico.jpg', 1, '50% 0%'),
-            ('file-text', 'Órdenes médicas',
-             'Consulta las órdenes por servicio y por estado, con el detalle de lo ordenado: medicamentos, procedimientos y más.',
-             'hc-ordenes.jpg', 1, '50% 0%'),
-            ('pen', 'Evolución SOAP',
-             'Documenta la evolución del paciente con el formato SOAP; el sistema avisa, por ejemplo, cuando falta el resumen de estancia.',
-             'hc-evolucion.jpg', 1, '50% 0%'),
-            ('shield-check', 'Escalas de riesgo',
-             'Aplica escalas como Barthel con el puntaje obtenido y el nivel de riesgo calculado.',
-             'hc-escalas.jpg', 1, '50% 0%'),
-            ('award', 'Resumen Digital de Atención',
-             'Consulta los RDA generados en el marco de la interoperabilidad de la historia clínica electrónica (IHCE) del Ministerio de Salud.',
-             'hc-rda.jpg', 1, '50% 0%'),
-            ('link', 'Envío de RDA al Ministerio',
-             'Haz seguimiento a los envíos: totales, pendientes, enviados y rechazados, por tipo de RDA y estado.',
-             'hc-envio-rda.jpg', 1, '50% 0%'),
-        ], 'Pantallas reales de SAMAN HC. Haz clic en la imagen para ampliarla.', ratio='1366 / 596', compact=True), 'alt')
-    + section(
-        app_head('logo-saman-fca.png', 'SAMAN FCA Financiero, contable y administrativo', 'Financiero · Contable · Administrativo',
-                 'La gestión financiera, contable y administrativa, <span class="hl">organizada</span>',
-                 'Recorre las pantallas reales de SAMAN FCA: ingresa, explora sus módulos y mira cómo se gestiona cada proceso.')
-        + tour('SAMAN FCA', [
-            ('lock', 'Inicio de sesión',
-             'Ingresa con tu usuario, contraseña y empresa para gestionar de forma organizada la contabilidad de los procesos internos.',
-             'fca-login.jpg', 1, '50% 0%'),
-            ('layers', 'Todos los módulos en un menú',
-             'Activos fijos, administración de personal, almacén, cartera, contabilidad, contratación, compras, nómina, presupuesto, proveedores, sistema y tesorería.',
-             'fca-menu.jpg', 1.3, '0% 0%'),
-            ('users', 'Hoja de vida del empleado',
-             'Administración de personal: registra la información personal, familiar, de educación, laboral y de publicaciones de cada empleado.',
-             'fca-hoja-vida.jpg', 1, '50% 0%'),
-        ], 'Pantallas reales de SAMAN FCA. Haz clic en la imagen para ampliarla.', ratio='1376 / 704'))
-    + section(
-        sec_head('Módulos', 'Explora los <span class="hl">módulos</span> de SAMAN FCA',
-                 'El menú del aplicativo organiza cada proceso. Elige un módulo y mira sus opciones reales.')
-        + modules('SAMAN FCA', [
-            ('package', 'Activos fijos',
-             'Administración, actualizaciones, consultas y reportes de los activos fijos de la empresa.',
-             'fca-menu-activos.png',
-             ['Administración', 'Actualizaciones: activos fijos, aspectos técnicos e impresión de placas', 'Operaciones, depreciación y ajustes en activos',
-              'Interfaz con contabilidad', 'Pólizas de seguros e inventario físico', 'Deterioro NIF', 'Carga de activos fijos por archivo plano', 'Consultas y reportes']),
-            ('wallet', 'Cartera',
-             'Actualización de clientes, facturas, recibos de caja y anticipos, con consultas, reportes y planos.',
-             'fca-menu-cartera.png',
-             ['Administración', 'Actualizaciones: clientes, facturas, recibos de caja y anticipos', 'Notas débito y crédito',
-              'Aplicación y desaplicación de documentos', 'Consultas', 'Reportes', 'Planos']),
-            ('receipt', 'Contabilidad',
-             'Comprobantes, consultas, reportes, procesos e información exógena.',
-             'fca-menu-contabilidad.png',
-             ['Administración', 'Comprobantes: grabación, actualización y copias', 'Comprobante de ajuste por inflación', 'Consultas', 'GIF', 'Reportes', 'Procesos', 'Información exógena']),
-            ('users', 'Nómina',
-             'Contratos, novedades y liquidación de nómina, con interfases, consultas y reportes.',
-             'fca-menu-nomina.png',
-             ['Administración', 'Contratos', 'Novedades: devengos y deducciones, préstamos, incapacidades y embargos', 'Programación de vacaciones y aumentos salariales',
-              'Liquidación de nómina y de prestaciones', 'Liquidación final', 'Autoliquidación de aportes', 'Interfases, consultas y reportes']),
-        ], 'Recortes reales del menú de SAMAN FCA.', open_tabs=True, min_h=640), 'alt')
+        sec_head('La suite', 'Una suite que <span class="hl">integra</span> todos tus aplicativos',
+                 'SAMAN SOLUTION reúne la historia clínica, lo financiero, contable y administrativo, el talento humano, los documentos electrónicos, la calidad en salud y los RIPS.')
+        + pcards(['saman-hc', 'saman-fca', 'saman-hcm', 'saman-soft', 'health-sq', 'saman-rips']), 'alt')
     + section(h_timeline(
         'Por qué SAMAN SOLUTION', 'Una sola solución, un único proveedor',
         'Toda la operación de tu institución trabaja sobre la misma información, de la atención del paciente a los indicadores gerenciales.',
@@ -752,7 +685,6 @@ add('saman-solution.html', 'SAMAN SOLUTION | Gestión hospitalaria integrada · 
          ('award', 'Respaldo', 'Respaldo certificado',
           'Procesos evaluados bajo CMMI-SVC nivel 3, seguridad de la información ISO/IEC 27001 y respaldo tecnológico de Oracle.')]))
     + support_strip('SAMAN SOLUTION', detail='Los clientes de SAMAN HC, SAMAN HCM y SAMAN FCA cuentan con soporte funcional y técnico. ')
-    + related(['saman-soft', 'health-sq', 'saman-rips'], 'Se integra con', 'Soluciones que potencian SAMAN SOLUTION')
     + cta_band('Conoce SAMAN SOLUTION en acción', 'Solicita una demostración sin costo y descubre cómo unificar la operación de tu institución.'))
 
 # ---------- SAMAN SOFT
@@ -951,187 +883,186 @@ add('saman-rips.html', 'Saman RIPS | RIPS automáticos · Resolución 2275 · SI
     + related(['saman-solution', 'saman-soft', 'health-sq'], 'Se integra con', 'Más soluciones para tu institución')
     + cta_band('Deja de preocuparte por los RIPS', 'Escríbenos por WhatsApp para una asesoría gratuita o solicita una demostración.'))
 
-# ---------- GESTIÓN DOCUMENTAL
-add('gestion-documental.html', 'Gestión documental | Servicios BPO · SIO',
-    'Análisis, desarrollo e implementación de actividades para la planificación, manejo y organización de la documentación, desde su origen hasta su disposición final.',
+# ---------- SAMAN HC
+HC_IHCE = 'assets/img/cert/ihce-reconocimiento.webp'
+HC_IHCE_CAP = 'Reconocimiento del Ministerio de Salud y Protección Social (IHCE) a Soluciones Integrales de Oficina SIO S.A.S. · 17 de abril de 2026'
+add('saman-hc.html', 'SAMAN HC | Historia clínica electrónica · SIO',
+    'Historia clínica electrónica de SIO: triage, signos vitales, diagnósticos, órdenes médicas, evolución SOAP, escalas de riesgo e interoperabilidad con el Ministerio de Salud (IHCE). Parte de la suite SAMAN SOLUTION.',
     'soluciones',
     hero(dict(
-        crumbs=crumbs_sol('Gestión documental'), img='hero/doc.jpg', pos='50% 50%',
-        pill='Servicios BPO',
-        h1='Gestión documental, <span class="hl-y">de su origen a su disposición final</span>',
-        lead='Servicios de análisis, desarrollo e implementación de actividades para la planificación, el manejo y la organización de la documentación de tu organización.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
-    + section(
-        sec_head('Servicios', 'Todo el ciclo de vida de tus documentos')
-        + feats([
-            ('folder', 'Tablas de Retención Documental (TRD)', 'Recolección y análisis de series documentales y tipos de documentos; ordenación y recuperación de información semiactiva e inactiva.'),
-            ('scan', 'Digitalización e indexación', 'Conversión de documentos analógicos a formatos digitales mediante infraestructura tecnológica especializada.'),
-            ('layers', 'Intervención de archivo', 'Organización, depuración, foliación y disposición final de documentos.'),
-            ('archive', 'Custodia de archivos', 'Depósito y administración en locaciones especializadas con tecnología avanzada.'),
-            ('inbox', 'Ventanilla única de correspondencia', 'Registro centralizado de la información recibida, enviada e interna, con seguimiento y trazabilidad.'),
-            ('monitor', 'Software de gestión documental', 'Solución tecnológica para la administración documental con altos niveles de oportunidad, efectividad y trazabilidad.'),
-            ('graduation', 'Capacitación especializada', 'Programas de formación en los productos y servicios del sistema.'),
-        ], cols=3))
-    + related(['gestion-de-informacion', 'suministros-tecnologicos', 'gobierno-de-datos'])
-    + cta_band('Organiza la documentación de tu organización', 'Cuéntanos tu necesidad y diseñamos el servicio a tu medida.'))
-
-# ---------- GESTIÓN DE INFORMACIÓN
-add('gestion-de-informacion.html', 'Gestión de información | Servicios BPO · SIO',
-    'Procesos para controlar el ciclo de vida de la información, desde su obtención hasta su disposición final: digitalización, captura masiva y tecnologías avanzadas de captura.',
-    'soluciones',
-    hero(dict(
-        crumbs=crumbs_sol('Gestión de información'), img='hero/info.jpg', pos='50% 50%',
-        pill='Servicios BPO',
-        h1='Controla el ciclo de vida de tu <span class="hl-y">información</span>',
-        lead='Servicio de procesos por los cuales se controla el ciclo de vida de la información, desde su obtención hasta su disposición final.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
-    + section(
-        sec_head('Servicios', 'De la captura a la disposición final')
-        + feats([
-            ('scan', 'Digitalización e indexación', 'Reproducción de la información almacenada en formato analógico mediante infraestructura tecnológica especializada, hardware y software.'),
-            ('database', 'Captura masiva de información', 'Procesamiento extensivo de documentos mediante digitación o digitalización automatizada.'),
-            ('graduation', 'Capacitación', 'Formación en todos los productos y servicios relacionados con la gestión informática.'),
-        ], cols=3))
-    + section(
-        split('Tecnologías avanzadas de captura', 'Menos digitación manual, más calidad en el dato',
-              ['Múltiples métodos orientados a disminuir la cantidad de entradas de datos manuales para la captura de la información impresa.'],
-              None,
-              '<div class="feat-grid c2" data-reveal>'
-              + ''.join(f'<div class="feat"><span class="f-ico">{ic(i)}</span><h3>{t}</h3><p>{d}</p></div>'
-                        for i, t, d in [('scan', 'OCR', 'Reconocimiento óptico de caracteres.'),
-                                        ('cpu', 'ICR', 'Reconocimiento inteligente de caracteres.'),
-                                        ('check', 'OMR', 'Reconocimiento de marcas ópticas.'),
-                                        ('link', 'QR y RFID', 'Identificación y lectura automática de códigos y etiquetas.')])
-              + '</div>'), 'alt')
-    + related(['gestion-documental', 'suministros-tecnologicos', 'gobierno-de-datos'])
-    + cta_band('Automatiza la captura de tu información', 'Cuéntanos el volumen y el tipo de documentos y te proponemos la solución.'))
-
-# ---------- SUMINISTROS TECNOLÓGICOS
-add('suministros-tecnologicos.html', 'Suministros tecnológicos | Servicios BPO · SIO',
-    'Suministro y administración de los espacios físicos de trabajo según las especificaciones técnicas y tecnológicas: equipos, puestos de trabajo y mesa de ayuda.',
-    'soluciones',
-    hero(dict(
-        crumbs=crumbs_sol('Suministros tecnológicos'), img='hero/supply.jpg', pos='50% 50%',
-        pill='Servicios BPO',
-        h1='Infraestructura y espacios de trabajo, <span class="hl-y">listos para operar</span>',
-        lead='Suministro y administración de los espacios físicos de trabajo, de acuerdo con las especificaciones técnicas y tecnológicas de tu proceso.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
-    + section(
-        sec_head('Servicios', 'Soluciones integrales con soporte continuo',
-                 'Combinamos infraestructura física y tecnológica personalizada con acompañamiento permanente.')
-        + feats([
-            ('monitor', 'Equipos tecnológicos', 'Alquiler y venta de infraestructura: computadores, servidores, impresoras y escáneres, con instalación y adecuación incluidas.'),
-            ('building', 'Espacios de trabajo', 'Suministro de sistemas de puestos de trabajo adaptados a procesos específicos.'),
-            ('headset', 'Asistencia técnica', 'Servicio de mesa de ayuda local y remota para resolver problemas técnicos.'),
-            ('graduation', 'Capacitación', 'Programas educativos en los productos y servicios suministrados.'),
-        ], cols=4))
-    + related(['gestion-documental', 'gestion-de-informacion', 'centro-de-negocios'])
-    + cta_band('Equipa tu operación sin complicaciones', 'Cuéntanos qué necesitas y armamos la propuesta a tu medida.'))
-
-# ---------- SERVICIOS PÚBLICOS
-add('servicios-publicos.html', 'Servicios públicos | Supernova S.C. · SIO',
-    'Soluciones informáticas especializadas para el sector de servicios públicos (energía, agua y gas): software comercial Supernova S.C., consultoría en inteligencia de negocios y minería de datos.',
-    'soluciones',
-    hero(dict(
-        crumbs=crumbs_sol('Servicios públicos'), img='hero/utilities.jpg', pos='50% 60%',
-        logo='logo-supernova.png', logo_alt='Supernova S.C.',
-        pill='Energía, agua y gas',
-        h1='Soluciones informáticas para <span class="hl-y">servicios públicos</span>',
-        lead='Servicios profesionales, aplicativos y hardware para empresas de energía, agua y gas.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
+        crumbs=crumbs_sol('Saman HC'),
+        logo='logo-saman-hc.png', logo_alt='SAMAN HC Historia clínica electrónica',
+        pill='Historia clínica electrónica',
+        h1='La atención del paciente, <span class="hl-y">en una sola historia clínica</span>',
+        lead='SAMAN HC es la historia clínica electrónica de SIO: del ingreso y el triage al seguimiento, con órdenes, evolución, escalas de riesgo e interoperabilidad con el Ministerio de Salud. Hace parte de la suite SAMAN SOLUTION.',
+        ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Ver el recorrido', '#recorrido', 'light', arrow=False)],
+        visual=real_visual(
+            'hc-diagnostico.jpg', 'SAMAN HC: diagnóstico y pictograma de la historia clínica electrónica', ratio='1366 / 596',
+            floats=_f_dark('sfa', 0, _DUR[5], _DEL[5], 'Interoperabilidad', '', 'RDA al Ministerio', 'Conforme a IHCE')
+            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'heart-pulse', 'Triage y signos vitales', 'Registro desde el ingreso', ok=True)
+            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'pen', 'Evolución SOAP', 'Con alertas de resumen de estancia'))))
+    + section(img_panel(
+        'panels/solution.jpg', '78% 35%', 'Atención',
+        'La historia clínica como <span class="hl-y">eje de la atención</span>',
+        'Registra y consulta toda la atención del paciente en un solo lugar y alimenta de forma natural el resto de la operación hospitalaria.',
+        [('heart-pulse', 'Atención', 'Triage, signos vitales y examen físico', 'Registra los signos vitales y los hallazgos por sistema.'),
+         ('file-text', 'Órdenes y evolución', 'Órdenes médicas y evolución SOAP', 'Consulta las órdenes por estado y documenta la evolución del paciente.'),
+         ('award', 'Interoperabilidad', 'Resumen Digital de Atención', 'Genera y haz seguimiento al envío de los RDA al Ministerio de Salud.')],
+        cta=btn('Cotiza ya', 'contacto.html', 'yellow'), tag='SAMAN HC'), 'tight')
+    + '<section class="section alt" id="recorrido"><div class="container">'
+    + sec_head('Conoce la plataforma', 'Así se ve <span class="hl">SAMAN HC</span> por dentro',
+               'Recorre las pantallas reales de la plataforma: elige una opción y mira cómo funciona.')
+    + tour('SAMAN HC', [
+        ('heart-pulse', 'Signos vitales y hallazgos',
+         'Registra los signos vitales y marca los hallazgos del examen físico por sistema: normal, anormal o no evaluado.',
+         'hc-vitales.jpg', 1, '50% 0%'),
+        ('clipboard-check', 'Diagnóstico y pictograma',
+         'Define el diagnóstico principal y los relacionados, y señala los hallazgos sobre un pictograma del cuerpo humano.',
+         'hc-diagnostico.jpg', 1, '50% 0%'),
+        ('file-text', 'Órdenes médicas',
+         'Consulta las órdenes por servicio y por estado, con el detalle de lo ordenado: medicamentos, procedimientos y más.',
+         'hc-ordenes.jpg', 1, '50% 0%'),
+        ('pen', 'Evolución SOAP',
+         'Documenta la evolución del paciente con el formato SOAP; el sistema avisa, por ejemplo, cuando falta el resumen de estancia.',
+         'hc-evolucion.jpg', 1, '50% 0%'),
+        ('shield-check', 'Escalas de riesgo',
+         'Aplica escalas como Barthel con el puntaje obtenido y el nivel de riesgo calculado.',
+         'hc-escalas.jpg', 1, '50% 0%'),
+        ('award', 'Resumen Digital de Atención',
+         'Consulta los RDA generados en el marco de la interoperabilidad de la historia clínica electrónica (IHCE) del Ministerio de Salud.',
+         'hc-rda.jpg', 1, '50% 0%'),
+        ('link', 'Envío de RDA al Ministerio',
+         'Haz seguimiento a los envíos: totales, pendientes, enviados y rechazados, por tipo de RDA y estado.',
+         'hc-envio-rda.jpg', 1, '50% 0%'),
+    ], 'Pantallas reales de SAMAN HC. Haz clic en la imagen para ampliarla.', ratio='1366 / 596', compact=True)
+    + '</div></section>'
     + section(split(
-        'Supernova S.C.', 'Software integral comercial para empresas de servicios públicos',
-        ['Implementa modelos de negocio de manera dinámica considerando el marco regulatorio, y gestiona las pérdidas no técnicas mediante la detección de anomalías.',
-         'Su integración modular y flexible es compatible con módulos financieros y soporta procesos comerciales, operativos, técnicos, financieros y contables.'],
-        ['Venta de productos y servicios', 'Infraestructura eléctrica', 'Atención al cliente y contact center',
-         'Facturación y recaudos', 'Financiaciones y recuperación de cartera',
-         'Micromedición, macromedición y control de pérdidas', 'Estadísticas y reportes gerenciales', 'Seguridad y auditoría'],
-        shot('assets/img/shots/supernova-modulos.jpg', 'Módulos de Supernova S.C.', pad=True)))
+        'Reconocimiento', 'Reconocidos por el <span class="hl">Ministerio de Salud</span>',
+        ['El Ministerio de Salud y Protección Social reconoció a SIO por su aporte en la validación de la conformidad técnica de las operaciones del ciclo de vida del Resumen Digital de Atención (RDA) del paciente y de consulta externa, en el software Sio Salud, módulo Historia Clínica, dentro del proyecto de Interoperabilidad de la Historia Clínica Electrónica (IHCE).',
+         'Constancia firmada en Bogotá D.C. el 17 de abril de 2026.'],
+        None,
+        visual=doc_view(HC_IHCE, HC_IHCE_CAP, 'Reconocimiento del Ministerio de Salud y Protección Social (IHCE) a SIO'), rev=True))
     + section(
-        sec_head('Servicios profesionales', 'Del dato a la decisión')
+        sec_head('Funcionalidades', 'Todo lo asistencial, en una sola historia clínica')
         + feats([
-            ('bar-chart', 'Inteligencia de negocios', 'Consultoría en inteligencia de negocios con CONOZE B.I.®.'),
-            ('database', 'Minería de datos', 'Minería de datos especializada para descubrir patrones y oportunidades.'),
-            ('gauge', 'Planeación', 'Software de restricciones para la planeación operativa.'),
-        ], cols=3), 'alt')
-    + related(['gobierno-de-datos', 'gestion-documental', 'saman-solution'])
-    + cta_band('Moderniza la gestión de tu empresa de servicios públicos', 'Cuéntanos tu operación y conversemos sobre Supernova S.C.'))
+            ('heart-pulse', 'Historia clínica electrónica', 'Registro de la atención del paciente, integrado con el resto de la suite.'),
+            ('users', 'Registro de enfermería', 'Registro de enfermería sincronizado con la historia clínica.'),
+            ('link', 'Interoperabilidad', 'Intercambio de información con el Ministerio de Salud (IHCE).'),
+            ('file-text', 'Órdenes médicas electrónicas', 'Órdenes integradas a la atención del paciente.'),
+            ('lock', 'Mecanismos de seguridad', 'Medidas para proteger la información clínica.'),
+            ('layers', 'Historias por especialidades', 'Historias clínicas adaptadas a cada especialidad.'),
+            ('calendar', 'Citas web', 'Asignación de citas por internet.'),
+            ('smartphone', 'Salud móvil', 'Atención y consulta desde dispositivos móviles.'),
+            ('clipboard-check', 'Auditoría interna y concurrente', 'Seguimiento y auditoría durante la atención.'),
+        ]), 'alt')
+    + support_strip('SAMAN HC')
+    + related(['saman-solution', 'saman-fca', 'saman-hcm'], 'Se integra con', 'Más aplicativos de la suite SAMAN SOLUTION')
+    + cta_band('Lleva tu historia clínica al siguiente nivel', 'Solicita una demostración de SAMAN HC con un asesor de SIO.'))
 
-# ---------- GOBIERNO DE DATOS
-add('gobierno-de-datos.html', 'Gobierno de datos | Oracle · SIO',
-    'Servicios de outsourcing especializados en captura, procesamiento y administración de información basados en las mejores prácticas: administración Oracle, tuning, migración, alta disponibilidad y nube.',
+# ---------- SAMAN FCA
+add('saman-fca.html', 'SAMAN FCA | Financiero, contable y administrativo · SIO',
+    'Aplicativo financiero, contable y administrativo de SIO: activos fijos, cartera, contabilidad, nómina, almacén, compras, presupuesto, proveedores y tesorería. Parte de la suite SAMAN SOLUTION.',
     'soluciones',
     hero(dict(
-        crumbs=crumbs_sol('Gobierno de datos'), img='hero/data.jpg', pos='50% 50%',
-        logo='cert/oracle-partner.png', logo_alt='Oracle Partner',
-        pill='Oracle Partner Network',
-        h1='Tus datos, <span class="hl-y">disponibles, seguros y optimizados</span>',
-        lead='Servicios de outsourcing especializados en captura, procesamiento y administración de información, basados en las mejores prácticas.',
+        crumbs=crumbs_sol('Saman FCA'),
+        logo='logo-saman-fca.png', logo_alt='SAMAN FCA Financiero, contable y administrativo',
+        pill='Financiero · Contable · Administrativo',
+        h1='Tu contabilidad y administración, <span class="hl-y">bien organizadas</span>',
+        lead='SAMAN FCA ayuda a tu empresa a gestionar de forma organizada la contabilidad de los procesos internos: activos fijos, cartera, nómina, compras, presupuesto y tesorería, en un aplicativo de la suite SAMAN SOLUTION.',
+        ctas=[btn('Cotiza ya', 'contacto.html', 'yellow'), btn('Ver el recorrido', '#recorrido', 'light', arrow=False)],
+        visual=real_visual(
+            'fca-menu.jpg', 'SAMAN FCA: menú con los módulos del aplicativo', ratio='1376 / 704',
+            floats=_f_dark('sfa', 0, _DUR[5], _DEL[5], 'Contabilidad', '', 'Comprobantes y reportes', 'Información exógena')
+            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'wallet', 'Cartera', 'Facturas, recibos y anticipos', ok=True)
+            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'package', 'Activos fijos', 'Depreciación y ajustes'))))
+    + section(img_panel(
+        'stock/sub-financiero.jpg', '50% 50%', 'Un solo aplicativo',
+        'Finanzas, contabilidad y administración <span class="hl-y">bajo control</span>',
+        'Doce módulos reúnen los procesos financieros, contables y administrativos de tu empresa, con la información integrada a la suite SAMAN SOLUTION.',
+        [('wallet', 'Financiero', 'Cartera, tesorería y presupuesto', 'Control de la cartera, la tesorería y el presupuesto privado.'),
+         ('receipt', 'Contable', 'Contabilidad y comprobantes', 'Comprobantes, consultas, reportes e información exógena.'),
+         ('package', 'Administrativo', 'Activos, almacén y compras', 'Activos fijos, almacén, contratación, compras y proveedores.')],
+        cta=btn('Cotiza ya', 'contacto.html', 'yellow'), tag='SAMAN FCA'), 'tight')
+    + '<section class="section alt" id="recorrido"><div class="container">'
+    + sec_head('Conoce la plataforma', 'Así se ve <span class="hl">SAMAN FCA</span> por dentro',
+               'Recorre las pantallas reales del aplicativo: ingresa, explora sus módulos y mira cómo se gestiona cada proceso.')
+    + tour('SAMAN FCA', [
+        ('lock', 'Inicio de sesión',
+         'Ingresa con tu usuario, contraseña y empresa para gestionar de forma organizada la contabilidad de los procesos internos.',
+         'fca-login.jpg', 1, '50% 0%'),
+        ('layers', 'Todos los módulos en un menú',
+         'Activos fijos, administración de personal, almacén, cartera, contabilidad, contratación, compras, nómina, presupuesto, proveedores, sistema y tesorería.',
+         'fca-menu.jpg', 1.3, '0% 0%'),
+        ('users', 'Hoja de vida del empleado',
+         'Administración de personal: registra la información personal, familiar, de educación, laboral y de publicaciones de cada empleado.',
+         'fca-hoja-vida.jpg', 1, '50% 0%'),
+    ], 'Pantallas reales de SAMAN FCA. Haz clic en la imagen para ampliarla.', ratio='1376 / 704')
+    + '</div></section>'
+    + section(
+        sec_head('Módulos', 'Explora los <span class="hl">módulos</span> de SAMAN FCA',
+                 'El menú del aplicativo organiza cada proceso. Elige un módulo y mira sus opciones reales.')
+        + modules('SAMAN FCA', [
+            ('package', 'Activos fijos',
+             'Administración, actualizaciones, consultas y reportes de los activos fijos de la empresa.',
+             'fca-menu-activos.png',
+             ['Administración', 'Actualizaciones: activos fijos, aspectos técnicos e impresión de placas', 'Operaciones, depreciación y ajustes en activos',
+              'Interfaz con contabilidad', 'Pólizas de seguros e inventario físico', 'Deterioro NIF', 'Carga de activos fijos por archivo plano', 'Consultas y reportes']),
+            ('wallet', 'Cartera',
+             'Actualización de clientes, facturas, recibos de caja y anticipos, con consultas, reportes y planos.',
+             'fca-menu-cartera.png',
+             ['Administración', 'Actualizaciones: clientes, facturas, recibos de caja y anticipos', 'Notas débito y crédito',
+              'Aplicación y desaplicación de documentos', 'Consultas', 'Reportes', 'Planos']),
+            ('receipt', 'Contabilidad',
+             'Comprobantes, consultas, reportes, procesos e información exógena.',
+             'fca-menu-contabilidad.png',
+             ['Administración', 'Comprobantes: grabación, actualización y copias', 'Comprobante de ajuste por inflación', 'Consultas', 'GIF', 'Reportes', 'Procesos', 'Información exógena']),
+            ('users', 'Nómina',
+             'Contratos, novedades y liquidación de nómina, con interfases, consultas y reportes.',
+             'fca-menu-nomina.png',
+             ['Administración', 'Contratos', 'Novedades: devengos y deducciones, préstamos, incapacidades y embargos', 'Programación de vacaciones y aumentos salariales',
+              'Liquidación de nómina y de prestaciones', 'Liquidación final', 'Autoliquidación de aportes', 'Interfases, consultas y reportes']),
+        ], 'Recortes reales del menú de SAMAN FCA.', open_tabs=True, min_h=640), 'alt')
+    + support_strip('SAMAN FCA')
+    + related(['saman-solution', 'saman-hc', 'saman-hcm'], 'Se integra con', 'Más aplicativos de la suite SAMAN SOLUTION')
+    + cta_band('Pon en orden las finanzas y la administración de tu empresa', 'Solicita una demostración de SAMAN FCA con un asesor de SIO.'))
+
+# ---------- SAMAN HCM
+add('saman-hcm.html', 'SAMAN HCM | Gestión de recursos humanos · SIO',
+    'SAMAN HCM: sistema de gestión de recursos humanos de SIO. Talento humano, nómina y administración del personal, integrados con la suite SAMAN SOLUTION.',
+    'soluciones',
+    hero(dict(
+        crumbs=crumbs_sol('Saman HCM'),
+        logo='logo-saman-hcm.png', logo_alt='SAMAN HCM Sistemas de gestión de recursos humanos',
+        pill='Gestión de recursos humanos',
+        h1='Las personas de tu institución, <span class="hl-y">bien gestionadas</span>',
+        lead='SAMAN HCM es el sistema de gestión de recursos humanos de SIO: talento humano y nómina de tu institución, integrados con el resto de la suite SAMAN SOLUTION.',
         ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
     + section(
-        sec_head('Servicios', 'Administración integral de bases de datos Oracle')
+        sec_head('Qué incluye', 'Talento humano y nómina, en un solo sistema')
         + feats([
-            ('server', 'Instalación y configuración', None,
-             ['Motores Oracle 9i, 10g, 11g y 12c', 'Ambientes de desarrollo, testing y producción', 'Oracle ASM e implementación de auditorías', 'Clonación de bases de datos']),
-            ('database', 'Administración de bases de datos', None,
-             ['Implementación de seguridades personalizadas', 'Solución de errores y monitoreo preventivo', 'Mantenimiento de filesystems y esquemas', 'Aplicación de parches y monitoreo de backups']),
-            ('gauge', 'Tuning y optimización', None,
-             ['Análisis de parámetros y procesos críticos', 'Implementación de técnicas de optimización']),
-            ('refresh', 'Migración, backup y recuperación', None,
-             ['Migraciones entre versiones y storage', 'Configuración de RMAN', 'Recuperación de bases de datos, esquemas o tablas']),
-            ('zap', 'Alta disponibilidad', None,
-             ['Implementación de Oracle RAC', 'Base de datos Standby con Data Guard']),
-            ('cloud', 'Servicios en la nube', None,
-             ['Bases de datos en la nube', 'Backup de archivos']),
-        ], cols=3))
+            ('users', 'Gestión del talento humano', 'Administra la información de las personas que trabajan en tu institución.'),
+            ('receipt', 'Nómina electrónica', 'Genera la nómina electrónica de tu institución.'),
+            ('wallet', 'Liquidación de nómina', 'Liquidación de nómina, prenómina y nómina definitiva.'),
+        ]), 'alt')
     + section(split(
-        'Respaldo', 'Con el respaldo tecnológico de Oracle',
-        ['Nuestros productos cuentan con el respaldo tecnológico de ORACLE, líder mundial en motores de bases de datos robustas e infraestructura tecnológica en la nube. SIO cuenta con la membresía de Oracle Partner Network.'],
-        ['Capacitación según las necesidades de tu equipo'],
-        '<div class="shot pad" style="display:grid;place-items:center;min-height:220px"><img src="assets/img/cert/oracle-partner.png" alt="Oracle Partner Network" style="max-width:320px"></div>'), 'alt')
-    + related(['servicios-publicos', 'gestion-de-informacion', 'saman-solution'])
-    + cta_band('Pon tus bases de datos en manos expertas', 'Cuéntanos tu ambiente actual y te proponemos un plan de administración.'))
-
-# ---------- CENTRO DE NEGOCIOS
-add('centro-de-negocios.html', 'Centro de negocios | Oficinas en Cali · SIO',
-    'Espacio ideal para profesionales y empresas de distintos sectores en una de las mejores ubicaciones comerciales de Cali: oficinas amobladas, oficina virtual y salas de reuniones por horas.',
-    'soluciones',
-    hero(dict(
-        crumbs=crumbs_sol('Centro de negocios'), img='hero/center.jpg', pos='50% 50%',
-        pill='Cali, Valle del Cauca',
-        h1='Un espacio ideal para tu <span class="hl-y">empresa</span>',
-        lead='Centro de negocios SIO: el espacio ideal para profesionales y empresas de distintos sectores, en una de las mejores ubicaciones comerciales de Cali.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
-    + section(
-        sec_head('Servicios', 'Elige el espacio que tu empresa necesita')
-        + feats([
-            ('building', 'Alquiler de oficinas amobladas', 'De 1 a 20 puestos de trabajo según tus necesidades, con todos los servicios incluidos en una única tarifa.',
-             ['Aire acondicionado', 'Sillas ergonómicas y escritorios', 'Internet WiFi', 'Recepción']),
-            ('cloud', 'Oficina virtual', 'Recursos tecnológicos para el trabajo remoto a menor costo y posicionamiento de marca sin un espacio físico permanente.',
-             ['Buzón para llamadas', 'Recepción de documentos físicos']),
-            ('users', 'Salas de reuniones por horas', 'Para tus comités y reuniones de junta directiva, con capacidad para hasta 10 personas.',
-             ['Ayudas audiovisuales', 'Catering opcional: desayuno, brunch o almuerzo', 'Aire acondicionado y WiFi']),
-        ], cols=3))
-    + section(
-        sec_head('Todo incluido', 'Servicios y comodidades para tu día a día')
-        + '<div class="feat-grid c4" data-reveal>'
-        + ''.join(f'<div class="feat"><span class="f-ico">{ic(i)}</span><h3>{t}</h3></div>' for i, t in [
-            ('wifi', 'Internet WiFi'), ('wind', 'Aire acondicionado'), ('coffee', 'Estación de bebidas'),
-            ('shield-check', 'Portería con seguridad privada'), ('key', 'Recepción'), ('arrow-up', 'Elevador'),
-            ('utensils', 'Comedor'), ('sparkles', 'Servicio de limpieza')])
-        + '</div>', 'alt')
-    + related(['suministros-tecnologicos', 'gestion-documental', 'gobierno-de-datos'])
-    + cta_band('Conoce el Centro de negocios', 'Agenda una visita o solicita una cotización sin compromiso.'))
+        'Suite SAMAN SOLUTION', 'Integrado con <span class="hl">toda la operación</span>',
+        ['SAMAN HCM comparte la información con los demás aplicativos de la suite: historia clínica, financiero, contable y administrativo, documentos electrónicos, calidad en salud y RIPS.'],
+        ['Un único proveedor para toda la institución', 'Información integrada, sin reprocesos', 'Soporte funcional y técnico de SIO'],
+        '<div class="shot pad" style="display:grid;place-items:center;min-height:240px"><img src="assets/img/logo-saman-hcm.png" alt="SAMAN HCM" style="max-width:360px"></div>'))
+    + soon_band('Pronto, el recorrido por la plataforma', 'Estamos preparando las pantallas de SAMAN HCM. Mientras tanto, solicita información y un asesor de SIO te cuenta cómo funciona.')
+    + support_strip('SAMAN HCM')
+    + related(['saman-solution', 'saman-hc', 'saman-fca'], 'Se integra con', 'Más aplicativos de la suite SAMAN SOLUTION')
+    + cta_band('Conoce SAMAN HCM', 'Solicita información con un asesor de SIO.'))
 
 # ---------- SOLUCIONES (índice)
 add('soluciones.html', 'Soluciones | SIO',
-    'Soluciones para la gestión hospitalaria, documentos electrónicos, calidad en salud, BPO y servicios de datos. Un ecosistema que se integra para que la información fluya.',
+    'SAMAN SOLUTION, la suite que integra la historia clínica, lo financiero, contable y administrativo, el talento humano, los documentos electrónicos, la calidad en salud y los RIPS.',
     'soluciones',
     hero(dict(
         crumbs=[('Inicio', 'index.html'), ('Soluciones', '')],
         pill='Soluciones',
-        h1='Soluciones para cada proceso de tu <span class="hl-y">organización</span>',
-        lead='Un ecosistema de soluciones que se integran entre sí: gestión hospitalaria, documentos electrónicos, calidad en salud, servicios BPO y servicios de datos.',
+        h1='Una suite para cada proceso de tu <span class="hl-y">institución</span>',
+        lead='SAMAN SOLUTION es la suite que integra todos tus aplicativos: historia clínica, financiero, contable y administrativo, recursos humanos, documentos electrónicos, calidad en salud y RIPS.',
         ctas=[btn('Solicitar demo', 'contacto.html', 'yellow')]))
     + section(
         f'''<a class="sol-feature" href="saman-solution.html" data-reveal>
@@ -1143,13 +1074,9 @@ add('soluciones.html', 'Soluciones | SIO',
             <span class="link-arrow" style="color:var(--yellow)">Conocer SAMAN SOLUTION {ic("arrow-right")}</span>
           </div><span></span></a>''')
     + section(
-        sec_head('Se integran entre sí', 'Soluciones que se integran a SAMAN SOLUTION',
-                 'Cada una resuelve una necesidad específica y se conecta para que la información fluya sin reprocesos.')
-        + pcards(['saman-soft', 'health-sq', 'saman-rips']), 'alt')
-    + f'<section class="section" id="otras-soluciones"><div class="container">'
-      + '<div class="others-head"><div><span class="pill pill-sm">Otras soluciones</span><h3>Servicios que complementan tu operación</h3></div>'
-      + f'<a class="link-arrow" href="contacto.html">Hablar con un asesor {ic("arrow-right")}</a></div>'
-      + otiles(OTHER) + '</div></section>'
+        sec_head('Se integran entre sí', 'Aplicativos que se integran a SAMAN SOLUTION',
+                 'Cada uno resuelve una necesidad específica y se conecta con los demás para que la información fluya sin reprocesos.')
+        + pcards(['saman-hc', 'saman-fca', 'saman-hcm', 'saman-soft', 'health-sq', 'saman-rips']), 'alt')
     + cta_band('¿No sabes por dónde empezar?', 'Un asesor de SIO te ayuda a identificar la solución que mejor se ajusta a tu operación.'))
 
 # ---------- TRABAJA CON NOSOTROS
@@ -1249,8 +1176,7 @@ add('nosotros.html', 'Nosotros | SIO',
         ctas=[btn('Hablar con un asesor', 'contacto.html', 'yellow')]))
     + section(split(
         'Quiénes somos', 'Soluciones de valor agregado para la misión de tu organización',
-        ['Cubrimos procesos de desarrollo, implementación, soporte, actualización, mantenimiento y operación de soluciones informáticas misionales dentro de las organizaciones.',
-         'También ofrecemos servicios de outsourcing en captura, procesamiento y administración de la información, basados en las mejores prácticas.'],
+        ['Cubrimos procesos de desarrollo, implementación, soporte, actualización, mantenimiento y operación de soluciones informáticas misionales dentro de las organizaciones.'],
         ['Fundada en 1992 y con sede en Cali, Colombia', 'Evaluada bajo el modelo CMMI nivel III y IT Mark',
          'Procesos caracterizados y descritos en estándares, procedimientos, herramientas y métodos'],
         '<div class="stats-card" style="grid-template-columns:1fr 1fr"><div class="stat"><div class="stat-n"><span data-count="34">0</span><i>+</i></div><b>años de experiencia</b></div>'
@@ -1377,15 +1303,12 @@ FORM = '''<form class="form-card" data-form novalidate>
           <label class="field"><span>Me interesa</span>
             <select id="f-interes" name="interes">
               <option>SAMAN SOLUTION · Gestión hospitalaria</option>
+              <option>Saman HC · Historia clínica electrónica</option>
+              <option>Saman FCA · Financiero, contable y administrativo</option>
+              <option>Saman HCM · Gestión de recursos humanos</option>
               <option>Saman Soft · Facturación y nómina electrónica</option>
               <option>Health SQ · Calidad en salud</option>
               <option>Saman RIPS</option>
-              <option>Gestión documental</option>
-              <option>Gestión de información</option>
-              <option>Suministros tecnológicos</option>
-              <option>Servicios públicos</option>
-              <option>Gobierno de datos</option>
-              <option>Centro de negocios</option>
             </select>
           </label>
           <label class="field"><span>Mensaje</span><textarea id="f-mensaje" name="mensaje" rows="4" placeholder="Cuéntanos brevemente qué necesitas"></textarea></label>

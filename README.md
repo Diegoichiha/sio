@@ -15,7 +15,7 @@ assets/img/              ← logos (SVG en alta), clientes, banners (hero/), fon
 | Menú | Páginas |
 |---|---|
 | Inicio | `index.html` |
-| Soluciones | `soluciones.html`, `saman-solution`, `saman-soft`, `health-sq`, `saman-rips`, `gestion-documental`, `gestion-de-informacion`, `suministros-tecnologicos`, `servicios-publicos`, `gobierno-de-datos`, `centro-de-negocios` |
+| Soluciones | `soluciones.html`, `saman-solution`, `saman-hc`, `saman-fca`, `saman-hcm`, `saman-soft`, `health-sq`, `saman-rips` |
 | Nosotros | `nosotros.html` |
 | Trabaja con nosotros | `trabaja-con-nosotros.html` (vacantes: lista `VACANTES` en `build.py`) |
 | Soporte | `soporte.html` (canal por software; el ticket es externo: `https://tbg.sio.com.co/login`) |
@@ -43,7 +43,7 @@ Tipografía: el sitio actual usa Montserrat. La propuesta usa **Plus Jakarta San
 
 ## Estructura / jerarquía
 Inicio → Soluciones (mega-menú) → Nosotros → Trabaja con nosotros → **Soporte** (página interna con enlace al ticket) → Contacto.
-Peso visual: SAMAN SOLUTION (panel oscuro a pantalla completa + hub interactivo) > Saman Soft / Health SQ / Saman RIPS (bento) > Otras soluciones (lista compacta).
+Peso visual: SAMAN SOLUTION (la suite que integra todos los aplicativos: panel oscuro a pantalla completa + hub interactivo) > Saman HC / FCA / HCM / Soft / Health SQ / Saman RIPS (cuadrícula de 6, cada uno con su landing). Los servicios BPO y de datos (gestión documental, gestión de información, suministros, servicios públicos, gobierno de datos, centro de negocios) se retiraron: el cliente indicó que ya no se ofrecen.
 
 ## Material del cliente (carpeta Drive "VENTANAS")
 - **Datos de la empresa** (docs INFORMACIÓN): Edificio Centro Empresarial Versalles, Calle 22 Norte # 3N–15, piso 4, barrio San Vicente (Cali) · Tel. 300 677 0106 · mercadeo@sio.com.co. Ya aplicados en footer, home y contacto.
@@ -55,7 +55,7 @@ Peso visual: SAMAN SOLUTION (panel oscuro a pantalla completa + hub interactivo)
 
 ## Pendientes de validar con SIO
 - WhatsApp: `+57 318 506 7331` (dato del sitio anterior; el doc nuevo solo trae el teléfono 300 677 0106).
-- SAMAN HC / HCM / FCA: por los logos y pantallas son Historia Clínica, Sistemas de gestión de recursos humanos y Financiero-Contable-Administrativo; confirmar si tendrán página propia (hoy HC y FCA viven en la página de SAMAN SOLUTION y HCM solo aparece en Soporte).
+- SAMAN HC / HCM / FCA: por los logos y pantallas son Historia Clínica, Sistemas de gestión de recursos humanos y Financiero-Contable-Administrativo; confirmar si tendrán página propia (el cliente confirmó que tienen landing independiente: `saman-hc`, `saman-fca`, `saman-hcm`; pendiente confirmar si la interna de SAMAN SOLUTION debe mostrar todos estos aplicativos; HCM aún sin pantallas).
 - Trabaja con nosotros: no hay vacantes cargadas (muestra "Por ahora no tenemos vacantes") y el correo de hojas de vida es `mercadeo@sio.com.co`; confirmar el de talento humano.
 - Mockup del producto: es ilustrativo (datos de ejemplo). Reemplazar por capturas reales de SAMAN SOLUTION.
 - Logos de clientes: recortados de una imagen de 1024 px; pedir originales vectoriales/alta resolución.
