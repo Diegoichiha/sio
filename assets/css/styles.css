@@ -1548,3 +1548,34 @@ body.lb-lock { overflow: hidden; }
   .su-pane::after { height: 24%; }
 }
 
+/* =========================================================
+   WHATSAPP FLOTANTE · azul y amarillo corporativos
+   ========================================================= */
+.wa-float { position: fixed; z-index: 90; right: max(18px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom));
+  display: inline-flex; align-items: center; height: 64px; padding: 6px; border-radius: 999px; color: #fff;
+  background: linear-gradient(135deg, var(--blue-bright), var(--blue) 48%, var(--navy));
+  box-shadow: 0 18px 38px -12px rgba(9, 40, 98, .7), 0 2px 0 rgba(255, 255, 255, .25) inset, 0 0 0 1px rgba(255, 255, 255, .12);
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+.wa-float:hover, .wa-float:focus-visible { transform: translateY(-3px); box-shadow: 0 24px 44px -12px rgba(9, 40, 98, .8), 0 2px 0 rgba(255, 255, 255, .25) inset, 0 0 0 1px rgba(255, 255, 255, .2); }
+.wa-float:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+.wa-ic { position: relative; flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--yellow); color: var(--navy);
+  box-shadow: 0 6px 14px -6px rgba(0, 16, 46, .55), 0 0 0 3px rgba(244, 213, 59, .28); transition: transform .5s var(--ease); }
+.wa-ic svg { width: 28px; height: 28px; }
+.wa-float:hover .wa-ic { transform: rotate(-8deg) scale(1.06); }
+.wa-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--yellow); opacity: 0; animation: wa-ring 2.8s var(--ease) infinite; pointer-events: none; }
+.wa-dot { position: absolute; top: 1px; right: 1px; width: 13px; height: 13px; border-radius: 50%; background: #1FB36B; border: 2.5px solid var(--navy); }
+.wa-label { display: grid; gap: 1px; max-width: 0; padding: 0; opacity: 0; overflow: hidden; white-space: nowrap; text-align: left;
+  transition: max-width .55s var(--ease), padding .55s var(--ease), opacity .35s; }
+.wa-label b { font: 700 1rem/1.15 var(--font-display); letter-spacing: -.02em; color: #fff; }
+.wa-label small { font: 500 .75rem/1.2 var(--font-body); color: #C9D6F2; }
+.wa-float:hover .wa-label, .wa-float:focus-visible .wa-label, .wa-float.is-hint .wa-label { max-width: 220px; padding: 0 20px 0 14px; opacity: 1; }
+@keyframes wa-ring { 0% { transform: scale(1); opacity: .9; } 70%, 100% { transform: scale(1.75); opacity: 0; } }
+@media (max-width: 640px) {
+  .wa-float { height: 58px; right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom)); }
+  .wa-ic { width: 46px; height: 46px; }
+  .wa-ic svg { width: 25px; height: 25px; }
+  .wa-label small { display: none; }
+  .wa-float:hover .wa-label, .wa-float:focus-visible .wa-label, .wa-float.is-hint .wa-label { max-width: 130px; }
+}
+@media (prefers-reduced-motion: reduce) { .wa-ring { animation: none; } .wa-float, .wa-ic, .wa-label { transition: none; } }
+@media print { .wa-float { display: none; } }

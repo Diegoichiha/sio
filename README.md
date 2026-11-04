@@ -53,6 +53,9 @@ Peso visual: SAMAN SOLUTION (la suite que integra todos los aplicativos: panel o
 - **Home:** el monitor del hero muestra una pantalla real de SAMAN HC (`assets/img/shots/home-hero.webp`, fotograma del video escalado 2x y afinado para pantallas retina); ya no hay mockup de ejemplo.
 - **PDF "pared lateral"**: panel "Tecnología que respalda tu operación" reconstruido en `nosotros.html`.
 
+## WhatsApp flotante
+Botón fijo abajo a la derecha en todas las páginas (`src/partials/footer.html`, estilos `.wa-float`): círculo amarillo con el ícono sobre píldora azul corporativa, anillo pulsante y etiqueta "¿Hablamos?" que se abre al pasar el mouse y unos segundos al cargar. Enlaza a `https://wa.me/573185067331` con un mensaje inicial; cambiar el número/mensaje en esa línea del partial.
+
 ## Pendientes de validar con SIO
 - WhatsApp: `+57 318 506 7331` (dato del sitio anterior; el doc nuevo solo trae el teléfono 300 677 0106).
 - SAMAN HC / HCM / FCA: por los logos y pantallas son Historia Clínica, Sistemas de gestión de recursos humanos y Financiero-Contable-Administrativo; confirmar si tendrán página propia (el cliente confirmó que tienen landing independiente: `saman-hc`, `saman-fca`, `saman-hcm`; la interna de SAMAN SOLUTION es la suite: explorador con la pantalla y la información de cada Saman; HCM aún sin pantallas).

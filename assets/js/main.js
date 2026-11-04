@@ -443,6 +443,13 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTabs);
   });
 
+  /* ---------- WhatsApp flotante: se abre un momento al cargar para invitar a escribir ---------- */
+  const wa = $('.wa-float');
+  if (wa && !reduceMotion) {
+    setTimeout(() => wa.classList.add('is-hint'), 2600);
+    setTimeout(() => wa.classList.remove('is-hint'), 8600);
+  }
+
   /* ---------- Formulario (maqueta: sin backend) ---------- */
   const form = $('[data-form]');
   if (form) {
