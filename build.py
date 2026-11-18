@@ -688,8 +688,8 @@ add('saman-solution.html', 'SAMAN SOLUTION | La suite que integra todos los apli
          'Doce módulos para gestionar de forma organizada la contabilidad y los procesos internos de tu empresa.',
          'fca-menu.jpg', ['Activos fijos y cartera', 'Contabilidad y nómina', 'Compras, presupuesto y tesorería'], 'saman-fca.html'),
         ('logo-saman-hcm.png', 'SAMAN HCM', 'Gestión de recursos humanos',
-         'El sistema de gestión de recursos humanos: talento humano y nómina, integrados con toda la suite.',
-         None, ['Talento humano', 'Nómina electrónica', 'Liquidación de nómina'], 'saman-hcm.html'),
+         'El sistema de gestión de recursos humanos: administración de personal, hoja de vida y nómina, integrados con toda la suite.',
+         'hcm-suite.jpg', ['Administración de personal', 'Hoja de vida del empleado', 'Nómina'], 'saman-hcm.html'),
         ('logo-saman-soft.png', 'Saman Soft', 'Documentos electrónicos · DIAN',
          'Facturación y nómina electrónica en la nube, como proveedor tecnológico autorizado por la DIAN.',
          'soft-tablero.jpg', ['Facturación y nómina electrónica', 'Documento soporte', 'Buzón de facturas'], 'saman-soft.html'),
@@ -778,9 +778,12 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
             ('file-text', 'Documentos',
              'Filtra por tipo, estado y fechas, y gestiona cada documento: número, cliente, total, fecha y estado.',
              'soft-documentos.jpg', 1.23, '100% 0%'),
-            ('zap', 'Servicios públicos',
-             'Gestiona los documentos de servicios públicos y filtra por estado: no enviados, pendientes de envío por correo o enviados.',
+            ('zap', 'Servicios públicos (Documento Equivalente)',
+             'Gestiona el documento equivalente para la facturación electrónica de servicios públicos y filtra por estado: no enviados, pendientes de envío por correo o enviados.',
              'soft-servicios.jpg', 1.23, '100% 0%'),
+            ('file-text', 'Documento soporte',
+             'Gestiona todas las órdenes de prestación de servicios contratados por la empresa.',
+             'soft-movimiento.jpg', 1.25, '100% 100%'),
             ('inbox', 'Buzón electrónico',
              'Consulta los documentos recibidos de tus proveedores (emisor, NIT, total, fecha y evento) y filtra por evento, forma de pago y fechas.',
              'soft-buzon.jpg', 1.23, '100% 0%'),
@@ -790,12 +793,12 @@ add('saman-soft.html', 'Saman Soft | Facturación y nómina electrónica · SIO'
         + feats([
             ('file-text', 'Generación de documentos', 'Facturas, notas débito, notas crédito, nómina electrónica y documento soporte.'),
             ('shield-check', 'Validación ante la DIAN', 'Valida los documentos tributarios ante la DIAN antes de distribuirlos.'),
-            ('mail', 'Distribución por correo', 'Envío automático de los documentos al correo electrónico del destinatario.'),
-            ('link', 'Integración flexible', 'Se integra mediante servicios REST o archivos planos con tus otros sistemas.'),
+            ('mail', 'Distribución por correo', 'Envío automático de los documentos al correo electrónico del adquiriente.'),
+            ('link', 'Integración flexible', 'Se integra mediante servicios API REST o archivos planos con tus otros sistemas.'),
             ('scan', 'Captura y generación', 'Módulo para la captura y la generación de documentos electrónicos.'),
-            ('archive', 'Conservación por 10 años', 'Los documentos se conservan durante 10 años, durante la vigencia del contrato.'),
+            ('archive', 'Conservación de documentos', 'Los documentos se conservan según la vigencia del contrato.'),
             ('layers', 'Plantillas a tu medida', 'Plantillas prediseñadas o personalizadas con la imagen de tu institución.'),
-            ('life-buoy', 'Soporte funcional y técnico', 'Acompañamiento de nuestro equipo para resolver tus dudas y novedades.'),
+            ('life-buoy', 'Soporte funcional y técnico', 'Acompañamiento de nuestro equipo mediante mesa de servicios para resolver tus dudas y novedades.'),
         ], cols=4), 'alt')
     + support_strip('Saman Soft', 'soon')
     + related(['saman-solution', 'health-sq', 'saman-rips'], 'Se integra con', 'Más soluciones para tu institución')
@@ -854,6 +857,10 @@ add('health-sq.html', 'Health SQ | Calidad en salud · SIO',
              'Captura de eventos adversos con análisis mediante el protocolo de Londres y gestión de barreras y fallas latentes.',
              'hsq-menu-seguridad.png',
              ['Reportar caso', 'Analizar', 'Relacionar análisis de sucesos', 'Seguimiento de oportunidades', 'Informes', 'Des/Habilitar']),
+            ('refresh', 'PAMEC',
+             'Programa de Auditoría para el Mejoramiento de la Calidad: prioriza las oportunidades de mejora y gestiona sus acciones de mejoramiento.',
+             'hsq-menu-pamec.png',
+             ['Subgrupos de acreditación', 'Priorización', 'Oportunidades de mejoramiento', 'Acciones de mejoramiento', 'Otras fuentes de mejoramiento', 'Des/Habilitar', 'Informes']),
             ('bar-chart', 'Indicadores',
              'Diseño de fichas técnicas para medir la eficiencia y la calidad de los procesos organizacionales.',
              'hsq-menu-indicadores.png',
@@ -1082,28 +1089,80 @@ add('saman-fca.html', 'SAMAN FCA | Financiero, contable y administrativo · SIO'
 
 # ---------- SAMAN HCM
 add('saman-hcm.html', 'SAMAN HCM | Gestión de recursos humanos · SIO',
-    'SAMAN HCM: sistema de gestión de recursos humanos de SIO. Talento humano, nómina y administración del personal, integrados con la suite SAMAN SOLUTION.',
+    'SAMAN HCM: sistema de gestión de recursos humanos de SIO. Administración de personal, hoja de vida del empleado y nómina, integrados con la suite SAMAN SOLUTION.',
     'soluciones',
     hero(dict(
         crumbs=crumbs_sol('Saman HCM'),
         logo='logo-saman-hcm.png', logo_alt='SAMAN HCM Sistemas de gestión de recursos humanos',
         pill='Gestión de recursos humanos',
         h1='Las personas de tu institución, <span class="hl-y">bien gestionadas</span>',
-        lead='SAMAN HCM es el sistema de gestión de recursos humanos de SIO: talento humano y nómina de tu institución, integrados con el resto de la suite SAMAN SOLUTION.',
-        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Hablar por WhatsApp', WA, 'light', ext=True)]))
+        lead='SAMAN HCM es el sistema de gestión de recursos humanos de SIO: administración de personal, hoja de vida del empleado y nómina, integrados con el resto de la suite SAMAN SOLUTION.',
+        ctas=[btn('Solicitar información', 'contacto.html', 'yellow'), btn('Ver el recorrido', '#recorrido', 'light', arrow=False)],
+        visual=real_visual(
+            'hcm-hv-empleado.jpg', 'SAMAN HCM: hoja de vida del empleado con su información personal', ratio='1000 / 674',
+            floats=_f_dark('sfa', 0, _DUR[5], _DEL[5], 'Nómina', '', 'Novedades y liquidación', 'Contratos, prestaciones y aportes')
+            + _f_item('sfb', 0, _DUR[0], _DEL[0], 'users', 'Hoja de vida', 'Una por cada empleado', ok=True)
+            + _f_item('sfc', 0, _DUR[4], _DEL[4], 'briefcase', 'Administración de personal', 'Contratos y empleados'))))
+    + section(img_panel(
+        'stock/sub-talento.jpg', '50% 50%', 'Un solo sistema',
+        'Personas, contratos y nómina <span class="hl-y">en un solo lugar</span>',
+        'Tres módulos reúnen la gestión del talento humano de tu institución, con la información integrada a la suite SAMAN SOLUTION.',
+        [('users', 'Administración de personal', 'Empleados y contratos', 'Administra la información de las personas que trabajan en tu institución.'),
+         ('file-text', 'Hoja de vida', 'La historia de cada empleado', 'Información personal, familiar, de educación, laboral, de publicaciones y de capacitación.'),
+         ('wallet', 'Nómina', 'Novedades y liquidación', 'Contratos, novedades, liquidación de nómina y de prestaciones, con interfases y reportes.')],
+        cta=btn('Solicitar información', 'contacto.html', 'yellow'), tag='SAMAN HCM'), 'tight')
+    + '<section class="section alt" id="recorrido"><div class="container">'
+    + sec_head('Conoce la plataforma', 'Así se ve <span class="hl">SAMAN HCM</span> por dentro',
+               'Recorre las pantallas reales de la hoja de vida: elige una sección y mira qué información se registra de cada empleado.')
+    + tour('SAMAN HCM', [
+        ('users', 'Información del empleado',
+         'Registra los datos personales de cada empleado: documento, lugar de nacimiento, estado civil, dirección, contacto y profesión.',
+         'hcm-hv-empleado.jpg', 1, '0% 0%'),
+        ('heart-pulse', 'Información familiar',
+         'Relaciona a los familiares del empleado: afinidad, fecha de nacimiento, escolaridad, contacto y documento soporte.',
+         'hcm-hv-familiar.jpg', 1, '0% 0%'),
+        ('graduation', 'Educación y aptitudes',
+         'Guarda los títulos obtenidos, el establecimiento, la tarjeta profesional y los idiomas, con su nivel.',
+         'hcm-hv-educacion.jpg', 1, '0% 0%'),
+        ('briefcase', 'Historia laboral',
+         'Consulta las empresas, los cargos, las funciones, los sueldos, las fechas y el motivo del retiro.',
+         'hcm-hv-laboral.jpg', 1, '0% 0%'),
+        ('file-text', 'Publicaciones e investigaciones',
+         'Registra las publicaciones e investigaciones del empleado: nombre, medio y fecha.',
+         'hcm-hv-publicaciones.jpg', 1, '0% 0%'),
+        ('award', 'Capacitación',
+         'Lleva el historial de capacitaciones: tema, duración, entidad, tipo de asistencia y certificación.',
+         'hcm-hv-capacitacion.jpg', 1, '0% 0%'),
+        ('pen', 'Observaciones del jefe de talento humano',
+         'Deja las observaciones del jefe de talento humano sobre cada empleado.',
+         'hcm-hv-observaciones.jpg', 1, '0% 0%'),
+    ], 'Pantallas reales de SAMAN HCM. Haz clic en la imagen para ampliarla.', ratio='1000 / 674', compact=True)
+    + '</div></section>'
     + section(
-        sec_head('Qué incluye', 'Talento humano y nómina, en un solo sistema')
-        + feats([
-            ('users', 'Gestión del talento humano', 'Administra la información de las personas que trabajan en tu institución.'),
-            ('receipt', 'Nómina electrónica', 'Genera la nómina electrónica de tu institución.'),
-            ('wallet', 'Liquidación de nómina', 'Liquidación de nómina, prenómina y nómina definitiva.'),
-        ]), 'alt')
+        sec_head('Módulos', 'Explora la <span class="hl">nómina</span> de SAMAN HCM',
+                 'El menú del aplicativo organiza cada proceso. Elige una opción y mira sus opciones reales.')
+        + modules('SAMAN HCM', [
+            ('users', 'Administración de personal y contratos',
+             'Administra al personal y sus contratos: empleados, actualización de NITs y cambios por distintos criterios de selección.',
+             'hcm-menu-contratos.png',
+             ['Administración de personal', 'Nómina: administración', 'Contratos: actualización de NITs', 'Contratos: empleados', 'Contratos: C. contratos',
+              'Contratos: cambios por distintos criterios de selección']),
+            ('wallet', 'Novedades',
+             'Registra las novedades de nómina: devengos y deducciones fijos, préstamos, incapacidades, embargos, vacaciones y aumentos salariales.',
+             'hcm-menu-novedades.png',
+             ['N. novedades', 'Devengos y deducciones fijos', 'Manejo de préstamos', 'Incapacidades', 'Embargos', 'Base gravable', 'Programación de vacaciones',
+              'Aumentos salariales', 'Turnos realizados y horas de trabajo', 'Deducciones acumuladas', 'Novedades de autoliquidación', 'Interface reloj', 'N. retroactivos']),
+            ('receipt', 'Liquidación',
+             'Liquida la nómina y las prestaciones, con autoliquidación de aportes, planilla PILA, liquidación final y acumulados.',
+             'hcm-menu-liquidacion.png',
+             ['Liquidación de nómina y su reversión', 'Autoliquidación de aportes y aportes parafiscales', 'Liquidación de prestaciones y liquidación final', 'Acumulados',
+              'Captura de conceptos de nómina por plano', 'Subir PILA', 'Liquidación de prestaciones semestral', 'Interfaces, consultas, reportes y archivos planos']),
+        ], 'Recortes reales del menú de SAMAN HCM.', open_tabs=True, min_h=640), 'alt')
     + section(split(
         'Suite SAMAN SOLUTION', 'Integrado con <span class="hl">toda la operación</span>',
         ['SAMAN HCM comparte la información con los demás aplicativos de la suite: historia clínica, financiero, contable y administrativo, documentos electrónicos, calidad en salud y RIPS.'],
         ['Un único proveedor para toda la institución', 'Información integrada, sin reprocesos', 'Soporte funcional y técnico de SIO'],
         '<div class="shot pad" style="display:grid;place-items:center;min-height:240px"><img src="assets/img/logo-saman-hcm.png" alt="SAMAN HCM" style="max-width:360px"></div>'))
-    + soon_band('Pronto, el recorrido por la plataforma', 'Estamos preparando las pantallas de SAMAN HCM. Mientras tanto, solicita información y un asesor de SIO te cuenta cómo funciona.')
     + support_strip('SAMAN HCM')
     + related(['saman-solution', 'saman-hc', 'saman-fca'], 'Se integra con', 'Más aplicativos de la suite SAMAN SOLUTION')
     + cta_band('Conoce SAMAN HCM', 'Solicita información con un asesor de SIO.'))

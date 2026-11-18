@@ -174,13 +174,17 @@ section { position: relative; }
   transition: background .2s, color .2s;
 }
 .nav-links > li > a:hover, .mega-trigger:hover, .has-mega.is-open .mega-trigger { background: var(--blue-50); color: var(--ink); }
-.nav-links > li > a.is-active { color: var(--ink); font-weight: 600; }
+/* Página actual: píldora amarilla, igual que el resaltado de Soporte */
+.nav-links > li > a.is-active, .mega-trigger.is-active {
+  background: var(--yellow-wash); box-shadow: inset 0 0 0 1px rgba(244, 213, 59, .9); color: var(--ink); font-weight: 600;
+}
+.nav-links > li > a.is-active:hover, .mega-trigger.is-active:hover, .has-mega.is-open .mega-trigger.is-active { background: var(--yellow); }
 .mega-trigger .ic { width: 16px; height: 16px; transition: transform .3s var(--ease); }
 .has-mega.is-open .mega-trigger .ic { transform: rotate(180deg); }
 
-/* Soporte: destacado, enlace externo */
-.nav-links > li > a.link-support { border: 1px solid rgba(244, 213, 59, .9); background: var(--yellow-wash); color: var(--ink); font-weight: 600; }
-.nav-links > li > a.link-support:hover, .nav-links > li > a.link-support.is-active { background: var(--yellow); }
+/* Soporte: enlace destacado (punto verde y aro amarillo tenue); al estar activo toma la píldora amarilla como los demás */
+.nav-links > li > a.link-support { box-shadow: inset 0 0 0 1px rgba(244, 213, 59, .6); color: var(--ink); font-weight: 600; }
+.nav-links > li > a.link-support:hover { background: var(--yellow-wash); box-shadow: inset 0 0 0 1px rgba(244, 213, 59, .9); }
 .link-support .dot { width: 7px; height: 7px; border-radius: 50%; background: #1FB36B; box-shadow: 0 0 0 3px rgba(31, 179, 107, .22); animation: pulse 2.2s infinite; }
 .link-support .ic { width: 14px; height: 14px; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(31, 179, 107, 0); } }
@@ -236,7 +240,7 @@ section { position: relative; }
   .drawer a:hover, .drawer summary:hover { background: var(--blue-50); }
   .drawer details a { padding-left: 30px; font-weight: 500; color: var(--slate); }
   .drawer details a.d-main small { margin-left: auto; font: 500 .625rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; background: var(--yellow); padding: 3px 8px; border-radius: 999px; color: var(--ink); }
-  .drawer .d-support { background: var(--yellow-wash); border: 1px solid var(--yellow); }
+  .drawer .d-support { box-shadow: inset 0 0 0 1px rgba(244, 213, 59, .6); }
   .drawer a.btn { margin-top: 8px; justify-content: center; height: 52px; padding: 0 24px; color: #fff; }
   .drawer a.btn:hover { background: var(--navy); }
 }
@@ -827,11 +831,10 @@ a.f-row:hover { color: var(--yellow); }
    ========================================================= */
 
 /* — navegación: estado activo — */
-.mega-trigger.is-active { color: var(--ink); font-weight: 600; }
 .mega-all { display: inline-flex; align-items: center; gap: 8px; margin: 10px 12px 0; padding-top: 12px; border-top: 1px solid var(--line); font: 600 .875rem var(--font-display); color: var(--blue); }
 .mega-all .ic { transition: transform .3s var(--ease); }
 .mega-all:hover .ic { transform: translateX(4px); }
-.drawer a.is-active, .drawer summary.is-active { background: var(--blue-50); }
+.drawer a.is-active, .drawer summary.is-active { background: var(--yellow-wash); box-shadow: inset 0 0 0 1px var(--yellow); }
 
 /* — cabecera de página: limpia, como el hero de la home — */
 .page-hero {
